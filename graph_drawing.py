@@ -109,6 +109,10 @@ class AttackGraphDrawer(GraphDrawer):
         if ranking:
             min_, max_ = self.find_extrema_ranking_values()
 
+        # Find whether or not clustering has been applied
+        clustering = hasattr(self.ag.states[0], "id_cluster")
+        subgraphs = {}
+
         # Add the states to the graph
         for state in self.ag.states:
             # Create the node
@@ -124,7 +128,25 @@ class AttackGraphDrawer(GraphDrawer):
                 node.set_style("filled")
                 node.set_fillcolor(color)
 
-            graph.add_node(node)
+            # If clustering has been applied, add the node to the corresponding
+            # subgraph
+            if clustering:
+                id_cluster = state.id_cluster
+
+                # If the subgraph does not exist, create a new one
+                if id_cluster not in subgraphs:
+                    subgraphs[id_cluster] = pydot.Subgraph("cluster_" +
+                                                           str(id_cluster))
+
+                # Add the new node to the cluster
+                subgraphs[id_cluster].add_node(node)
+            else:
+                graph.add_node(node)
+
+        # If clustering has been applied, add the subgraphs to the graph
+        if clustering:
+            for id_cluster in subgraphs:
+                graph.add_subgraph(subgraphs[id_cluster])
 
         # Add the transitions to the graph
         for transition in self.ag.transitions:

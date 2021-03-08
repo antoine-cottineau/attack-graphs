@@ -1,6 +1,7 @@
 from mulval import MulvalAttackGraph
 from attack_graph import AttackGraph
 from ranking import PageRankMethod, KuehlmannMethod
+from clustering import Spectral1
 from graph_drawing import MulvalGraphDrawer, AttackGraphDrawer
 
 # Create the attack graph
@@ -23,16 +24,20 @@ ag.import_mulval_attack_graph(mag)
 prm = PageRankMethod(ag)
 prm.apply()
 
+# Perform clustering with Spectral1
+spectral1 = Spectral1(ag)
+spectral1.apply(5)
+
 # Draw the attack graph
 agd = AttackGraphDrawer(ag)
 attack_graph = agd.create_pydot_graph("ag_page_rank", labels=True)
 AttackGraphDrawer.save_graph_to_file(attack_graph, "png")
+AttackGraphDrawer.save_graph_to_file(attack_graph, "dot")
 
 # Perform node ranking with KuehlmannMethod
 km = KuehlmannMethod(ag)
 km.apply(max_m=7)
 
-# Draw the attack graph
-agd = AttackGraphDrawer(ag)
+# Draw the attack graph$
 attack_graph = agd.create_pydot_graph("ag_kuehlmann", labels=True)
 AttackGraphDrawer.save_graph_to_file(attack_graph, "png")
