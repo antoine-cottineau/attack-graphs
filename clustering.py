@@ -20,6 +20,9 @@ class Spectral:
         self.D = np.zeros((self.ag.N, self.ag.N))
         self.inverse_D = np.zeros((self.ag.N, self.ag.N))
 
+        self.create_weight_matrix()
+        self.create_transition_matrix()
+
     def create_weight_matrix(self):
         """
         Create the weight matrix W.
@@ -82,7 +85,7 @@ class Spectral:
         """
         X = np.zeros((self.ag.N, k))
         for i in range(self.ag.N):
-            X[i, partition[i]] = 1
+            X[i, int(partition[i])] = 1
         return X
 
     def compute_Q_function(self, partition: list, k: int):
@@ -103,6 +106,24 @@ class Spectral:
 
         return np.trace(csr_matrix.dot(X.T, vol_G * self.W - D).dot(X))
 
+    @staticmethod
+    def extract_and_normalize_eigenvectors(eigenvectors: np.array, k: int):
+        """
+        Static method that extracts the top k-1 eigenvectors and normalize
+        the rows.
+
+        :param ndarray eigenvectors: The eigenvectors.
+        :param int k: The number of clusters.
+        :return ndarray U_k: The extracted and normalized eigenvectors.
+        """
+        U_k = eigenvectors[:, :k - 1]
+
+        # Normalize U_k
+        norm = np.linalg.norm(U_k, axis=1, ord=2)
+        U_k = (U_k.T / norm).T
+
+        return U_k
+
 
 class Spectral1(Spectral):
     """
@@ -122,11 +143,7 @@ class Spectral1(Spectral):
         :return list partition: A list of integers giving the id of the cluster
         corresponding to each node.
         """
-        U_k = eigenvectors[:, :k - 1]
-
-        # Normalize U_k
-        norm = np.linalg.norm(U_k, axis=1, ord=2)
-        U_k = (U_k.T / norm).T
+        U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
 
         # Apply k-means on the rows of U_k
         k_means = KMeans(n_clusters=k)
@@ -141,9 +158,6 @@ class Spectral1(Spectral):
 
         :param int K: The maximal number of clusters.
         """
-        self.create_weight_matrix()
-        self.create_transition_matrix()
-
         eigenvectors = self.compute_eigenvector_matrix(K)
         best_score = -np.inf
         best_partition = None
@@ -157,3 +171,85 @@ class Spectral1(Spectral):
 
         for i in range(self.ag.N):
             self.ag.states[i].id_cluster = best_partition[i]
+
+
+class Spectral2(Spectral):
+    """
+    Implementation of the second algorithm introduced by White and Smyth.
+
+    :param AttackGraph ag: The attack graph on which clustering is applied.
+    """
+    def __init__(self, ag: AttackGraph):
+        Spectral.__init__(self, ag)
+
+    def apply_for_k(self, eigenvectors: np.array, k: int, P: list):
+        """
+        Get the partition for a given k. This function try to split the current
+        clusters to improve the Q function.
+
+        :param ndarray eigenvectors: The top eigenvectors of U_K.
+        :param int k: The number of desired clusters.
+        :return list P_new: A list of integers giving the id of the cluster
+        corresponding to each node.
+        :return bool has_updated: Whether or not the function has updated P or
+        has just kept the same P.
+        """
+        P_new = P.copy()
+        ids_clusters = set(P)
+        state_assignments = {
+            c: np.array([i for i in range(self.ag.N) if P[i] == c])
+            for c in ids_clusters
+        }
+        has_updated = False
+
+        for c in ids_clusters:
+            U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
+            U_k_c = U_k[state_assignments[c]]
+
+            sub_partition = KMeans(n_clusters=2).fit_predict(U_k_c)
+            ids_states_in_new_cluster = [
+                i for i in range(len(sub_partition)) if sub_partition[i] == 0
+            ]
+
+            P_prime = P.copy()
+            new_id_cluster = P.max() + 1
+            ids_states_to_update = state_assignments[c][
+                ids_states_in_new_cluster]
+            P_prime[ids_states_to_update] = new_id_cluster
+
+            # Check if the modification improves the value of the Q function
+            if self.compute_Q_function(P_prime, k) > self.compute_Q_function(
+                    P, k):
+                P_new = P_prime
+                has_updated = True
+                break
+
+        return P_new, has_updated
+
+    def apply(self, k_min: int, K: int):
+        """
+        Apply the algorithm and add a new attribute called id_cluster to every
+        state.
+
+        :param int k_min: The starting number of clusters.
+        :param int K: The maximal number of clusters.
+        """
+        eigenvectors = self.compute_eigenvector_matrix(K)
+
+        k = k_min
+        P = np.zeros(self.ag.N)
+        if k > 1:
+            U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
+            P = KMeans(n_clusters=k).fit_predict(U_k)
+
+        k += 1
+        possible_splits = True
+        while k <= K and possible_splits:
+            P, has_updated = self.apply_for_k(eigenvectors, k, P)
+            if has_updated:
+                k += 1
+            else:
+                possible_splits = False
+
+        for i in range(self.ag.N):
+            self.ag.states[i].id_cluster = P[i]

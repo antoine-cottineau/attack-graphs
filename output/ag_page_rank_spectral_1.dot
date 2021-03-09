@@ -1,4 +1,4 @@
-digraph ag_page_rank {
+digraph ag_page_rank_spectral_1 {
 subgraph cluster_0 {
 0 [fillcolor="0 0.0 1", label=0, shape=circle, style=filled];
 1 [fillcolor="0 1.0 1", label=1, shape=circle, style=filled];
@@ -6,14 +6,14 @@ subgraph cluster_0 {
 11 [fillcolor="0 0.426 1", label=11, shape=circle, style=filled];
 }
 
-subgraph cluster_2 {
+subgraph cluster_1 {
 3 [fillcolor="0 0.426 1", label=3, shape=circle, style=filled];
 4 [fillcolor="0 0.196 1", label=4, shape=circle, style=filled];
 5 [fillcolor="0 0.363 1", label=5, shape=circle, style=filled];
 8 [fillcolor="0 0.393 1", label=8, shape=circle, style=filled];
 }
 
-subgraph cluster_1 {
+subgraph cluster_2 {
 6 [fillcolor="0 0.46 1", label=6, shape=circle, style=filled];
 7 [fillcolor="0 0.617 1", label=7, shape=circle, style=filled];
 9 [fillcolor="0 0.272 1", label=9, shape=circle, style=filled];
