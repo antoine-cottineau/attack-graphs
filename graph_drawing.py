@@ -5,23 +5,21 @@ import pydot
 
 class GraphDrawer:
     """
-    Basic class for drawing graphs.
+    Base class for drawing graphs.
     """
-    @staticmethod
-    def save_graph_to_file(graph: pydot.Graph, extension: str):
+    def save_graph_to_file(self, extension: str):
         """
-        Save a pydot graph in a file.
+        Save a graph in a file.
 
-        :param pydot.Graph graph: The graph to save.
         :param str extension: The extension of the file.
         """
-        file_name = "./output/" + str(graph.get_name()) + "." + extension
+        file_name = "./output/" + str(self.graph.get_name()) + "." + extension
         if extension == "dot":
-            graph.write_raw(file_name)
+            self.graph.write_raw(file_name)
         elif extension == "pdf":
-            graph.write_pdf(file_name)
+            self.graph.write_pdf(file_name)
         elif extension == "png":
-            graph.write_png(file_name)
+            self.graph.write_png(file_name)
         else:
             print("File type not supported.")
 
@@ -41,12 +39,11 @@ class MulvalGraphDrawer(GraphDrawer):
 
         :param str graph_name: The name of the graph.
         :param str simplified: Whether or not the labels should be simplified.
-        :return pydot.Graph graph: The built graph.
         """
         if not self.mag.vertices:
             return
 
-        graph = pydot.Dot(graph_name=graph_name, graph_type="digraph")
+        self.graph = pydot.Dot(graph_name=graph_name, graph_type="digraph")
 
         # Add the vertices to the graph
         for id_ in self.mag.ids:
@@ -68,16 +65,14 @@ class MulvalGraphDrawer(GraphDrawer):
             # Create the node with all the above parameters
             node = pydot.Node(name=vertex.id_, label=label, shape=shape)
 
-            graph.add_node(node)
+            self.graph.add_node(node)
 
         # Add the edges to the graph
         for id_i in self.mag.ids:
             vertex_i = self.mag.vertices[id_i]
             for id_j in vertex_i.out:
                 edge = pydot.Edge(id_i, id_j)
-                graph.add_edge(edge)
-
-        return graph
+                self.graph.add_edge(edge)
 
 
 class AttackGraphDrawer(GraphDrawer):
@@ -95,84 +90,66 @@ class AttackGraphDrawer(GraphDrawer):
 
         :param str graph_name: The name of the graph.
         :param bool labels: Whether or not the edge labels should be shown.
-        :return pydot.Graph graph: The built graph.
         """
         if not self.ag.states:
             return
 
-        graph = pydot.Dot(graph_name=graph_name, graph_type="digraph")
+        self.graph = pydot.Dot(graph_name=graph_name, graph_type="digraph")
 
-        # Find whether or not a ranking has been applied
-        ranking = hasattr(self.ag.states[0], "ranking_score")
-
-        # If a ranking has been applied, find the extrema of the values
-        if ranking:
-            min_, max_ = self.find_extrema_ranking_values()
+        # Find whether or not ranking has been applied
+        self.ranking = hasattr(self.ag.states[0], "ranking_score")
 
         # Find whether or not clustering has been applied
-        clustering = hasattr(self.ag.states[0], "id_cluster")
-        subgraphs = {}
+        self.clustering = hasattr(self.ag.states[0], "id_cluster")
 
-        # Add the states to the graph
+        # Create a dictionnary matching the cluster ids and the lists of states
+        # in the clusters.
+        self.clusters = {}
+
+        # Add the states to the graph and complete the clusters
         for state in self.ag.states:
-            # Create the node
-            node = pydot.Node(name=state.id_,
-                              label=str(state.id_),
-                              shape="circle")
+            self.create_pydot_node(state)
 
-            # If a ranking has been applied, change the color of the node
-            # accordingly
-            if ranking:
-                saturation = (state.ranking_score - min_) / (max_ - min_)
-                color = "0 " + str(round(saturation, 3)) + " 1"
-                node.set_style("filled")
-                node.set_fillcolor(color)
-
-            # If clustering has been applied, add the node to the corresponding
-            # subgraph
-            if clustering:
-                id_cluster = state.id_cluster
-
-                # If the subgraph does not exist, create a new one
-                if id_cluster not in subgraphs:
-                    subgraphs[id_cluster] = pydot.Subgraph("cluster_" +
-                                                           str(id_cluster))
-
-                # Add the new node to the cluster
-                subgraphs[id_cluster].add_node(node)
-            else:
-                graph.add_node(node)
-
-        # If clustering has been applied, add the subgraphs to the graph
-        if clustering:
-            for id_cluster in subgraphs:
-                graph.add_subgraph(subgraphs[id_cluster])
+        # If clustering has been applied, add the clusters to the graph
+        if self.clustering:
+            for id_cluster in self.clusters:
+                self.graph.add_subgraph(self.clusters[id_cluster])
 
         # Add the transitions to the graph
         for transition in self.ag.transitions:
             edge = pydot.Edge(transition.state_id_from, transition.state_id_to)
             if labels:
                 edge.set_label(transition.id_)
-            graph.add_edge(edge)
+            self.graph.add_edge(edge)
 
-        return graph
-
-    def find_extrema_ranking_values(self):
+    def create_pydot_node(self, state):
         """
-        Find the minimum and the maximum of the ranking values among the
-        states.
-        The function should be called only if a ranking method has been
-        applied.
+        Create a pydot node from the provided state. Also add the node to the
+        corresponding cluster if needed.
 
-        :return tuple (min, max): The minimum and the maximum of the ranking
-        values.
+        :param State state: The state to convert.
         """
-        min_ = self.ag.states[0].ranking_score
-        max_ = self.ag.states[0].ranking_score
-        for state in self.ag.states:
-            ranking_score = state.ranking_score
-            if ranking_score < min_:
-                min_ = ranking_score
-            elif ranking_score > max_:
-                max_ = ranking_score
-        return min_, max_
+        node = pydot.Node(name=state.id_, label=str(state.id_), shape="circle")
+
+        # If ranking has been applied, change the color of the node accordingly
+        if self.ranking:
+            saturation = (state.ranking_score - self.ag.ranking_min) / (
+                self.ag.ranking_max - self.ag.ranking_min)
+            color = "0 " + str(round(saturation, 3)) + " 1"
+            node.set_style("filled")
+            node.set_fillcolor(color)
+
+        # If clustering has been applied, add the node to the corresponding
+        # cluster
+        if self.clustering:
+            id_cluster = state.id_cluster
+
+            # If the cluster does not exist, create a new one
+            if id_cluster not in self.clusters:
+                self.clusters[id_cluster] = pydot.Subgraph("cluster_" +
+                                                           str(id_cluster))
+
+            # Add the new node to the cluster
+            self.clusters[id_cluster].add_node(node)
+        else:
+            self.graph.add_node(node)

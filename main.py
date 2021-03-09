@@ -10,11 +10,10 @@ mag.parse_from_file("./mulval_data/AttackGraph.xml")
 
 # Draw the MulVAL attack graph
 mgd = MulvalGraphDrawer(mag)
-mulval_graph = mgd.create_pydot_graph("mulval_attack_graph")
-MulvalGraphDrawer.save_graph_to_file(mulval_graph, "png")
-simple_mulval_graph = mgd.create_pydot_graph("simple_mulval_attack_graph",
-                                             simplified=True)
-MulvalGraphDrawer.save_graph_to_file(simple_mulval_graph, "png")
+mgd.create_pydot_graph("mulval_attack_graph")
+mgd.save_graph_to_file("png")
+mgd.create_pydot_graph("simple_mulval_attack_graph", simplified=True)
+mgd.save_graph_to_file("png")
 
 # Convert to a standard attack graph
 ag = AttackGraph()
@@ -30,9 +29,9 @@ spectral1.apply(5)
 
 # Draw the attack graph
 agd = AttackGraphDrawer(ag)
-attack_graph = agd.create_pydot_graph("ag_page_rank_spectral_1", labels=True)
-AttackGraphDrawer.save_graph_to_file(attack_graph, "png")
-AttackGraphDrawer.save_graph_to_file(attack_graph, "dot")
+agd.create_pydot_graph("ag_page_rank_spectral_1", labels=True)
+agd.save_graph_to_file("png")
+agd.save_graph_to_file("dot")
 
 # Perform node ranking with KuehlmannMethod
 km = KuehlmannMethod(ag)
@@ -43,5 +42,5 @@ spectral2 = Spectral2(ag)
 spectral2.apply(1, 5)
 
 # Draw the attack graph$
-attack_graph = agd.create_pydot_graph("ag_kuehlmann_spectral_2", labels=True)
-AttackGraphDrawer.save_graph_to_file(attack_graph, "png")
+agd.create_pydot_graph("ag_kuehlmann_spectral_2", labels=True)
+agd.save_graph_to_file("png")

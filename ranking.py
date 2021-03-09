@@ -2,7 +2,45 @@ from attack_graph import AttackGraph
 import numpy as np
 
 
-class PageRankMethod:
+class RankingMethod:
+    """
+    Base class for ranking methods.
+
+    :param AttackGraph ag: The attack graph to consider.
+    """
+    def __init__(self, ag: AttackGraph):
+        self.ag = ag
+
+    def update_ranking_scores(self, ranking_scores: np.array):
+        """
+        Add a new attribute called ranking_score to the states of the attack
+        graph.
+        The attack graph will also recieve two attributes namely ranking_min
+        and ranking_max.
+
+        :param ndarray ranking_scores: The array of the rankings.
+        """
+        # Find the minimum and maximum of the rankings
+        min_ = ranking_scores[0]
+        max_ = ranking_scores[0]
+
+        # Add a ranking score to each vertex in the graph
+        for i in range(self.ag.N):
+            state = self.ag.states[i]
+            state.ranking_score = ranking_scores[i]
+
+            # Update the extrema
+            if ranking_scores[i] < min_:
+                min_ = ranking_scores[i]
+            elif ranking_scores[i] > max_:
+                max_ = ranking_scores[i]
+
+        # Add the extrema to the attack graph
+        self.ag.ranking_min = min_
+        self.ag.ranking_max = max_
+
+
+class PageRankMethod(RankingMethod):
     """
     Implementation of the first method introduced by Mehta et al. in Ranking
     Attack Graphs (2006).
@@ -12,7 +50,7 @@ class PageRankMethod:
     :param float d: The damping factor.
     """
     def __init__(self, ag: AttackGraph, d=0.85):
-        self.ag = ag
+        RankingMethod.__init__(self, ag)
         self.d = d
 
     def compute_normalized_adjacency_matrix(self):
@@ -55,19 +93,18 @@ class PageRankMethod:
     def apply(self):
         """
         Apply the method.
-        The vertices of the provided attack graph will receive a new attribute
+        The states of the provided attack graph will receive a new attribute
         called ranking_score.
+        The attack graph will also recieve two attributes namely ranking_min
+        and ranking_max.
         """
         Z = self.compute_normalized_adjacency_matrix()
         R = self.compute_page_rank_vector(Z)
 
-        # Add a ranking score to each vertex in the graph
-        for i in range(self.ag.N):
-            state = self.ag.states[i]
-            state.ranking_score = R[i]
+        self.update_ranking_scores(R)
 
 
-class KuehlmannMethod:
+class KuehlmannMethod(RankingMethod):
     """
     Implementation of the second method introduced by Mehta et al. in Ranking
     Attack Graphs (2006).
@@ -77,7 +114,7 @@ class KuehlmannMethod:
     :param float eta: The eta used in Kuehlmann's technique.
     """
     def __init__(self, ag: AttackGraph, eta=0.85):
-        self.ag = ag
+        RankingMethod.__init__(self, ag)
         self.eta = eta
 
     def compute_transition_probability_matrix(self):
@@ -97,8 +134,10 @@ class KuehlmannMethod:
     def apply(self, max_m=100):
         """
         Apply the method.
-        The vertices of the provided attack graph will receive a new attribute
+        The states of the provided attack graph will receive a new attribute
         called ranking_score.
+        The attack graph will also recieve two attributes namely ranking_min
+        and ranking_max.
         """
         P = self.compute_transition_probability_matrix()
         s = np.zeros(self.ag.N)
@@ -116,7 +155,4 @@ class KuehlmannMethod:
 
         r *= (1 - self.eta) / self.eta
 
-        # Add a ranking score to each vertex in the graph
-        for i in range(self.ag.N):
-            state = self.ag.states[i]
-            state.ranking_score = r[i]
+        self.update_ranking_scores(r)
