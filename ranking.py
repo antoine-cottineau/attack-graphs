@@ -15,7 +15,7 @@ class RankingMethod:
         """
         Add a new attribute called ranking_score to the states of the attack
         graph.
-        The attack graph will also recieve two attributes namely ranking_min
+        The attack graph will also receive two attributes namely ranking_min
         and ranking_max.
 
         :param ndarray ranking_scores: The array of the rankings.
@@ -95,7 +95,7 @@ class PageRankMethod(RankingMethod):
         Apply the method.
         The states of the provided attack graph will receive a new attribute
         called ranking_score.
-        The attack graph will also recieve two attributes namely ranking_min
+        The attack graph will also receive two attributes namely ranking_min
         and ranking_max.
         """
         Z = self.compute_normalized_adjacency_matrix()
@@ -136,7 +136,7 @@ class KuehlmannMethod(RankingMethod):
         Apply the method.
         The states of the provided attack graph will receive a new attribute
         called ranking_score.
-        The attack graph will also recieve two attributes namely ranking_min
+        The attack graph will also receive two attributes namely ranking_min
         and ranking_max.
         """
         P = self.compute_transition_probability_matrix()
