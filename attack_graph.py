@@ -62,6 +62,7 @@ class AttackGraph:
         self.propositions = {}
 
         self.N = 0
+        self.proposition_mapping = {}
 
     def import_mulval_attack_graph(self, mag: MulvalAttackGraph):
         """
@@ -108,6 +109,9 @@ class AttackGraph:
 
         # Add the neighbours of the states
         self.add_neighbours_to_states(mag)
+
+        # Create the proposition mapping
+        self.create_proposition_mapping()
 
     def find_states_and_transitions(self, mag: MulvalAttackGraph, state: State,
                                     ids_transitions: list):
@@ -201,3 +205,18 @@ class AttackGraph:
                 self.states[t.state_id_to].in_[t.state_id_from].add(t.id_)
             else:
                 self.states[t.state_id_to].in_[t.state_id_from] = {t.id_}
+
+    def create_proposition_mapping(self):
+        """
+        Create the proposition mapping, a dictionnary where keys are the
+        indices of the propositions and the values are index between 0 and
+        len(self.propositions) - 1.
+        It is useful if we want to index propositions to put them in a numpy
+        array.
+        """
+        proposition_mapping = {}
+        ids_propositions = [*self.propositions]
+        for i in range(len(self.propositions)):
+            proposition = self.propositions[ids_propositions[i]]
+            proposition_mapping[proposition.id_] = i
+        self.proposition_mapping = proposition_mapping
