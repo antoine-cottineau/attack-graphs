@@ -3,6 +3,7 @@ from attack_graph import AttackGraph
 from ranking import PageRankMethod, KuehlmannMethod
 from clustering import Spectral1, Spectral2
 from graph_drawing import MulvalGraphDrawer, AttackGraphDrawer
+from graphsage import Graphsage
 
 # Create the attack graph
 mag = MulvalAttackGraph()
@@ -41,6 +42,15 @@ km.apply(max_m=7)
 spectral2 = Spectral2(ag)
 spectral2.apply(1, 5)
 
-# Draw the attack graph$
+# Draw the attack graph
 agd.create_pydot_graph("ag_kuehlmann_spectral_2", labels=True)
+agd.save_graph_to_file("png")
+
+# Perform clustering with Graphsage
+graphsage = Graphsage(ag, 8, "graphsage")
+graphsage.run()
+graphsage.cluster_with_k_clusters(3)
+
+# Draw the attack graph
+agd.create_pydot_graph("ag_graphsage_clustering", labels=True)
 agd.save_graph_to_file("png")
