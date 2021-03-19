@@ -172,7 +172,6 @@ class Graphsage(Embedding):
 
         self.client = docker.from_env()
         self.container = None
-        self.run_container()
 
     def run(self, size_layer_1=16):
         """
@@ -194,7 +193,7 @@ class Graphsage(Embedding):
         # The size of the output layer should be equal to half the size of
         # dim_embedding if the aggregator is concatenating
         self.run_graphsage(size_layer_1=size_layer_1,
-                           size_layer_2=self.dim_embedding / 2)
+                           size_layer_2=self.dim_embedding // 2)
 
         # Create the embeddings from the output files
         self.create_embeddings()
@@ -284,9 +283,9 @@ class Graphsage(Embedding):
         path = "/notebooks/unsup-graphsage_input/{}".format(folder)
         stream, stats = self.container.get_archive(path)
 
-        tar_file_name = "temp/{}.tar".format(stats["name"])
+        tar_file_path = "temp/{}.tar".format(stats["name"])
 
-        with open(tar_file_name, "wb") as f:
+        with open(tar_file_path, "wb") as f:
             for chunk in stream:
                 f.write(chunk)
 
@@ -295,7 +294,7 @@ class Graphsage(Embedding):
         for i in range(len(files_to_copy)):
             files_to_copy[i] = "{}/{}".format(folder, files_to_copy[i])
 
-        with tarfile.open(tar_file_name) as f:
+        with tarfile.open(tar_file_path) as f:
             members = []
 
             # Only keep the basename of the files
@@ -305,6 +304,9 @@ class Graphsage(Embedding):
                     members.append(member)
 
             f.extractall("graphsage_output", members)
+
+        # Remove the tar file
+        Path(tar_file_path).unlink()
 
         # Extract information from the files
         with open("graphsage_output/val.txt") as f:
