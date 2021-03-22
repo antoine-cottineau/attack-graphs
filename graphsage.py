@@ -1,9 +1,8 @@
 import json
 import numpy as np
-import docker
-import tarfile
-from pathlib import Path, PurePath
+from pathlib import Path
 from attack_graph import AttackGraph
+from docker_handler import DockerHandler
 from embedding import Embedding
 
 
@@ -170,8 +169,7 @@ class Graphsage(Embedding):
         self.dim_embedding = dim_embedding
         self.prefix = prefix
 
-        self.client = docker.from_env()
-        self.container = None
+        self.dh = DockerHandler("graphsage")
 
     def run(self, size_layer_1=16):
         """
@@ -184,10 +182,10 @@ class Graphsage(Embedding):
         fc.create_files()
 
         # Run the container
-        self.run_container()
+        self.dh.run_container()
 
         # Transfer the input files
-        self.transfer_files()
+        self.dh.transfer_folder("temp", "/notebooks", self.prefix)
 
         # Run Graphsage
         # The size of the output layer should be equal to half the size of
@@ -197,42 +195,6 @@ class Graphsage(Embedding):
 
         # Create the embeddings from the output files
         self.create_embeddings()
-
-    def run_container(self):
-        """
-        Get the reference of an existing GraphSAGE container or create a new
-        one.
-        """
-        for container in self.client.containers.list():
-            if container.attrs["Config"]["Image"] == "graphsage":
-                self.container = container
-
-        if not self.container:
-            self.container = self.client.containers.run("graphsage",
-                                                        detach=True)
-
-    def transfer_files(self):
-        """
-        Transfer the input files to the GraphSAGE container.
-        The input files must exist.
-        """
-        Path("temp").mkdir(exist_ok=True)
-
-        file_names = [
-            "class_map.json", "feats.npy", "G.json", "id_map.json", "walks.txt"
-        ]
-
-        # Create an archive with the input files
-        with tarfile.open("temp/{}.tar".format(self.prefix), "w") as f:
-            for file_name in file_names:
-                f.add("graphsage_input/{}-{}".format(self.prefix, file_name))
-
-        # Run the container
-        self.run_container()
-
-        # Transfer the archive to the container
-        data = open("temp/{}.tar".format(self.prefix), "rb").read()
-        self.container.put_archive("/notebooks", data)
 
     def run_graphsage(self, size_layer_1=16, size_layer_2=8):
         """
@@ -259,7 +221,7 @@ class Graphsage(Embedding):
         # Add various parameters
         command += "--max_total_steps 1000 --validate_iter 10"
 
-        self.container.exec_run(command)
+        self.dh.run_command(command)
 
     def create_embeddings(self):
         """
@@ -268,45 +230,16 @@ class Graphsage(Embedding):
         # Create a folder for Graphsage results
         Path("graphsage_output").mkdir(exist_ok=True)
 
-        # Find the path to the result files
-        result_folders = self.container.exec_run(
-            "ls unsup-graphsage_input -t").output.decode("utf-8")
-
-        # Split according to line breaks and remove the last entry which is
-        # always empty
-        result_folders = result_folders.split("\n")[:-1]
-
-        # Take the most recent result folder
-        folder = result_folders[0]
+        # Find the path to the result files and extract the most recent one
+        folder = self.dh.list_elements_in_container("unsup-graphsage_input")[0]
 
         # Copy the folder to a tar file
-        path = "/notebooks/unsup-graphsage_input/{}".format(folder)
-        stream, stats = self.container.get_archive(path)
+        container_path = "/notebooks/unsup-graphsage_input/{}".format(folder)
+        host_path = "graphsage_output"
+        file_filter = ["val.txt", "val.npy"]
 
-        tar_file_path = "temp/{}.tar".format(stats["name"])
-
-        with open(tar_file_path, "wb") as f:
-            for chunk in stream:
-                f.write(chunk)
-
-        # Extract the content of the tar file
-        files_to_copy = ["val.txt", "val.npy"]
-        for i in range(len(files_to_copy)):
-            files_to_copy[i] = "{}/{}".format(folder, files_to_copy[i])
-
-        with tarfile.open(tar_file_path) as f:
-            members = []
-
-            # Only keep the basename of the files
-            for member in f.getmembers():
-                if member.name in files_to_copy:
-                    member.path = PurePath(member.path).name
-                    members.append(member)
-
-            f.extractall("graphsage_output", members)
-
-        # Remove the tar file
-        Path(tar_file_path).unlink()
+        self.dh.copy_folder_from_container(container_path, host_path,
+                                           file_filter)
 
         # Extract information from the files
         with open("graphsage_output/val.txt") as f:
