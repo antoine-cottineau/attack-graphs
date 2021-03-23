@@ -227,9 +227,6 @@ class Graphsage(Embedding):
         """
         Create the embeddings from the output files.
         """
-        # Create a folder for Graphsage results
-        Path("graphsage_output").mkdir(exist_ok=True)
-
         # Find the path to the result files and extract the most recent one
         folder = self.dh.list_elements_in_container("unsup-graphsage_input")[0]
 
