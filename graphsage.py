@@ -185,7 +185,7 @@ class Graphsage(Embedding):
         self.dh.run_container()
 
         # Transfer the input files
-        self.dh.transfer_folder("temp", "/notebooks", self.prefix)
+        self.dh.transfer_folder("graphsage_input", "/notebooks", self.prefix)
 
         # Run Graphsage
         # The size of the output layer should be equal to half the size of
