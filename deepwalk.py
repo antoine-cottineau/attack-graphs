@@ -18,8 +18,6 @@ class DeepWalk(Embedding):
     def __init__(self, ag: AttackGraph, dim_embedding: int, prefix: str):
         super().__init__(ag, dim_embedding)
 
-        self.ag = ag
-        self.dim_embedding = dim_embedding
         self.prefix = prefix
 
         self.dh = DockerHandler("deepwalk")

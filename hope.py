@@ -18,8 +18,6 @@ class Hope(Embedding):
     def __init__(self, ag: AttackGraph, dim_embedding: int, measurement: str):
         super().__init__(ag, dim_embedding)
 
-        self.ag = ag
-        self.dim_embedding = dim_embedding
         self.measurement = measurement
 
     def run(self):
