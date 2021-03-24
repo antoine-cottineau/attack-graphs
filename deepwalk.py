@@ -7,7 +7,6 @@ from embedding import Embedding
 
 
 class DeepWalk(Embedding):
-
     """
     Class that implements the DeepWalk algorithm introduced by Perozzi et al.
 
@@ -17,6 +16,8 @@ class DeepWalk(Embedding):
     created.
     """
     def __init__(self, ag: AttackGraph, dim_embedding: int, prefix: str):
+        super().__init__(ag, dim_embedding)
+
         self.ag = ag
         self.dim_embedding = dim_embedding
         self.prefix = prefix
