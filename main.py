@@ -1,7 +1,7 @@
 from mulval import MulvalAttackGraph
 from attack_graph import AttackGraph
 from graph_drawing import AttackGraphDrawer
-from deepwalk import DeepWalk
+from hope import Hope
 
 # Create the attack graph
 mag = MulvalAttackGraph()
@@ -11,12 +11,12 @@ mag.parse_from_file("./mulval_data/AttackGraph.xml")
 ag = AttackGraph()
 ag.import_mulval_attack_graph(mag)
 
-# Perform clustering with DeepWalk
-dw = DeepWalk(ag, 8, "deepwalk")
-dw.run()
-dw.cluster_with_k_clusters(3)
+# Perform clustering with HOPE
+hope = Hope(ag, 8, "cn")
+hope.run()
+hope.cluster_with_k_clusters(3)
 
 # Draw the attack graph
 agd = AttackGraphDrawer(ag)
-agd.create_pydot_graph("ag_deepwalk_clustering", labels=True)
+agd.create_pydot_graph("ag_hope_clustering", labels=True)
 agd.save_graph_to_file("png")
