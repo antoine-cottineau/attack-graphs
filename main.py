@@ -1,6 +1,7 @@
 import click
 
 from attack_graph import MulvalAttackGraph, AttackGraph
+from clustering import Spectral1, Spectral2
 from ranking import PageRankMethod, KuehlmannMethod
 
 
@@ -17,9 +18,14 @@ from ranking import PageRankMethod, KuehlmannMethod
     type=click.Choice(["pagerank", "kuehlmann"]),
     help="Indicates if a ranking method should be applied and which method to"
     " apply.")
+@click.option(
+    "--cluster",
+    type=click.Choice(["spectral1", "spectral2"]),
+    help="Indicates if a clustering method should be applied and which method"
+    " to apply.")
 @click.argument("input", required=True)
 @click.argument("output", required=True)
-def draw(input: str, output: str, convert: bool, ranking: str):
+def draw(input: str, output: str, convert: bool, ranking: str, cluster: str):
     """
     Draw the attack graph xml file located at INPUT to OUTPUT.
 
@@ -37,11 +43,15 @@ def draw(input: str, output: str, convert: bool, ranking: str):
 
     # Apply ranking
     if ranking == "pagerank":
-        rm = PageRankMethod(ag)
-    else:
-        rm = KuehlmannMethod(ag)
+        PageRankMethod(ag).apply()
+    elif ranking == "kuehlmann":
+        KuehlmannMethod(ag).apply()
 
-    rm.apply()
+    # Apply clustering
+    if cluster == "spectral1":
+        Spectral1(ag).apply(5)
+    elif cluster == "spectral2":
+        Spectral2(ag).apply(1, 9)
 
     # Draw the resulting graph
     ag.draw(output)

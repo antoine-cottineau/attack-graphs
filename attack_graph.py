@@ -1,6 +1,7 @@
 import bisect
 import networkx as nx
 import pathlib
+import pydot
 import xml.etree.ElementTree as ET
 
 
@@ -18,7 +19,7 @@ class BaseGraph(nx.DiGraph):
         extension = file_.suffix
 
         # Draw the graph
-        pydot_graph = nx.nx_pydot.to_pydot(self)
+        pydot_graph = self.convert_to_pydot()
         if extension == ".dot":
             pydot_graph.write_raw(file_)
         elif extension == ".pdf":
@@ -30,6 +31,9 @@ class BaseGraph(nx.DiGraph):
 
     def import_from_mulval_xml_file(self, path: str):
         pass
+
+    def convert_to_pydot(self):
+        return nx.nx_pydot.to_pydot(self)
 
 
 class MulvalAttackGraph(BaseGraph):
@@ -118,6 +122,39 @@ class AttackGraph(BaseGraph):
             color = "0 " + str(round(saturation, 3)) + " 1"
             node["style"] = "filled"
             node["fillcolor"] = color
+
+    def convert_to_pydot(self):
+        pydot_graph = nx.nx_pydot.to_pydot(self)
+
+        if "id_cluster" not in self.nodes(data=True)[0]:
+            return pydot_graph
+
+        # Create clusters and add the existing nodes to them
+        clusters = {}
+
+        for i, node in self.nodes(data=True):
+            id_cluster = node["id_cluster"]
+
+            # If the cluster does not exist, create a new one
+            if id_cluster not in clusters:
+                clusters[id_cluster] = pydot.Subgraph(
+                    "cluster_{}".format(id_cluster))
+
+            # Add the pydot node to the cluster
+            clusters[id_cluster].add_node(pydot_graph.get_node(str(i))[0])
+
+        # Create a new pydot graph
+        new_pydot_graph = pydot.Dot()
+
+        # Add the clusters to the new graph
+        for id_cluster in clusters:
+            new_pydot_graph.add_subgraph(clusters[id_cluster])
+
+        # Add the edges to the new graph
+        for edge in pydot_graph.get_edge_list():
+            new_pydot_graph.add_edge(edge)
+
+        return new_pydot_graph
 
     def _fill_graph_recursively(self, mag: MulvalAttackGraph, node: tuple,
                                 ids_edges: list):

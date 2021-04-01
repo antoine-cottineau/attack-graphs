@@ -1,51 +1,28 @@
-from attack_graph import AttackGraph
+import networkx as nx
 import numpy as np
+
+from attack_graph import AttackGraph
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigs
 from sklearn.cluster import KMeans
 
 
 class Spectral:
-    """
-    Base class for the clustering techniques developped in A Spectral
-    Clustering Approach To Finding Communities in Graphs by White and Smyth in
-    2005.
-
-    :param AttackGraph ag: The attack graph on which clustering is applied.
-    """
     def __init__(self, ag: AttackGraph):
         self.ag = ag
 
-        self.W = np.zeros((self.ag.N, self.ag.N))
-        self.D = np.zeros((self.ag.N, self.ag.N))
-        self.inverse_D = np.zeros((self.ag.N, self.ag.N))
+        self.W = nx.linalg.graphmatrix.adjacency_matrix(nx.Graph(ag))
+        self.D = np.zeros((ag.number_of_nodes(), ag.number_of_nodes()))
+        self.inverse_D = np.zeros((ag.number_of_nodes(), ag.number_of_nodes()))
 
-        self.create_weight_matrix()
         self.create_transition_matrix()
 
-    def create_weight_matrix(self):
-        """
-        Create the weight matrix W.
-        W is a sparse matrix as most of the nodes aren't linked.
-        """
-        W = np.zeros((self.ag.N, self.ag.N))
-
-        for state in self.ag.states:
-            for id_neighbour in state.in_:
-                neighbour = self.ag.states[id_neighbour]
-                W[state.id_, neighbour.id_] = 1
-                W[neighbour.id_, state.id_] = 1
-
-        self.W = csr_matrix(W)
-
     def create_transition_matrix(self):
-        """
-        Create the transition matrix and its inverse.
-        """
-        D = np.zeros((self.ag.N, self.ag.N))
-        inverse_D = np.zeros((self.ag.N, self.ag.N))
+        D = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
+        inverse_D = np.zeros(
+            (self.ag.number_of_nodes(), self.ag.number_of_nodes()))
 
-        for i in range(self.ag.N):
+        for i in self.ag.nodes():
             sum_ = np.sum(self.W[i])
             D[i, i] = sum_
             inverse_D[i, i] = 1 / sum_
@@ -54,13 +31,6 @@ class Spectral:
         self.inverse_D = csr_matrix(inverse_D)
 
     def compute_eigenvector_matrix(self, K: int):
-        """
-        Compute the top K-1 eigenvectors of the transition matrix M=D^-1*W.
-
-        :param int K: The parameter K in the paper.
-        :return ndarray eigenvectors: The top K-1 eigenvectors of the
-        transition matrix.
-        """
         transition_matrix = self.inverse_D.dot(self.W)
         eigenvectors = eigs(transition_matrix, k=K,
                             which="LR")[1].astype("float64")
@@ -75,28 +45,12 @@ class Spectral:
         return eigenvectors[:, :K - 1]
 
     def compute_assignment_matrix(self, partition: list, k: int):
-        """
-        Compute the assignment matrix X.
-
-        :param list partition: A list of integers giving the id of the cluster
-        corresponding to each node.
-        :param int k: The number of clusters.
-        :return ndarray X: The assignment matrix X.
-        """
-        X = np.zeros((self.ag.N, k))
-        for i in range(self.ag.N):
+        X = np.zeros((self.ag.number_of_nodes(), k))
+        for i in self.ag.nodes():
             X[i, int(partition[i])] = 1
         return X
 
     def compute_Q_function(self, partition: list, k: int):
-        """
-        Compute the Q function for a given partition.
-
-        :param list partition: A list of integers giving the id of the cluster
-        corresponding to each node.
-        :param int k: The number of clusters.
-        :return int: The value of the Q function.
-        """
         X = self.compute_assignment_matrix(partition, k)
         vol_G = self.W.sum()
 
@@ -108,14 +62,6 @@ class Spectral:
 
     @staticmethod
     def extract_and_normalize_eigenvectors(eigenvectors: np.array, k: int):
-        """
-        Static method that extracts the top k-1 eigenvectors and normalize
-        the rows.
-
-        :param ndarray eigenvectors: The eigenvectors.
-        :param int k: The number of clusters.
-        :return ndarray U_k: The extracted and normalized eigenvectors.
-        """
         U_k = eigenvectors[:, :k - 1]
 
         # Normalize U_k
@@ -126,23 +72,10 @@ class Spectral:
 
 
 class Spectral1(Spectral):
-    """
-    Implementation of the first algorithm introduced by White and Smyth.
-
-    :param AttackGraph ag: The attack graph on which clustering is applied.
-    """
     def __init__(self, ag: AttackGraph):
-        Spectral.__init__(self, ag)
+        super().__init__(ag)
 
     def apply_for_k(self, eigenvectors: np.array, k: int):
-        """
-        Get the partition for a given k.
-
-        :param ndarray eigenvectors: The top eigenvectors of U_K.
-        :param int k: The number of desired clusters.
-        :return list partition: A list of integers giving the id of the cluster
-        corresponding to each node.
-        """
         U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
 
         # Apply k-means on the rows of U_k
@@ -152,12 +85,6 @@ class Spectral1(Spectral):
         return partition
 
     def apply(self, K: int):
-        """
-        Apply the algorithm and add a new attribute called id_cluster to every
-        state.
-
-        :param int K: The maximal number of clusters.
-        """
         eigenvectors = self.compute_eigenvector_matrix(K)
         best_score = -np.inf
         best_partition = None
@@ -169,35 +96,19 @@ class Spectral1(Spectral):
                 best_score = score
                 best_partition = partition
 
-        for i in range(self.ag.N):
-            self.ag.states[i].id_cluster = best_partition[i]
+        for i, node in self.ag.nodes(data=True):
+            node["id_cluster"] = best_partition[i]
 
 
 class Spectral2(Spectral):
-    """
-    Implementation of the second algorithm introduced by White and Smyth.
-
-    :param AttackGraph ag: The attack graph on which clustering is applied.
-    """
     def __init__(self, ag: AttackGraph):
-        Spectral.__init__(self, ag)
+        super().__init__(ag)
 
     def apply_for_k(self, eigenvectors: np.array, k: int, P: list):
-        """
-        Get the partition for a given k. This function try to split the current
-        clusters to improve the Q function.
-
-        :param ndarray eigenvectors: The top eigenvectors of U_K.
-        :param int k: The number of desired clusters.
-        :return list P_new: A list of integers giving the id of the cluster
-        corresponding to each node.
-        :return bool has_updated: Whether or not the function has updated P or
-        has just kept the same P.
-        """
         P_new = P.copy()
         ids_clusters = set(P)
         state_assignments = {
-            c: np.array([i for i in range(self.ag.N) if P[i] == c])
+            c: np.array([i for i in self.ag.nodes() if P[i] == c])
             for c in ids_clusters
         }
         has_updated = False
@@ -227,17 +138,10 @@ class Spectral2(Spectral):
         return P_new, has_updated
 
     def apply(self, k_min: int, K: int):
-        """
-        Apply the algorithm and add a new attribute called id_cluster to every
-        state.
-
-        :param int k_min: The starting number of clusters.
-        :param int K: The maximal number of clusters.
-        """
         eigenvectors = self.compute_eigenvector_matrix(K)
 
         k = k_min
-        P = np.zeros(self.ag.N)
+        P = np.zeros(self.ag.number_of_nodes())
         if k > 1:
             U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
             P = KMeans(n_clusters=k).fit_predict(U_k)
@@ -251,5 +155,5 @@ class Spectral2(Spectral):
             else:
                 possible_splits = False
 
-        for i in range(self.ag.N):
-            self.ag.states[i].id_cluster = P[i]
+        for i, node in self.ag.nodes(data=True):
+            node["id_cluster"] = P[i]
