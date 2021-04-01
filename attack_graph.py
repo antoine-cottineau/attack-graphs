@@ -28,6 +28,9 @@ class BaseGraph(nx.DiGraph):
         else:
             raise Exception("File type {} not supported.".format(extension))
 
+    def import_from_mulval_xml_file(self, path: str):
+        pass
+
 
 class MulvalAttackGraph(BaseGraph):
     def __init__(self):
@@ -157,12 +160,3 @@ class AttackGraph(BaseGraph):
                 new_ids_edges = ids_edges.copy()
                 new_ids_edges.remove(id_edge)
                 self._fill_graph_recursively(mag, new_node, new_ids_edges)
-
-
-mag = MulvalAttackGraph()
-mag.import_from_mulval_xml_file("graphs_input/AttackGraph.xml")
-mag.draw("examples/3_machines_mulval_attack_graph.png")
-
-ag = AttackGraph()
-ag.import_from_mulval_attack_graph(mag)
-ag.draw("examples/3_machines_attack_graph.png")
