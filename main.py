@@ -1,5 +1,7 @@
 import click
+
 from attack_graph import MulvalAttackGraph, AttackGraph
+from ranking import PageRankMethod, KuehlmannMethod
 
 
 @click.command()
@@ -7,11 +9,17 @@ from attack_graph import MulvalAttackGraph, AttackGraph
     "-c",
     "--convert",
     is_flag=True,
-    help="Whether or not the attack graph should be converted from a MulVAL \
-        to a standard attack graph.")
+    help="Whether or not the attack graph should be converted from a MulVAL to"
+    " a standard attack graph.")
+@click.option(
+    "-r",
+    "--ranking",
+    type=click.Choice(["pagerank", "kuehlmann"]),
+    help="Indicates if a ranking method should be applied and which method to"
+    " apply.")
 @click.argument("input", required=True)
 @click.argument("output", required=True)
-def draw(input: str, output: str, convert: bool):
+def draw(input: str, output: str, convert: bool, ranking: str):
     """
     Draw the attack graph xml file located at INPUT to OUTPUT.
 
@@ -19,12 +27,23 @@ def draw(input: str, output: str, convert: bool):
     OUTPUT is the location where the attack graph should be drawn. The
     extension of the path should be in [dot|pdf|png].
     """
-    if (convert):
+    # Create the attack graph
+    if convert:
         ag = AttackGraph()
     else:
         ag = MulvalAttackGraph()
 
     ag.import_from_mulval_xml_file(input)
+
+    # Apply ranking
+    if ranking == "pagerank":
+        rm = PageRankMethod(ag)
+    else:
+        rm = KuehlmannMethod(ag)
+
+    rm.apply()
+
+    # Draw the resulting graph
     ag.draw(output)
 
 

@@ -109,6 +109,16 @@ class AttackGraph(BaseGraph):
         # Fill the graph
         self._fill_graph_recursively(mag, initial_node, ids_edges)
 
+    def update_colors_based_on_ranking(self):
+        for _, node in self.nodes(data=True):
+            # The color saturation of a node is calculated thanks to a linear
+            # interpolation between the two extrema of the ranking
+            saturation = (node["ranking_score"] - self.ranking_min) / (
+                self.ranking_max - self.ranking_min)
+            color = "0 " + str(round(saturation, 3)) + " 1"
+            node["style"] = "filled"
+            node["fillcolor"] = color
+
     def _fill_graph_recursively(self, mag: MulvalAttackGraph, node: tuple,
                                 ids_edges: list):
         current_ids_propositions = node[1]["ids_propositions"]
