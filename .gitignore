@@ -1,5 +1,3 @@
 .vscode
 __pycache__
-graphsage_output
-deepwalk_output
 temp

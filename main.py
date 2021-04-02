@@ -1,8 +1,8 @@
 import click
 
 from attack_graph import MulvalAttackGraph, AttackGraph
-from clustering import Spectral1, Spectral2
-from ranking import PageRankMethod, KuehlmannMethod
+from clustering.white_smyth import Spectral1, Spectral2
+from ranking.mehta import PageRankMethod, KuehlmannMethod
 
 
 @click.command()
