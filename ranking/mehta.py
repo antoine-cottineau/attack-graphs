@@ -31,7 +31,7 @@ class RankingMethod:
 
 
 class PageRankMethod(RankingMethod):
-    def __init__(self, ag: AttackGraph, d=0.85):
+    def __init__(self, ag: AttackGraph, d: float = 0.85):
         super().__init__(ag)
         self.d = d
 
@@ -49,7 +49,7 @@ class PageRankMethod(RankingMethod):
 
         return toward_initial_state + self.d * Z
 
-    def compute_page_rank_vector(self, Z: np.array, eps=1e-4):
+    def compute_page_rank_vector(self, Z: np.array, eps: float = 1e-4):
         R = np.ones(self.ag.number_of_nodes()) / self.ag.number_of_nodes()
         distance = np.inf
         while distance > eps:
@@ -67,7 +67,7 @@ class PageRankMethod(RankingMethod):
 
 
 class KuehlmannMethod(RankingMethod):
-    def __init__(self, ag: AttackGraph, eta=0.85):
+    def __init__(self, ag: AttackGraph, eta: float = 0.85):
         super().__init__(ag)
         self.eta = eta
 
@@ -78,7 +78,7 @@ class KuehlmannMethod(RankingMethod):
                 P[i, j] = 1 / len(list(self.ag.successors(j)))
         return P
 
-    def apply(self, max_m=100):
+    def apply(self, max_m: int = 100):
         P = self.compute_transition_probability_matrix()
         s = np.zeros(self.ag.number_of_nodes())
         s[0] = 1
