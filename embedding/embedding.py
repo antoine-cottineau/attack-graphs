@@ -2,6 +2,7 @@ import click
 import numpy as np
 
 from attack_graph import AttackGraph
+from pathlib import Path
 from sklearn.cluster import KMeans
 
 
@@ -13,6 +14,7 @@ class Embedding:
         self.embedding = np.zeros((ag.number_of_nodes(), dim_embedding))
 
     def save_embedding_in_file(self, path: str):
+        Path(path).parent.mkdir(exist_ok=True, parents=True)
         np.save(path, self.embedding)
         click.echo("Embedding saved in file \"{}\".".format(path))
 

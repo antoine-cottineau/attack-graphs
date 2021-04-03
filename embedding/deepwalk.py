@@ -10,7 +10,7 @@ class DeepWalk(Embedding):
         super().__init__(ag, dim_embedding)
 
     def run(self):
-        model = DW()
+        model = DW(dimensions=self.dim_embedding)
         model.fit(nx.Graph(incoming_graph_data=self.ag))
         self.embedding = model.get_embedding()
         self.save_embedding_in_file("methods_output/deepwalk/embedding.npy")
