@@ -4,12 +4,6 @@ from pathlib import Path, PurePath
 
 
 class DockerHandler:
-    """
-    Class used to run some code in a Docker container. It can be useful when
-    the code needs a particular environment to be run.
-
-    :param str image: The docker image of the container.
-    """
     def __init__(self, image: str):
         self.image = image
 
@@ -17,10 +11,6 @@ class DockerHandler:
         self.container = None
 
     def run_container(self):
-        """
-        Run a container with the image specified during class instanciation. If
-        a container with this image is already running, it is used again.
-        """
         # A container is already stored in the variable self.container
         if self.container:
             return
@@ -37,16 +27,8 @@ class DockerHandler:
                                                         detach=True)
 
     def transfer_folder(self, host_path, container_path, tar_file_name):
-        """
-        Transfer a folder from the host to the container.
-
-        :param str host_path: The path to the folder to transfer.
-        :param str container_path: The path indicating where to copy the folder
-        in the container.
-        :param str tar_file_name: The name of the tar archive to transfer.
-        """
         folder = Path(host_path)
-        folder.mkdir(parents=True, exist_ok=True)
+        folder.mkdir(exist_ok=True, parents=True)
 
         # Create a temporary archive with the files in folder
         tar_file_path = "temp/{}.tar".format(tar_file_name)
@@ -63,14 +45,6 @@ class DockerHandler:
         Path(tar_file_path).unlink()
 
     def list_elements_in_container(self, container_path):
-        """
-        List all elements in a folder in the container.
-
-        :param str container_path: The path of the folder to explore in the
-        container.
-        :return list elements: A list of the elements in the folder, sorted
-        from most recent to oldest.
-        """
         # Create the ls command
         ls_command = "ls {} -t".format(container_path)
 
@@ -83,17 +57,8 @@ class DockerHandler:
 
     def copy_folder_from_container(self, container_path, host_path,
                                    file_filter):
-        """
-        Copy a folder from the container to the host.
-
-        :param str container_path: The path of the folder to copy.
-        :param str host_path: The path indicating where to copy the folder in
-        the host.
-        :param list file_filter: A list of the files that need to be copied
-        from the folder.
-        """
         # Create necessary folders
-        Path(host_path).mkdir(parents=True, exist_ok=True)
+        Path(host_path).mkdir(exist_ok=True, parents=True)
 
         # Copy the folder to a tar file
         stream, stats = self.container.get_archive(container_path)
@@ -113,9 +78,10 @@ class DockerHandler:
 
             # Only keep the basename of the files
             for member in tar.getmembers():
-                if member.name in files_to_copy:
-                    member.path = PurePath(member.path).name
-                    members.append(member)
+                for file_to_copy in file_filter:
+                    if member.name.endswith(file_to_copy):
+                        member.path = PurePath(member.path).name
+                        members.append(member)
 
             tar.extractall(host_path, members)
 
@@ -123,8 +89,4 @@ class DockerHandler:
         Path(tar_file_path).unlink()
 
     def run_command(self, command):
-        """
-        Run a command in the container
-        :param str command: The command to run.
-        """
         self.container.exec_run(command)

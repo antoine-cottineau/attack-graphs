@@ -19,7 +19,7 @@ class BaseGraph(nx.DiGraph):
         extension = file_.suffix
 
         # Draw the graph
-        pydot_graph = self.convert_to_pydot()
+        pydot_graph = self._convert_to_pydot()
         if extension == ".dot":
             pydot_graph.write_raw(file_)
         elif extension == ".pdf":
@@ -32,7 +32,7 @@ class BaseGraph(nx.DiGraph):
     def import_from_mulval_xml_file(self, path: str):
         pass
 
-    def convert_to_pydot(self):
+    def _convert_to_pydot(self):
         return nx.nx_pydot.to_pydot(self)
 
 
@@ -113,6 +113,10 @@ class AttackGraph(BaseGraph):
         # Fill the graph
         self._fill_graph_recursively(mag, initial_node, ids_edges)
 
+        # Create a mapping between the id of each proposition and an integer
+        # between 0 and len(self.propositions) - 1
+        self._create_proposition_mapping()
+
     def update_colors_based_on_ranking(self):
         for _, node in self.nodes(data=True):
             # The color saturation of a node is calculated thanks to a linear
@@ -123,7 +127,15 @@ class AttackGraph(BaseGraph):
             node["style"] = "filled"
             node["fillcolor"] = color
 
-    def convert_to_pydot(self):
+    def _create_proposition_mapping(self):
+        proposition_mapping = {}
+        ids_propositions = [*self.propositions]
+        for i in range(len(self.propositions)):
+            proposition = self.propositions[ids_propositions[i]]
+            proposition_mapping[proposition[0]] = i
+        self.proposition_mapping = proposition_mapping
+
+    def _convert_to_pydot(self):
         pydot_graph = nx.nx_pydot.to_pydot(self)
 
         if "id_cluster" not in self.nodes(data=True)[0]:
