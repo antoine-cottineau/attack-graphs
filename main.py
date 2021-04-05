@@ -17,11 +17,10 @@ def run():
 
 @run.command("")
 @click.option(
-    "-c",
-    "--convert",
+    "--keep_mulval",
     is_flag=True,
-    help="Whether or not the attack graph should be converted from a MulVAL to"
-    " a standard attack graph.")
+    help="Whether or not the attack graph should be kept as a MulVAL attack"
+    " graph and not converted to a standard attack graph.")
 @click.option(
     "-r",
     "--ranking",
@@ -40,8 +39,8 @@ def run():
     " used for clustering.")
 @click.argument("input", required=True)
 @click.argument("output", required=True)
-def draw(input: str, output: str, convert: bool, ranking: str, cluster: str,
-         embedding: str):
+def draw(input: str, output: str, keep_mulval: bool, ranking: str,
+         cluster: str, embedding: str):
     """
     Draws the attack graph xml file located at INPUT to OUTPUT.
 
@@ -50,10 +49,10 @@ def draw(input: str, output: str, convert: bool, ranking: str, cluster: str,
     extension of the path should be in [dot|pdf|png].
     """
     # Create the attack graph
-    if convert:
-        ag = AttackGraph()
-    else:
+    if keep_mulval:
         ag = MulvalAttackGraph()
+    else:
+        ag = AttackGraph()
 
     ag.import_from_mulval_xml_file(input)
 
