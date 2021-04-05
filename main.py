@@ -104,9 +104,17 @@ def deepwalk(input: str, dim_embedding: str = "8"):
 @click.option("-d",
               "--dim_embedding",
               type=click.Choice(["8", "16", "32", "64"]),
-              help="The dimension of the embedding.")
+              help="The dimension of the embedding.",
+              default="8")
+@click.option(
+    "-m",
+    "--measurement",
+    type=click.Choice(["cn", "katz", "pagerank", "aa"]),
+    help="The measurement to use. Either cn (Common Neighbours),"
+    " katz (Katz), pagerank (Personalized Pagerank) or aa (Adamic-Adar)",
+    default="cn")
 @click.argument("input", required=True)
-def hope(input: str, dim_embedding: str = "8"):
+def hope(input: str, dim_embedding: str = "8", measurement: str = "cn"):
     """
     Applies HOPE to the attack graph located at INPUT. Saves the embedding
     at methods_output/hope/embeddings.npy in a pickle file.
@@ -118,7 +126,7 @@ def hope(input: str, dim_embedding: str = "8"):
     ag.import_from_mulval_xml_file(input)
 
     # Apply Hope
-    Hope(ag, int(dim_embedding)).run()
+    Hope(ag, int(dim_embedding), measurement).run()
 
 
 @run.command()
