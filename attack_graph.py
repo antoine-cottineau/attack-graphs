@@ -200,7 +200,7 @@ class AttackGraph(BaseGraph):
                 # Search if there is already an edge between the source node
                 # and the reached one
                 similar_edges = [(src, dst) for src, dst in self.edges()
-                                 if src == node[0] and dst == id_edge]
+                                 if src == node[0] and dst == similar_nodes[0]]
                 if not similar_edges and node[0] != similar_nodes[0]:
                     # Just add the edge
                     self.add_edge(node[0], similar_nodes[0])
