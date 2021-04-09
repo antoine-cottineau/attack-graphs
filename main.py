@@ -102,7 +102,7 @@ def generate(output: str,
              n_initial_propositions: int = 10,
              n_exploits: int = 20):
     """
-    Generate a random attack graph.
+    Generates a random attack graph.
 
     OUTPUT is the location where the attack graph should be saved.
     """
