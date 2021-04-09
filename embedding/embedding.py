@@ -1,4 +1,3 @@
-import click
 import numpy as np
 
 from attack_graph import AttackGraph
@@ -16,7 +15,7 @@ class Embedding:
     def save_embedding_in_file(self, path: str):
         Path(path).parent.mkdir(exist_ok=True, parents=True)
         np.save(path, self.embedding)
-        click.echo("Embedding saved in file \"{}\".".format(path))
+        print("Embedding saved in file \"{}\".".format(path))
 
     def cluster_with_k_clusters(self, k: int):
         # Cluster the graph with k-means
