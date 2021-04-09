@@ -21,7 +21,7 @@ class BaseGraph(nx.DiGraph):
         # Draw the graph
         pydot_graph = self._convert_to_pydot()
         if extension == ".dot":
-            pydot_graph.write_raw(file_)
+            pydot_graph.write_dot(file_)
         elif extension == ".pdf":
             pydot_graph.write_pdf(file_)
         elif extension == ".png":
@@ -29,8 +29,29 @@ class BaseGraph(nx.DiGraph):
         else:
             raise Exception("File type {} not supported.".format(extension))
 
+    def import_from_file(self, path: str):
+        file_ = pathlib.Path(path)
+        extension = file_.suffix
+
+        if extension == ".xml":
+            self.import_from_mulval_attack_graph(path)
+        elif extension == ".gml":
+            self.load_gml(path)
+        else:
+            print(
+                "The extension {} is not supported for loading attack graphs".
+                format(extension[1:]))
+
     def import_from_mulval_xml_file(self, path: str):
         pass
+
+    def load_gml(self, path: str):
+        loaded_graph = nx.read_gml(path, destringizer=lambda x: int(x))
+        self.add_nodes_from(loaded_graph.nodes(data=True))
+        self.add_edges_from(loaded_graph.edges())
+
+    def save_gml(self, path: str):
+        nx.write_gml(self, path, stringizer=lambda x: str(x))
 
     def _convert_to_pydot(self):
         return nx.nx_pydot.to_pydot(self)
