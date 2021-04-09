@@ -35,6 +35,12 @@ class Generator:
         ag.add_nodes_from(graph.nodes(data=True))
         ag.add_edges_from(graph.edges())
 
+        # Add other variables to the attack graph
+        ag.propositions = {}
+        for i in range(self.n_propositions):
+            ag.propositions[i] = (i, "Randomly generated")
+        ag.create_proposition_mapping()
+
         return ag
 
     def generate_exploits(self):

@@ -115,7 +115,7 @@ class AttackGraph(BaseGraph):
 
         # Create a mapping between the id of each proposition and an integer
         # between 0 and len(self.propositions) - 1
-        self._create_proposition_mapping()
+        self.create_proposition_mapping()
 
     def update_colors_based_on_ranking(self):
         for _, node in self.nodes(data=True):
@@ -127,7 +127,7 @@ class AttackGraph(BaseGraph):
             node["style"] = "filled"
             node["fillcolor"] = color
 
-    def _create_proposition_mapping(self):
+    def create_proposition_mapping(self):
         proposition_mapping = {}
         ids_propositions = [*self.propositions]
         for i in range(len(self.propositions)):
