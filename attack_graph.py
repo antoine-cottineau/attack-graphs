@@ -138,6 +138,22 @@ class AttackGraph(BaseGraph):
         # between 0 and len(self.propositions) - 1
         self.create_proposition_mapping()
 
+    def load_gml(self, path: str):
+        super().load_gml(path)
+
+        # Find the number of propositions
+        n_propositions = max([
+            len(ids) for (_, ids) in self.nodes(data="ids_propositions")
+        ])
+
+        # Create the propositions dictionnary
+        self.propositions = {}
+        for i in range(n_propositions):
+            self.propositions[i] = (i, "Randomly generated")
+
+        # Create the proposition mapping
+        self.create_proposition_mapping()
+
     def update_colors_based_on_ranking(self):
         for _, node in self.nodes(data=True):
             # The color saturation of a node is calculated thanks to a linear
