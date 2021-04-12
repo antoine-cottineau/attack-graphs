@@ -142,9 +142,8 @@ class AttackGraph(BaseGraph):
         super().load_gml(path)
 
         # Find the number of propositions
-        n_propositions = max([
-            len(ids) for (_, ids) in self.nodes(data="ids_propositions")
-        ])
+        n_propositions = max(
+            [len(ids) for (_, ids) in self.nodes(data="ids_propositions")])
 
         # Create the propositions dictionnary
         self.propositions = {}
@@ -171,6 +170,13 @@ class AttackGraph(BaseGraph):
             proposition = self.propositions[ids_propositions[i]]
             proposition_mapping[proposition[0]] = i
         self.proposition_mapping = proposition_mapping
+
+    def compute_adjacency_matrix(self, keep_directed=True):
+        if keep_directed:
+            network = self
+        else:
+            network = nx.Graph(self)
+        return nx.linalg.graphmatrix.adjacency_matrix(network)
 
     def _convert_to_pydot(self):
         pydot_graph = nx.nx_pydot.to_pydot(self)

@@ -1,4 +1,3 @@
-import networkx as nx
 import numpy as np
 
 from attack_graph import AttackGraph
@@ -12,7 +11,7 @@ class Spectral:
     def __init__(self, ag: AttackGraph):
         self.ag = ag
 
-        self.W = nx.linalg.graphmatrix.adjacency_matrix(nx.Graph(ag))
+        self.W = ag.compute_adjacency_matrix(keep_directed=False)
         self.D = np.zeros((ag.number_of_nodes(), ag.number_of_nodes()))
         self.inverse_D = np.zeros((ag.number_of_nodes(), ag.number_of_nodes()))
 
