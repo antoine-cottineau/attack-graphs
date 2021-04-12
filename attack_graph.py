@@ -34,7 +34,7 @@ class BaseGraph(nx.DiGraph):
         extension = file_.suffix
 
         if extension == ".xml":
-            self.import_from_mulval_attack_graph(path)
+            self.import_from_mulval_xml_file(path)
         elif extension == ".gml":
             self.load_gml(path)
         else:
