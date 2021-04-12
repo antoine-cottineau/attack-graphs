@@ -73,8 +73,7 @@ def draw(input: str, output: str, keep_mulval: bool, ranking: str,
         user_embedding = np.load(embedding)
         emb = Embedding(ag, user_embedding.shape[1])
         emb.embedding = user_embedding
-        # TODO: find the optimal number of clusters
-        emb.cluster_with_k_clusters(3)
+        emb.cluster()
 
     # Draw the resulting graph
     ag.draw(output)

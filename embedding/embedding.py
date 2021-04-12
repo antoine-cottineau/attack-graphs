@@ -1,8 +1,8 @@
 import numpy as np
 
 from attack_graph import AttackGraph
+from clustering.clustering import Clustering
 from pathlib import Path
-from sklearn.cluster import KMeans
 
 
 class Embedding:
@@ -17,10 +17,11 @@ class Embedding:
         np.save(path, self.embedding)
         print("Embedding saved in file \"{}\".".format(path))
 
-    def cluster_with_k_clusters(self, k: int):
-        # Cluster the graph with k-means
-        clustering = KMeans(n_clusters=k).fit_predict(self.embedding)
+    def cluster(self):
+        # Cluster the graph
+        labels = Clustering(self.ag).find_optimal_number_of_clusters(
+            X=self.embedding, k_min=2, k_max=10)[0]
 
         # Apply the clustering to the nodes
         for i, node in self.ag.nodes(data=True):
-            node["id_cluster"] = clustering[i]
+            node["id_cluster"] = labels[i]
