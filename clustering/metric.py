@@ -28,7 +28,6 @@ class Metric:
         n_clusters = max(labels) + 1
         assignment_matrix = np.zeros((n_nodes, n_clusters))
         for i in range(n_nodes):
-            # TODO: check that labels[i] is an integer
             assignment_matrix[i, labels[i]] = 1
 
         # Compute the weighted degree of each node.
