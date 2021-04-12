@@ -2,6 +2,7 @@ import networkx as nx
 import numpy as np
 
 from attack_graph import AttackGraph
+from clustering.metric import Metric
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigs
 from sklearn.cluster import KMeans
@@ -44,21 +45,8 @@ class Spectral:
 
         return eigenvectors[:, :K - 1]
 
-    def compute_assignment_matrix(self, partition: list, k: int):
-        X = np.zeros((self.ag.number_of_nodes(), k))
-        for i in self.ag.nodes():
-            X[i, int(partition[i])] = 1
-        return X
-
-    def compute_Q_function(self, partition: list, k: int):
-        X = self.compute_assignment_matrix(partition, k)
-        vol_G = self.W.sum()
-
-        # Compute the weighted degree of each vertex
-        d = self.D.diagonal()
-        D = np.outer(d, d)
-
-        return np.trace(csr_matrix.dot(X.T, vol_G * self.W - D).dot(X))
+    def compute_Q_function(self, X: np.array, labels: list):
+        return Metric.score_with_Q_function(X, labels, self.W, self.D)
 
     @staticmethod
     def extract_and_normalize_eigenvectors(eigenvectors: np.array, k: int):
@@ -80,24 +68,24 @@ class Spectral1(Spectral):
 
         # Apply k-means on the rows of U_k
         k_means = KMeans(n_clusters=k)
-        partition = k_means.fit_predict(U_k)
+        labels = k_means.fit_predict(U_k)
 
-        return partition
+        return U_k, labels
 
     def apply(self, K: int):
         eigenvectors = self.compute_eigenvector_matrix(K)
         best_score = -np.inf
-        best_partition = None
+        best_labels = None
 
         for k in range(2, K + 1):
-            partition = self.apply_for_k(eigenvectors, k)
-            score = self.compute_Q_function(partition, k)
+            U_k, labels = self.apply_for_k(eigenvectors, k)
+            score = self.compute_Q_function(U_k, labels)
             if score > best_score:
                 best_score = score
-                best_partition = partition
+                best_labels = labels
 
         for i, node in self.ag.nodes(data=True):
-            node["id_cluster"] = best_partition[i]
+            node["id_cluster"] = best_labels[i]
 
 
 class Spectral2(Spectral):
@@ -129,8 +117,8 @@ class Spectral2(Spectral):
             P_prime[ids_states_to_update] = new_id_cluster
 
             # Check if the modification improves the value of the Q function
-            if self.compute_Q_function(P_prime, k) > self.compute_Q_function(
-                    P, k):
+            if self.compute_Q_function(U_k, P_prime) > self.compute_Q_function(
+                    U_k, P):
                 P_new = P_prime
                 has_updated = True
                 break
@@ -141,7 +129,7 @@ class Spectral2(Spectral):
         eigenvectors = self.compute_eigenvector_matrix(K)
 
         k = k_min
-        P = np.zeros(self.ag.number_of_nodes())
+        P = np.zeros(self.ag.number_of_nodes(), dtype=int)
         if k > 1:
             U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
             P = KMeans(n_clusters=k).fit_predict(U_k)
