@@ -33,6 +33,7 @@ class Generator:
         # Create the attack graph
         ag = AttackGraph()
         ag.add_nodes_from(graph.nodes(data=True))
+        ag.add_edges_from(graph.edges())
 
         # Add other variables to the attack graph
         ag.propositions = {}
