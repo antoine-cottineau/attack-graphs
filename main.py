@@ -16,7 +16,7 @@ def run():
     pass
 
 
-@run.command("")
+@run.command()
 @click.option(
     "--keep_mulval",
     is_flag=True,
@@ -56,7 +56,7 @@ def draw(input: str, output: str, keep_mulval: bool, ranking: str,
     else:
         ag = AttackGraph()
 
-    ag.import_from_file(input)
+    ag.load(input)
 
     # Apply ranking
     if ranking == "pagerank":
@@ -107,7 +107,7 @@ def generate(output: str,
     """
     ag = Generator(n_propositions, n_initial_propositions,
                    n_exploits).generate()
-    ag.save_gml(output)
+    ag.save(output)
 
 
 @run.command()
@@ -127,7 +127,7 @@ def deepwalk(input: str, dim_embedding: str = "8"):
     """
     # Create the attack graph
     ag = AttackGraph()
-    ag.import_from_file(input)
+    ag.load(input)
 
     # Apply DeepWalk
     DeepWalk(ag, int(dim_embedding)).run()
@@ -157,7 +157,7 @@ def hope(input: str, dim_embedding: str = "8", measurement: str = "cn"):
     """
     # Create the attack graph
     ag = AttackGraph()
-    ag.import_from_file(input)
+    ag.load(input)
 
     # Apply Hope
     Hope(ag, int(dim_embedding), measurement).run()
@@ -180,7 +180,7 @@ def graphsage(input: str, dim_embedding: str = "8"):
     """
     # Create the attack graph
     ag = AttackGraph()
-    ag.import_from_file(input)
+    ag.load(input)
 
     # Apply GraphSAGE
     Graphsage(ag, int(dim_embedding), "toy").run()

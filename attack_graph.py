@@ -11,47 +11,59 @@ class BaseGraph(nx.DiGraph):
 
     def draw(self, path: str):
         # Create the parent directory(ies) of the file
-        file_ = pathlib.Path(path)
-        parent_directory = file_.parent
+        file = pathlib.Path(path)
+        parent_directory = file.parent
         parent_directory.mkdir(exist_ok=True, parents=True)
 
         # Get the extension of the file
-        extension = file_.suffix
+        extension = file.suffix
 
         # Draw the graph
         pydot_graph = self._convert_to_pydot()
         if extension == ".dot":
-            pydot_graph.write_dot(file_)
+            pydot_graph.write_dot(file)
         elif extension == ".pdf":
-            pydot_graph.write_pdf(file_)
+            pydot_graph.write_pdf(file)
         elif extension == ".png":
-            pydot_graph.write_png(file_)
+            pydot_graph.write_png(file)
         else:
             raise Exception("File type {} not supported.".format(extension))
 
-    def import_from_file(self, path: str):
-        file_ = pathlib.Path(path)
-        extension = file_.suffix
+    def load(self, path: str):
+        file = pathlib.Path(path)
+        extension = file.suffix[1:]
 
-        if extension == ".xml":
-            self.import_from_mulval_xml_file(path)
-        elif extension == ".gml":
-            self.load_gml(path)
+        if extension == "xml":
+            self._load_xml(path=path)
         else:
-            print(
-                "The extension {} is not supported for loading attack graphs".
-                format(extension[1:]))
+            self._load_gml(path=path)
 
-    def import_from_mulval_xml_file(self, path: str):
+    def parse(self, string: str, extension: str):
+        if extension == "xml":
+            self._load_xml(string=string)
+        else:
+            self._load_gml(string=string)
+
+    def save(self, path: str):
+        nx.write_gml(self, path, stringizer=lambda x: str(x))
+
+    def _load_xml(self, path: str = None, string: str = None):
         pass
 
-    def load_gml(self, path: str):
-        loaded_graph = nx.read_gml(path, destringizer=lambda x: int(x))
-        self.add_nodes_from(loaded_graph.nodes(data=True))
-        self.add_edges_from(loaded_graph.edges())
+    def _load_gml(self, path: str = None, string: str = None):
+        if path is None and string is None:
+            return
 
-    def save_gml(self, path: str):
-        nx.write_gml(self, path, stringizer=lambda x: str(x))
+        def destringizer(x):
+            return int(x)
+
+        if path is None:
+            graph = nx.parse_gml(string, destringizer=destringizer)
+        else:
+            graph = nx.read_gml(path, destringizer=destringizer)
+
+        self.add_nodes_from(graph.nodes(data=True))
+        self.add_edges_from(graph.edges(data=True))
 
     def _convert_to_pydot(self):
         return nx.nx_pydot.to_pydot(self)
@@ -61,9 +73,16 @@ class MulvalAttackGraph(BaseGraph):
     def __init__(self):
         super().__init__()
 
-    def import_from_mulval_xml_file(self, path: str):
-        # Parse the file
-        tree = ET.parse(path)
+    def _load_xml(self, path: str = None, string: str = None):
+        if path is None and string is None:
+            return
+
+        # Parse the file or the string
+        if path is None:
+            tree = ET.ElementTree(ET.fromstring(string))
+        else:
+            tree = ET.parse(path)
+
         root = tree.getroot()
         nodes = root.findall(path="vertices/vertex")
         edges = root.findall(path="arcs/arc")
@@ -104,12 +123,37 @@ class AttackGraph(BaseGraph):
 
         self.propositions = {}
 
-    def import_from_mulval_xml_file(self, path: str):
-        mag = MulvalAttackGraph()
-        mag.import_from_mulval_xml_file(path)
-        self.import_from_mulval_attack_graph(mag)
+    def update_colors_based_on_ranking(self):
+        for _, node in self.nodes(data=True):
+            # The color saturation of a node is calculated thanks to a linear
+            # interpolation between the two extrema of the ranking
+            saturation = (node["ranking_score"] - self.ranking_min) / (
+                self.ranking_max - self.ranking_min)
+            color = "0 " + str(round(saturation, 3)) + " 1"
+            node["style"] = "filled"
+            node["fillcolor"] = color
 
-    def import_from_mulval_attack_graph(self, mag: MulvalAttackGraph):
+    def create_proposition_mapping(self):
+        proposition_mapping = {}
+        ids_propositions = [*self.propositions]
+        for i in range(len(self.propositions)):
+            proposition = self.propositions[ids_propositions[i]]
+            proposition_mapping[proposition[0]] = i
+        self.proposition_mapping = proposition_mapping
+
+    def compute_adjacency_matrix(self, keep_directed=True):
+        if keep_directed:
+            network = self
+        else:
+            network = nx.Graph(self)
+        return nx.linalg.graphmatrix.adjacency_matrix(network)
+
+    def _load_xml(self, path: str = None, string: str = None):
+        mag = MulvalAttackGraph()
+        mag._load_xml(path, string)
+        self._load_from_mulval_attack_graph(mag)
+
+    def _load_from_mulval_attack_graph(self, mag: MulvalAttackGraph):
         ids_initial_propositions = []
         ids_edges = []
 
@@ -137,79 +181,6 @@ class AttackGraph(BaseGraph):
         # Create a mapping between the id of each proposition and an integer
         # between 0 and len(self.propositions) - 1
         self.create_proposition_mapping()
-
-    def load_gml(self, path: str):
-        super().load_gml(path)
-
-        # Find the number of propositions
-        n_propositions = max(
-            [len(ids) for (_, ids) in self.nodes(data="ids_propositions")])
-
-        # Create the propositions dictionnary
-        self.propositions = {}
-        for i in range(n_propositions):
-            self.propositions[i] = (i, "Randomly generated")
-
-        # Create the proposition mapping
-        self.create_proposition_mapping()
-
-    def update_colors_based_on_ranking(self):
-        for _, node in self.nodes(data=True):
-            # The color saturation of a node is calculated thanks to a linear
-            # interpolation between the two extrema of the ranking
-            saturation = (node["ranking_score"] - self.ranking_min) / (
-                self.ranking_max - self.ranking_min)
-            color = "0 " + str(round(saturation, 3)) + " 1"
-            node["style"] = "filled"
-            node["fillcolor"] = color
-
-    def create_proposition_mapping(self):
-        proposition_mapping = {}
-        ids_propositions = [*self.propositions]
-        for i in range(len(self.propositions)):
-            proposition = self.propositions[ids_propositions[i]]
-            proposition_mapping[proposition[0]] = i
-        self.proposition_mapping = proposition_mapping
-
-    def compute_adjacency_matrix(self, keep_directed=True):
-        if keep_directed:
-            network = self
-        else:
-            network = nx.Graph(self)
-        return nx.linalg.graphmatrix.adjacency_matrix(network)
-
-    def _convert_to_pydot(self):
-        pydot_graph = nx.nx_pydot.to_pydot(self)
-
-        if "id_cluster" not in self.nodes(data=True)[0]:
-            return pydot_graph
-
-        # Create clusters and add the existing nodes to them
-        clusters = {}
-
-        for i, node in self.nodes(data=True):
-            id_cluster = node["id_cluster"]
-
-            # If the cluster does not exist, create a new one
-            if id_cluster not in clusters:
-                clusters[id_cluster] = pydot.Subgraph(
-                    "cluster_{}".format(id_cluster))
-
-            # Add the pydot node to the cluster
-            clusters[id_cluster].add_node(pydot_graph.get_node(str(i))[0])
-
-        # Create a new pydot graph
-        new_pydot_graph = pydot.Dot()
-
-        # Add the clusters to the new graph
-        for id_cluster in clusters:
-            new_pydot_graph.add_subgraph(clusters[id_cluster])
-
-        # Add the edges to the new graph
-        for edge in pydot_graph.get_edge_list():
-            new_pydot_graph.add_edge(edge)
-
-        return new_pydot_graph
 
     def _fill_graph_recursively(self, mag: MulvalAttackGraph, node: tuple,
                                 ids_edges: list):
@@ -246,7 +217,9 @@ class AttackGraph(BaseGraph):
                                  if src == node[0] and dst == similar_nodes[0]]
                 if not similar_edges and node[0] != similar_nodes[0]:
                     # Just add the edge
-                    self.add_edge(node[0], similar_nodes[0])
+                    self.add_edge(node[0],
+                                  similar_nodes[0],
+                                  fact=mag.nodes[id_edge]["fact"])
             else:
                 # Create a brand new node
                 new_node = (self.number_of_nodes(), {
@@ -255,10 +228,60 @@ class AttackGraph(BaseGraph):
                 self.add_nodes_from([new_node])
 
                 # Add an edge
-                self.add_edge(node[0], new_node[0])
+                self.add_edge(node[0],
+                              new_node[0],
+                              fact=mag.nodes[id_edge]["fact"])
 
                 # Call recursively this function with the new node and and with
                 # the used edge removed
                 new_ids_edges = ids_edges.copy()
                 new_ids_edges.remove(id_edge)
                 self._fill_graph_recursively(mag, new_node, new_ids_edges)
+
+    def _load_gml(self, path: str = None, string: str = None):
+        super()._load_gml(path, string)
+
+        # Find the number of propositions
+        n_propositions = max(
+            [len(ids) for (_, ids) in self.nodes(data="ids_propositions")])
+
+        # Create the propositions dictionnary
+        self.propositions = {}
+        for i in range(n_propositions):
+            self.propositions[i] = (i, "Randomly generated")
+
+        # Create the proposition mapping
+        self.create_proposition_mapping()
+
+    def _convert_to_pydot(self):
+        pydot_graph = nx.nx_pydot.to_pydot(self)
+
+        if "id_cluster" not in self.nodes(data=True)[0]:
+            return pydot_graph
+
+        # Create clusters and add the existing nodes to them
+        clusters = {}
+
+        for i, node in self.nodes(data=True):
+            id_cluster = node["id_cluster"]
+
+            # If the cluster does not exist, create a new one
+            if id_cluster not in clusters:
+                clusters[id_cluster] = pydot.Subgraph(
+                    "cluster_{}".format(id_cluster))
+
+            # Add the pydot node to the cluster
+            clusters[id_cluster].add_node(pydot_graph.get_node(str(i))[0])
+
+        # Create a new pydot graph
+        new_pydot_graph = pydot.Dot()
+
+        # Add the clusters to the new graph
+        for id_cluster in clusters:
+            new_pydot_graph.add_subgraph(clusters[id_cluster])
+
+        # Add the edges to the new graph
+        for edge in pydot_graph.get_edge_list():
+            new_pydot_graph.add_edge(edge)
+
+        return new_pydot_graph
