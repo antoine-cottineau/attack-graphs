@@ -37,6 +37,9 @@ class UserInterface:
         self.load_widget = self.create_load_widget()
         self.right_column.append(self.load_widget)
 
+        self.generate_widget = self.create_generate_widget()
+        self.right_column.append(self.generate_widget)
+
     def update_left_column(self):
         self.graph = UserInterface.create_graph(self.ag)
         self.hierarchical_graph = UserInterface.create_hierarchical_graph()
@@ -66,10 +69,7 @@ class UserInterface:
         graph = hv.Graph.from_networkx(ag,
                                        nx.drawing.layout.multipartite_layout)
 
-        graph.opts(
-            opts.Graph(arrowhead_length=0.007,
-                       directed=True,
-                       inspection_policy="edges"))
+        graph.opts(opts.Graph(inspection_policy="edges"))
 
         return pn.panel(graph, sizing_mode="stretch_both")
 
@@ -91,7 +91,7 @@ class UserInterface:
         file_input = pn.widgets.FileInput(accept=".xml,.gml", margin=5)
 
         def on_click(self: UserInterface):
-            if not hasattr(file_input, "filename"):
+            if file_input.filename is None:
                 # The user hasn't chosen a file.
                 return
 
@@ -112,13 +112,52 @@ class UserInterface:
         load_button.on_click(lambda _: on_click(self))
 
         # Finalize the creation of the widget box
-        load_box = pn.WidgetBox("### Load an attack graph", file_input,
-                                load_button)
+        load_box = pn.WidgetBox("### Load an attack graph",
+                                file_input,
+                                load_button,
+                                sizing_mode="stretch_width")
 
         return load_box
 
     def create_generate_widget(self) -> pn.WidgetBox:
-        pass
+        # Create the sliders that handle the generation of attack graphs
+        slider_n_propositions = pn.widgets.IntSlider(
+            name="Total number of propositions", start=1, end=50, value=20)
+        slider_n_initial_propositions = pn.widgets.IntSlider(
+            name="Initial number of true propositions",
+            start=1,
+            end=50,
+            value=10)
+        slider_n_exploits = pn.widgets.IntSlider(name="Number of exploits",
+                                                 start=1,
+                                                 end=50,
+                                                 value=20)
+
+        # Create the button
+        def on_click(self: UserInterface):
+            n_propositions = slider_n_propositions.value
+            n_initial_propositions = slider_n_initial_propositions.value
+            n_exploits = slider_n_exploits.value
+
+            self.ag = Generator(n_propositions, n_initial_propositions,
+                                n_exploits).generate()
+
+            self.update_left_column()
+
+        generate_button = pn.widgets.Button(name="Generate",
+                                            button_type="primary",
+                                            margin=5)
+        generate_button.on_click(lambda _: on_click(self))
+
+        # Finalize the creation of the widget box
+        generate_box = pn.WidgetBox("### Generate an attack graph",
+                                    slider_n_propositions,
+                                    slider_n_initial_propositions,
+                                    slider_n_exploits,
+                                    generate_button,
+                                    sizing_mode="stretch_width")
+
+        return generate_box
 
 
 if __name__ == "__main__":
