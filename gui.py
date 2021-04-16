@@ -6,6 +6,7 @@ from attack_graph import AttackGraph
 from attack_graph_generation import Generator
 from holoviews import opts
 from pathlib import Path
+from ranking.mehta import PageRankMethod, KuehlmannMethod
 
 pn.extension(comms='vscode')
 
@@ -40,6 +41,9 @@ class UserInterface:
         self.generate_widget = self.create_generate_widget()
         self.right_column.append(self.generate_widget)
 
+        self.ranking_widget = self.create_ranking_widget()
+        self.right_column.append(self.ranking_widget)
+
     def update_left_column(self):
         self.graph = UserInterface.create_graph(self.ag)
         self.hierarchical_graph = UserInterface.create_hierarchical_graph()
@@ -69,7 +73,14 @@ class UserInterface:
         graph = hv.Graph.from_networkx(ag,
                                        nx.drawing.layout.multipartite_layout)
 
-        graph.opts(opts.Graph(inspection_policy="edges"))
+        has_ranking = "ranking_score" in ag.nodes[0]
+        if has_ranking:
+            options = opts.Graph(node_color="ranking_score",
+                                 cmap="blues",
+                                 colorbar=True)
+        else:
+            options = opts.Graph()
+        graph.opts(options)
 
         return pn.panel(graph, sizing_mode="stretch_both")
 
@@ -122,16 +133,22 @@ class UserInterface:
     def create_generate_widget(self) -> pn.WidgetBox:
         # Create the sliders that handle the generation of attack graphs
         slider_n_propositions = pn.widgets.IntSlider(
-            name="Total number of propositions", start=1, end=50, value=20)
+            name="Total number of propositions",
+            start=1,
+            end=50,
+            value=20,
+            margin=5)
         slider_n_initial_propositions = pn.widgets.IntSlider(
             name="Initial number of true propositions",
             start=1,
             end=50,
-            value=10)
+            value=10,
+            margin=5)
         slider_n_exploits = pn.widgets.IntSlider(name="Number of exploits",
                                                  start=1,
                                                  end=50,
-                                                 value=20)
+                                                 value=20,
+                                                 margin=5)
 
         # Create the button
         def on_click(self: UserInterface):
@@ -158,6 +175,34 @@ class UserInterface:
                                     sizing_mode="stretch_width")
 
         return generate_box
+
+    def create_ranking_widget(self) -> pn.WidgetBox:
+        method_selector = pn.widgets.Select(name="Method",
+                                            options=["PageRank", "Kuehlmann"],
+                                            margin=5)
+
+        def on_click(self: UserInterface):
+            if method_selector.value is None:
+                return
+
+            if method_selector.value == "PageRank":
+                PageRankMethod(self.ag).apply()
+            else:
+                KuehlmannMethod(self.ag).apply()
+
+            self.update_left_column()
+
+        apply_button = pn.widgets.Button(name="Apply",
+                                         button_type="primary",
+                                         margin=5)
+        apply_button.on_click(lambda _: on_click(self))
+
+        ranking_box = pn.WidgetBox("### Apply a ranking algorithm",
+                                   method_selector,
+                                   apply_button,
+                                   sizing_mode="stretch_width")
+
+        return ranking_box
 
 
 if __name__ == "__main__":
