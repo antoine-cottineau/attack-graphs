@@ -122,6 +122,39 @@ class AttackGraph(BaseGraph):
         super().__init__()
 
         self.propositions = {}
+        self.proposition_mapping = {}
+
+    def get_copy(self):
+        new_graph = AttackGraph()
+        new_graph.add_nodes_from(self.nodes(data=True))
+        new_graph.add_edges_from(self.edges(data=True))
+        new_graph.propositions = self.propositions.copy()
+        new_graph.proposition_mapping = self.proposition_mapping.copy()
+        return new_graph
+
+    def get_pruned_graph(self, ids_exploits_to_remove):
+        # Copy this attack graph
+        new_graph = self.get_copy()
+
+        # Remove the edges corresponding to the exploits to remove
+        edges_to_remove = []
+        for src, dst, id_exploit in new_graph.edges(data="id_exploit"):
+            if id_exploit in ids_exploits_to_remove:
+                edges_to_remove.append((src, dst))
+        new_graph.remove_edges_from(edges_to_remove)
+
+        # The nodes that have no predecessors (except the initial node) must be
+        # removed
+        has_removed_nodes = True
+        while has_removed_nodes:
+            nodes_to_remove = []
+            for i in new_graph.nodes:
+                if i != 0 and len(list(new_graph.predecessors(i))) == 0:
+                    nodes_to_remove.append(i)
+            new_graph.remove_nodes_from(nodes_to_remove)
+            has_removed_nodes = len(nodes_to_remove) > 0
+
+        return new_graph
 
     def update_colors_based_on_ranking(self):
         for _, node in self.nodes(data=True):
@@ -219,7 +252,8 @@ class AttackGraph(BaseGraph):
                     # Just add the edge
                     self.add_edge(node[0],
                                   similar_nodes[0],
-                                  fact=mag.nodes[id_edge]["fact"])
+                                  id_exploit=id_edge,
+                                  exploit=mag.nodes[id_edge]["fact"])
             else:
                 # Create a brand new node
                 new_node = (self.number_of_nodes(), {
@@ -230,7 +264,8 @@ class AttackGraph(BaseGraph):
                 # Add an edge
                 self.add_edge(node[0],
                               new_node[0],
-                              fact=mag.nodes[id_edge]["fact"])
+                              id_exploit=id_edge,
+                              exploit=mag.nodes[id_edge]["fact"])
 
                 # Call recursively this function with the new node and and with
                 # the used edge removed

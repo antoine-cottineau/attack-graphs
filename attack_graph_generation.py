@@ -33,7 +33,7 @@ class Generator:
         # Create the attack graph
         ag = AttackGraph()
         ag.add_nodes_from(graph.nodes(data=True))
-        ag.add_edges_from(graph.edges())
+        ag.add_edges_from(graph.edges(data=True))
 
         # Add other variables to the attack graph
         ag.propositions = {}
@@ -69,6 +69,9 @@ class Generator:
         # perform it and by the proposition it grants
         exploits = []
 
+        # Each exploit is given an id and a small description
+        id_exploit = 0
+
         # Create the exploits by sampling some propositions that must be true
         # so that an exploit can be performed
         for granted_proposition in granted_propositions:
@@ -89,11 +92,13 @@ class Generator:
                 required_propositions = np.sort(required_propositions)
 
                 # Create the exploit and check that it doesn't already exist
-                exploit = (granted_proposition, list(required_propositions))
+                exploit = (granted_proposition, list(required_propositions),
+                           id_exploit)
                 already_exists = exploit in exploits
 
-            # Add the new exploit
+            # Add the new exploit and update the id
             exploits.append(exploit)
+            id_exploit += 1
 
         return exploits
 
@@ -132,7 +137,11 @@ class Generator:
                                  if src == node[0] and dst == similar_nodes[0]]
                 if not similar_edges and node[0] != similar_nodes[0]:
                     # Just add the edge
-                    graph.add_edge(node[0], similar_nodes[0])
+                    graph.add_edge(node[0],
+                                   similar_nodes[0],
+                                   id_exploit=exploit[2],
+                                   exploit="Randomly generated ({})".format(
+                                       exploit[2]))
             else:
                 # Create a brand new node
                 new_node = (graph.number_of_nodes(), {
@@ -141,7 +150,11 @@ class Generator:
                 graph.add_nodes_from([new_node])
 
                 # Add an edge
-                graph.add_edge(node[0], new_node[0])
+                graph.add_edge(node[0],
+                               new_node[0],
+                               id_exploit=exploit[2],
+                               exploit="Randomly generated ({})".format(
+                                   exploit[2]))
 
                 # Call recursively this function with the new node and and with
                 # the used edge removed
