@@ -16,7 +16,7 @@ def get_file_extension(file) -> str:
 
 
 def create_parent_folders(file):
-    """Create the parent folders of the file.
+    """Creates the parent folders of the file.
 
     Args:
         file (str|pathlib.PosixPath): A string or pathlib.PosixPath object
