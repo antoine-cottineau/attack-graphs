@@ -1,72 +1,80 @@
 import bisect
+import json
 import networkx as nx
-import pathlib
-import pydot
 import xml.etree.ElementTree as ET
+
+from pathlib import Path
+from scipy.sparse.coo import coo_matrix
+from utils import get_file_extension, create_parent_folders
 
 
 class BaseGraph(nx.DiGraph):
     def __init__(self):
         super().__init__()
 
-    def draw(self, path: str):
-        # Create the parent directory(ies) of the file
-        file = pathlib.Path(path)
-        parent_directory = file.parent
-        parent_directory.mkdir(exist_ok=True, parents=True)
-
-        # Get the extension of the file
-        extension = file.suffix
-
-        # Draw the graph
-        pydot_graph = self._convert_to_pydot()
-        if extension == ".dot":
-            pydot_graph.write_dot(file)
-        elif extension == ".pdf":
-            pydot_graph.write_pdf(file)
-        elif extension == ".png":
-            pydot_graph.write_png(file)
-        else:
-            raise Exception("File type {} not supported.".format(extension))
+    def load_nodes_and_edges(self, graph: nx.DiGraph):
+        self.add_nodes_from(graph.nodes(data=True))
+        self.add_edges_from(graph.edges(data=True))
 
     def load(self, path: str):
-        file = pathlib.Path(path)
-        extension = file.suffix[1:]
+        extension = get_file_extension(path)
 
         if extension == "xml":
             self._load_xml(path=path)
+        elif extension == "json":
+            self._load_json(path=path)
         else:
-            self._load_gml(path=path)
+            raise Exception(
+                "Error when loading file {}: extension {} not supported.".
+                format(path, extension))
 
     def parse(self, string: str, extension: str):
         if extension == "xml":
             self._load_xml(string=string)
+        elif extension == "json":
+            self._load_json(string=string)
         else:
-            self._load_gml(string=string)
-
-    def save(self, path: str):
-        nx.write_gml(self, path, stringizer=lambda x: str(x))
+            raise Exception(
+                "Error when loading string: extension {} not supported.".
+                format(extension))
 
     def _load_xml(self, path: str = None, string: str = None):
         pass
 
-    def _load_gml(self, path: str = None, string: str = None):
+    def _load_json(self, path: str = None, string: str = None):
         if path is None and string is None:
             return
 
-        def destringizer(x):
-            return int(x)
-
         if path is None:
-            graph = nx.parse_gml(string, destringizer=destringizer)
+            data = json.loads(string)
         else:
-            graph = nx.read_gml(path, destringizer=destringizer)
+            with open(path, mode="r") as f:
+                data = json.load(f)
 
-        self.add_nodes_from(graph.nodes(data=True))
-        self.add_edges_from(graph.edges(data=True))
+        graph = nx.node_link_graph(data)
 
-    def _convert_to_pydot(self):
-        return nx.nx_pydot.to_pydot(self)
+        self.load_nodes_and_edges(graph)
+        self._load_other_elements_from_json(data)
+
+    def _load_other_elements_from_json(self, data: dict):
+        pass
+
+    def save(self, path: str):
+        file = Path(path)
+        create_parent_folders(file)
+
+        data = self._write_data()
+
+        with open(file, mode="w") as f:
+            json.dump(data, f, indent=2)
+
+    def _write_data(self) -> dict:
+        data = nx.node_link_data(self)
+        data = self._write_other_elements_in_data(data)
+        return data
+
+    def _write_other_elements_in_data(self, data: dict) -> dict:
+        return data
 
 
 class MulvalAttackGraph(BaseGraph):
@@ -122,19 +130,19 @@ class AttackGraph(BaseGraph):
         super().__init__()
 
         self.propositions = {}
-        self.proposition_mapping = {}
 
-    def get_copy(self):
+    def copy(self, as_view):
+        graph = super().copy(as_view=as_view)
+
         new_graph = AttackGraph()
-        new_graph.add_nodes_from(self.nodes(data=True))
-        new_graph.add_edges_from(self.edges(data=True))
+        new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
-        new_graph.proposition_mapping = self.proposition_mapping.copy()
+
         return new_graph
 
-    def get_pruned_graph(self, ids_exploits_to_remove):
+    def get_pruned_graph(self, ids_exploits_to_remove: list):
         # Copy this attack graph
-        new_graph = self.get_copy()
+        new_graph = self.copy()
 
         # Remove the edges corresponding to the exploits to remove
         edges_to_remove = []
@@ -156,30 +164,21 @@ class AttackGraph(BaseGraph):
 
         return new_graph
 
-    def update_colors_based_on_ranking(self):
-        for _, node in self.nodes(data=True):
-            # The color saturation of a node is calculated thanks to a linear
-            # interpolation between the two extrema of the ranking
-            saturation = (node["ranking_score"] - self.ranking_min) / (
-                self.ranking_max - self.ranking_min)
-            color = "0 " + str(round(saturation, 3)) + " 1"
-            node["style"] = "filled"
-            node["fillcolor"] = color
-
-    def create_proposition_mapping(self):
+    def get_proposition_mapping(self) -> dict:
         proposition_mapping = {}
         ids_propositions = [*self.propositions]
         for i in range(len(self.propositions)):
             proposition = self.propositions[ids_propositions[i]]
             proposition_mapping[proposition[0]] = i
-        self.proposition_mapping = proposition_mapping
+        return proposition_mapping
 
-    def compute_adjacency_matrix(self, keep_directed=True):
+    def compute_adjacency_matrix(self,
+                                 keep_directed: bool = True) -> coo_matrix:
         if keep_directed:
             network = self
         else:
             network = nx.Graph(self)
-        return nx.linalg.graphmatrix.adjacency_matrix(network)
+        return nx.adjacency_matrix(network)
 
     def _load_xml(self, path: str = None, string: str = None):
         mag = MulvalAttackGraph()
@@ -213,7 +212,7 @@ class AttackGraph(BaseGraph):
 
         # Create a mapping between the id of each proposition and an integer
         # between 0 and len(self.propositions) - 1
-        self.create_proposition_mapping()
+        self.get_proposition_mapping()
 
     def _fill_graph_recursively(self, mag: MulvalAttackGraph, node: tuple,
                                 ids_edges: list):
@@ -286,37 +285,12 @@ class AttackGraph(BaseGraph):
             self.propositions[i] = (i, "Randomly generated")
 
         # Create the proposition mapping
-        self.create_proposition_mapping()
+        self.get_proposition_mapping()
 
-    def _convert_to_pydot(self):
-        pydot_graph = nx.nx_pydot.to_pydot(self)
+    def _load_other_elements_from_json(self, data: dict):
+        self.propositions = data["propositions"]
 
-        if "id_cluster" not in self.nodes(data=True)[0]:
-            return pydot_graph
-
-        # Create clusters and add the existing nodes to them
-        clusters = {}
-
-        for i, node in self.nodes(data=True):
-            id_cluster = node["id_cluster"]
-
-            # If the cluster does not exist, create a new one
-            if id_cluster not in clusters:
-                clusters[id_cluster] = pydot.Subgraph(
-                    "cluster_{}".format(id_cluster))
-
-            # Add the pydot node to the cluster
-            clusters[id_cluster].add_node(pydot_graph.get_node(str(i))[0])
-
-        # Create a new pydot graph
-        new_pydot_graph = pydot.Dot()
-
-        # Add the clusters to the new graph
-        for id_cluster in clusters:
-            new_pydot_graph.add_subgraph(clusters[id_cluster])
-
-        # Add the edges to the new graph
-        for edge in pydot_graph.get_edge_list():
-            new_pydot_graph.add_edge(edge)
-
-        return new_pydot_graph
+    def _write_other_elements_in_data(self, data: dict) -> dict:
+        new_data = data.copy()
+        new_data["propositions"] = self.propositions
+        return new_data

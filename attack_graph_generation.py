@@ -39,7 +39,7 @@ class Generator:
         ag.propositions = {}
         for i in range(self.n_propositions):
             ag.propositions[i] = (i, "Randomly generated")
-        ag.create_proposition_mapping()
+        ag.get_proposition_mapping()
 
         return ag
 

@@ -1,0 +1,476 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "ids_propositions": [
+        6,
+        11,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 0
+    },
+    {
+      "ids_propositions": [
+        6,
+        11,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 1
+    },
+    {
+      "ids_propositions": [
+        6,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 2
+    },
+    {
+      "ids_propositions": [
+        6,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 3
+    },
+    {
+      "ids_propositions": [
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 4
+    },
+    {
+      "ids_propositions": [
+        4,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 5
+    },
+    {
+      "ids_propositions": [
+        2,
+        4,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 6
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 7
+    },
+    {
+      "ids_propositions": [
+        4,
+        6,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 8
+    },
+    {
+      "ids_propositions": [
+        2,
+        4,
+        6,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 9
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        6,
+        9,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 10
+    },
+    {
+      "ids_propositions": [
+        4,
+        6,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 11
+    },
+    {
+      "ids_propositions": [
+        2,
+        4,
+        6,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 12
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        6,
+        11,
+        12,
+        14,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        23,
+        24,
+        25
+      ],
+      "id": 13
+    }
+  ],
+  "links": [
+    {
+      "id_exploit": 15,
+      "exploit": "RULE 6 (direct network access)",
+      "source": 0,
+      "target": 1
+    },
+    {
+      "id_exploit": 13,
+      "exploit": "RULE 2 (remote exploit of a server program)",
+      "source": 1,
+      "target": 2
+    },
+    {
+      "id_exploit": 10,
+      "exploit": "RULE 5 (multi-hop access)",
+      "source": 2,
+      "target": 3
+    },
+    {
+      "id_exploit": 22,
+      "exploit": "RULE 17 (NFS shell)",
+      "source": 2,
+      "target": 11
+    },
+    {
+      "id_exploit": 8,
+      "exploit": "RULE 2 (remote exploit of a server program)",
+      "source": 3,
+      "target": 4
+    },
+    {
+      "id_exploit": 22,
+      "exploit": "RULE 17 (NFS shell)",
+      "source": 3,
+      "target": 8
+    },
+    {
+      "id_exploit": 5,
+      "exploit": "RULE 10 (execCode implies file access)",
+      "source": 4,
+      "target": 5
+    },
+    {
+      "id_exploit": 3,
+      "exploit": "RULE 16 (NFS semantics)",
+      "source": 5,
+      "target": 6
+    },
+    {
+      "id_exploit": 1,
+      "exploit": "RULE 4 (Trojan horse installation)",
+      "source": 6,
+      "target": 7
+    },
+    {
+      "id_exploit": 3,
+      "exploit": "RULE 16 (NFS semantics)",
+      "source": 8,
+      "target": 9
+    },
+    {
+      "id_exploit": 8,
+      "exploit": "RULE 2 (remote exploit of a server program)",
+      "source": 8,
+      "target": 5
+    },
+    {
+      "id_exploit": 1,
+      "exploit": "RULE 4 (Trojan horse installation)",
+      "source": 9,
+      "target": 10
+    },
+    {
+      "id_exploit": 8,
+      "exploit": "RULE 2 (remote exploit of a server program)",
+      "source": 9,
+      "target": 6
+    },
+    {
+      "id_exploit": 8,
+      "exploit": "RULE 2 (remote exploit of a server program)",
+      "source": 10,
+      "target": 7
+    },
+    {
+      "id_exploit": 3,
+      "exploit": "RULE 16 (NFS semantics)",
+      "source": 11,
+      "target": 12
+    },
+    {
+      "id_exploit": 10,
+      "exploit": "RULE 5 (multi-hop access)",
+      "source": 11,
+      "target": 8
+    },
+    {
+      "id_exploit": 1,
+      "exploit": "RULE 4 (Trojan horse installation)",
+      "source": 12,
+      "target": 13
+    },
+    {
+      "id_exploit": 10,
+      "exploit": "RULE 5 (multi-hop access)",
+      "source": 12,
+      "target": 9
+    },
+    {
+      "id_exploit": 10,
+      "exploit": "RULE 5 (multi-hop access)",
+      "source": 13,
+      "target": 10
+    }
+  ],
+  "propositions": {
+    "0": [
+      0,
+      "execCode(workStation,root)"
+    ],
+    "2": [
+      2,
+      "accessFile(workStation,write,'/usr/local/share')"
+    ],
+    "4": [
+      4,
+      "accessFile(fileServer,write,'/export')"
+    ],
+    "6": [
+      6,
+      "canAccessFile(fileServer,root,write,'/export')"
+    ],
+    "7": [
+      7,
+      "execCode(fileServer,root)"
+    ],
+    "9": [
+      9,
+      "netAccess(fileServer,rpc,100005)"
+    ],
+    "11": [
+      11,
+      "hacl(webServer,fileServer,rpc,100005)"
+    ],
+    "12": [
+      12,
+      "execCode(webServer,apache)"
+    ],
+    "14": [
+      14,
+      "netAccess(webServer,tcp,80)"
+    ],
+    "16": [
+      16,
+      "hacl(internet,webServer,tcp,80)"
+    ],
+    "17": [
+      17,
+      "attackerLocated(internet)"
+    ],
+    "18": [
+      18,
+      "networkServiceInfo(webServer,httpd,tcp,80,apache)"
+    ],
+    "19": [
+      19,
+      "vulExists(webServer,'CAN-2002-0392',httpd,remoteExploit,privEscalation)"
+    ],
+    "20": [
+      20,
+      "networkServiceInfo(fileServer,mountd,rpc,100005,root)"
+    ],
+    "21": [
+      21,
+      "vulExists(fileServer,vulID,mountd,remoteExploit,privEscalation)"
+    ],
+    "23": [
+      23,
+      "hacl(webServer,fileServer,nfsProtocol,nfsPort)"
+    ],
+    "24": [
+      24,
+      "nfsExportInfo(fileServer,'/export',write,webServer)"
+    ],
+    "25": [
+      25,
+      "nfsMounted(workStation,'/usr/local/share',fileServer,'/export',read)"
+    ]
+  }
+}
