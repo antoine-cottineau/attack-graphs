@@ -1,0 +1,46 @@
+.slider {
+  margin: 0.4rem 0;
+}
+
+.rc-slider-rail {
+  background-color: var(--color-light);
+}
+
+.rc-slider-track {
+  background-color: var(--color-accent);
+}
+
+.rc-slider-handle {
+  border-color: var(--color-accent);
+}
+
+.rc-slider-handle:hover {
+  border-color: var(--color-accent);
+}
+
+.rc-slider-handle:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 5px var(--color-accent-light);
+}
+
+.rc-slider-handle:active {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 5px var(--color-accent);
+}
+
+.rc-slider-handle-click-focused:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 5px var(--color-accent-light);
+}
+
+.rc-slider-dot {
+  border-color: var(--color-light);
+}
+
+.rc-slider-dot-active {
+  border-color: var(--color-accent);
+}
+
+.rc-slider-mark-text {
+  color: var(--color-light);
+}

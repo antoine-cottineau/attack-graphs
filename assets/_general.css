@@ -1,0 +1,12 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat&display=swap);
+
+* {
+  font-family: "Montserrat", sans-serif;
+}
+
+:root {
+  --color_dark: rgb(43, 43, 43);
+  --color-light: rgb(255, 255, 255);
+  --color-accent: rgba(148, 8, 94);
+  --color-accent-light: rgba(233, 139, 197);
+}

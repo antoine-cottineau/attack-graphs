@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+}
+
+#root {
+  display: grid;
+  grid-template-columns: 12rem 30rem 1fr;
+  grid-template-rows: 5rem 1fr;
+  height: 100vh;
+  background-color: var(--color_dark);
+}
+
+#dashboard-title {
+  grid-column: 1 / 4;
+  padding-left: 1rem;
+  color: var(--color-light);
+}
+
+#side-menu-tabs {
+  width: 100%;
+}
+
+#tools-menu {
+  color: var(--color-light);
+  margin: 0 3rem;
+}
+
+.tool-sub-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+#graph {
+  height: 100%;
+}

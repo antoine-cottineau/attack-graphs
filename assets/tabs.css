@@ -1,0 +1,21 @@
+.tab-container--vert .tab:last-of-type {
+  border-bottom: none !important;
+}
+
+.side-menu-tab {
+  background-color: var(--color-light) !important;
+  color: var(--color-dark) !important;
+  border: none !important;
+  border-left: 0.3rem solid var(--color-light) !important;
+  border-radius: 0 0.5rem 0.5rem 0;
+  text-align: start !important;
+  margin-bottom: 0.3rem;
+  transition: none !important;
+  font-weight: 500;
+}
+
+.side-menu-tab.selected {
+  color: var(--color-accent) !important;
+  border-left: 0.3rem solid var(--color-accent) !important;
+  font-weight: 700;
+}

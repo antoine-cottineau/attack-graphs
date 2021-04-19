@@ -1,0 +1,26 @@
+.tool-button {
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+  background-color: var(--color-light);
+  border: none;
+  border-radius: 0.2rem;
+  width: 50%;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+#graph-upload {
+  width: calc(100% - 50px);
+  height: 5rem;
+  line-height: 5rem;
+  border: 1px dashed var(--color-light);
+  text-align: center;
+  align-self: center;
+  cursor: pointer;
+}
+
+#button-save {
+  margin-top: 1rem;
+}
