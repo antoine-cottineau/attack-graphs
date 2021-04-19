@@ -1,12 +1,14 @@
 import dash_core_components as dcc
 import dash_html_components as html
+from dash_html_components.H1 import H1
 
 
 def generate_layout() -> html.Div:
     return html.Div(id="root",
                     children=[
                         html.Div(id="attack-graph", style={"display": "none"}),
-                        html.H1(id="dashboard-title", children="Dashboard"),
+                        html.Div(id="dashboard-title",
+                                 children=html.H1("Dashboard")),
                         generate_side_menu(),
                         html.Div(id="tools-menu"),
                         html.Div(id="graph-zone")
@@ -71,6 +73,9 @@ def generate_menu_load() -> html.Div:
 
 def generate_menu_generate() -> html.Div:
     elements = []
+
+    slider_tooltip = dict(placement="right")
+
     elements.append(
         html.H3(children="Total number of propositions",
                 className="tool-small-header"))
@@ -83,6 +88,7 @@ def generate_menu_generate() -> html.Div:
                        1: "1",
                        50: "50"
                    },
+                   tooltip=slider_tooltip,
                    className="slider"))
 
     elements.append(
@@ -97,6 +103,7 @@ def generate_menu_generate() -> html.Div:
                        1: "1",
                        50: "50"
                    },
+                   tooltip=slider_tooltip,
                    className="slider"))
 
     elements.append(
@@ -110,6 +117,7 @@ def generate_menu_generate() -> html.Div:
                        1: "1",
                        50: "50"
                    },
+                   tooltip=slider_tooltip,
                    className="slider"))
 
     elements.append(
