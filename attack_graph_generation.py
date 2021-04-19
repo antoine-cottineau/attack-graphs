@@ -32,14 +32,12 @@ class Generator:
 
         # Create the attack graph
         ag = AttackGraph()
-        ag.add_nodes_from(graph.nodes(data=True))
-        ag.add_edges_from(graph.edges(data=True))
+        ag.load_nodes_and_edges(graph)
 
         # Add other variables to the attack graph
         ag.propositions = {}
         for i in range(self.n_propositions):
             ag.propositions[i] = (i, "Randomly generated")
-        ag.get_proposition_mapping()
 
         return ag
 
@@ -145,7 +143,7 @@ class Generator:
             else:
                 # Create a brand new node
                 new_node = (graph.number_of_nodes(), {
-                    "ids_propositions": new_ids_propositions
+                    "ids_propositions": [int(i) for i in new_ids_propositions]
                 })
                 graph.add_nodes_from([new_node])
 

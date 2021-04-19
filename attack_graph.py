@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 
 from pathlib import Path
 from scipy.sparse.coo import coo_matrix
-from utils import get_file_extension, create_parent_folders
+import utils
 
 
 class BaseGraph(nx.DiGraph):
@@ -17,7 +17,7 @@ class BaseGraph(nx.DiGraph):
         self.add_edges_from(graph.edges(data=True))
 
     def load(self, path: str):
-        extension = get_file_extension(path)
+        extension = utils.get_file_extension(path)
 
         if extension == "xml":
             self._load_xml(path=path)
@@ -61,12 +61,15 @@ class BaseGraph(nx.DiGraph):
 
     def save(self, path: str):
         file = Path(path)
-        create_parent_folders(file)
+        utils.create_parent_folders(file)
 
         data = self._write_data()
 
         with open(file, mode="w") as f:
             json.dump(data, f, indent=2)
+
+    def write(self):
+        return json.dumps(self._write_data(), indent=2)
 
     def _write_data(self) -> dict:
         data = nx.node_link_data(self)
