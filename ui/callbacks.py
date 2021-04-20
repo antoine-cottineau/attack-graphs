@@ -1,7 +1,6 @@
 import base64
 import dash
 import dash_core_components as dcc
-import dash_html_components as html
 import networkx as nx
 import numpy as np
 import plotly.graph_objects as go
@@ -92,6 +91,13 @@ def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
     value = [*ag.exploits]
 
     return options, value
+
+
+def update_section_visibility(current_visibility: str) -> Tuple[dict, str]:
+    if current_visibility == "visibility":
+        return dict(), "visibility_off"
+    else:
+        return dict(display="none"), "visibility"
 
 
 def update_displayed_attack_graph(graph_json: str,

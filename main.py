@@ -6,8 +6,22 @@ import ui.layout
 from dash.dependencies import Input, Output, State
 from typing import Tuple
 
-app = dash.Dash(__name__, suppress_callback_exceptions=True)
+app = dash.Dash(__name__,
+                suppress_callback_exceptions=True,
+                external_stylesheets=[
+                    "https://fonts.googleapis.com/icon?family=Material+Icons"
+                ])
 app.layout = ui.layout.generate_layout()
+
+for header in ui.layout.header_ids:
+
+    @app.callback(Output(header["section"], "style"),
+                  Output(header["icon"], "children"),
+                  Input(header["icon"], "n_clicks"),
+                  State(header["icon"], "children"))
+    def update_section_visibility(_: int,
+                                  current_visibility: str) -> Tuple[dict, str]:
+        return ui.callbacks.update_section_visibility(current_visibility)
 
 
 @app.callback(Output("attack-graph", "data"), Input("graph-upload",

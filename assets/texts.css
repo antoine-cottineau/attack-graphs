@@ -1,8 +1,7 @@
-.section-header {
+.section-header-label {
   font-size: 1.6rem;
   font-weight: 900;
-  margin: 1.6rem 0 0;
-  padding: 0 1.5rem 0;
+  margin: 0;
 }
 
 .section-subheader {

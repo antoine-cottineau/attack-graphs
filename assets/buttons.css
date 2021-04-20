@@ -23,3 +23,16 @@
   text-align: center;
   cursor: pointer;
 }
+
+.icon-visibility {
+  padding: 0.4rem;
+  border: none;
+  border-radius: 100%;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.icon-visibility:hover {
+  color: var(--color-medium);
+  background-color: var(--color-dark);
+}
