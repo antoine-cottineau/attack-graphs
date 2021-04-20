@@ -34,10 +34,15 @@ class Generator:
         ag = AttackGraph()
         ag.load_nodes_and_edges(graph)
 
-        # Add other variables to the attack graph
+        # Add the dictionnary of exploits to the attack graph
+        ag.exploits = dict([(i, "Randomly generated exploit ({})".format(i))
+                            for i in range(len(exploits))])
+
+        # Add the dictionnary of propositions to the attack graph
         ag.propositions = {}
         for i in range(self.n_propositions):
-            ag.propositions[i] = (i, "Randomly generated")
+            ag.propositions[i] = "Randomly generated proposition ({})".format(
+                i)
 
         return ag
 
@@ -137,9 +142,7 @@ class Generator:
                     # Just add the edge
                     graph.add_edge(node[0],
                                    similar_nodes[0],
-                                   id_exploit=exploit[2],
-                                   exploit="Randomly generated ({})".format(
-                                       exploit[2]))
+                                   id_exploit=exploit[2])
             else:
                 # Create a brand new node
                 new_node = (graph.number_of_nodes(), {
@@ -148,11 +151,7 @@ class Generator:
                 graph.add_nodes_from([new_node])
 
                 # Add an edge
-                graph.add_edge(node[0],
-                               new_node[0],
-                               id_exploit=exploit[2],
-                               exploit="Randomly generated ({})".format(
-                                   exploit[2]))
+                graph.add_edge(node[0], new_node[0], id_exploit=exploit[2])
 
                 # Call recursively this function with the new node and and with
                 # the used edge removed

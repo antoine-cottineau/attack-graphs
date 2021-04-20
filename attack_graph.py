@@ -133,6 +133,7 @@ class AttackGraph(BaseGraph):
         super().__init__()
 
         self.propositions = {}
+        self.exploits = {}
 
     def copy(self, as_view):
         graph = super().copy(as_view=as_view)
@@ -171,8 +172,7 @@ class AttackGraph(BaseGraph):
         proposition_mapping = {}
         ids_propositions = [*self.propositions]
         for i in range(len(self.propositions)):
-            proposition = self.propositions[ids_propositions[i]]
-            proposition_mapping[proposition[0]] = i
+            proposition_mapping[ids_propositions[i]] = i
         return proposition_mapping
 
     def compute_adjacency_matrix(self,
@@ -194,17 +194,20 @@ class AttackGraph(BaseGraph):
 
         for i, node in mag.nodes(data=True):
             if node["type"] == "LEAF":
-                # The vertex is a LEAF which corresponds to a proposition that
+                # The node is a LEAF which corresponds to a proposition that
                 # is true at the beginning
                 ids_initial_propositions.append(i)
-                self.propositions[i] = (i, node["fact"])
+                self.propositions[i] = node["fact"]
             elif node["type"] == "OR":
-                # The vertex is an OR which corresponds to a proposition that
+                # The node is an OR which corresponds to a proposition that
                 # is false at the beginning
-                self.propositions[i] = (i, node["fact"])
+                self.propositions[i] = node["fact"]
             else:
-                # The vertex is an AND which corresponds to an edge
+                # The node is an AND which corresponds to an edge
                 ids_edges.append(i)
+                # This node also corresponds to an exploit on a particular
+                # machine
+                self.exploits[i] = node["fact"]
 
         # Create the initial node
         initial_node = (0, {"ids_propositions": ids_initial_propositions})
@@ -254,8 +257,7 @@ class AttackGraph(BaseGraph):
                     # Just add the edge
                     self.add_edge(node[0],
                                   similar_nodes[0],
-                                  id_exploit=id_edge,
-                                  exploit=mag.nodes[id_edge]["fact"])
+                                  id_exploit=id_edge)
             else:
                 # Create a brand new node
                 new_node = (self.number_of_nodes(), {
@@ -264,10 +266,7 @@ class AttackGraph(BaseGraph):
                 self.add_nodes_from([new_node])
 
                 # Add an edge
-                self.add_edge(node[0],
-                              new_node[0],
-                              id_exploit=id_edge,
-                              exploit=mag.nodes[id_edge]["fact"])
+                self.add_edge(node[0], new_node[0], id_exploit=id_edge)
 
                 # Call recursively this function with the new node and and with
                 # the used edge removed
@@ -275,25 +274,12 @@ class AttackGraph(BaseGraph):
                 new_ids_edges.remove(id_edge)
                 self._fill_graph_recursively(mag, new_node, new_ids_edges)
 
-    def _load_gml(self, path: str = None, string: str = None):
-        super()._load_gml(path, string)
-
-        # Find the number of propositions
-        n_propositions = max(
-            [len(ids) for (_, ids) in self.nodes(data="ids_propositions")])
-
-        # Create the propositions dictionnary
-        self.propositions = {}
-        for i in range(n_propositions):
-            self.propositions[i] = (i, "Randomly generated")
-
-        # Create the proposition mapping
-        self.get_proposition_mapping()
-
     def _load_other_elements_from_json(self, data: dict):
         self.propositions = data["propositions"]
+        self.exploits = data["exploits"]
 
     def _write_other_elements_in_data(self, data: dict) -> dict:
         new_data = data.copy()
         new_data["propositions"] = self.propositions
+        new_data["exploits"] = self.exploits
         return new_data
