@@ -3,36 +3,9 @@ import numpy as np
 from attack_graph import AttackGraph
 
 
-class RankingMethod:
-    def __init__(self, ag: AttackGraph):
-        self.ag = ag
-
-    def update_ranking_scores(self, ranking_scores: np.array):
-        # Find the minimum and maximum of the ranking
-        min_ = ranking_scores[0]
-        max_ = ranking_scores[0]
-
-        # Add a ranking score to each vertex in the graph
-        for i, node in self.ag.nodes(data=True):
-            node["ranking_score"] = ranking_scores[i]
-
-            # Update the extrema
-            if ranking_scores[i] < min_:
-                min_ = ranking_scores[i]
-            elif ranking_scores[i] > max_:
-                max_ = ranking_scores[i]
-
-        # Add the extrema to the attack graph
-        self.ag.ranking_min = min_
-        self.ag.ranking_max = max_
-
-        # Update the colors of the nodes
-        self.ag.update_colors_based_on_ranking()
-
-
-class PageRankMethod(RankingMethod):
+class PageRankMethod():
     def __init__(self, ag: AttackGraph, d: float = 0.85):
-        super().__init__(ag)
+        self.ag = ag
         self.d = d
 
     def compute_normalized_adjacency_matrix(self):
@@ -63,12 +36,12 @@ class PageRankMethod(RankingMethod):
         Z = self.compute_normalized_adjacency_matrix()
         R = self.compute_page_rank_vector(Z)
 
-        self.update_ranking_scores(R)
+        return [float(i) for i in R]
 
 
-class KuehlmannMethod(RankingMethod):
+class KuehlmannMethod:
     def __init__(self, ag: AttackGraph, eta: float = 0.85):
-        super().__init__(ag)
+        self.ag = ag
         self.eta = eta
 
     def compute_transition_probability_matrix(self):
@@ -96,4 +69,4 @@ class KuehlmannMethod(RankingMethod):
 
         r *= (1 - self.eta) / self.eta
 
-        self.update_ranking_scores(r)
+        return [float(i) for i in r]

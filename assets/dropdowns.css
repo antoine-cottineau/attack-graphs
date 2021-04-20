@@ -1,0 +1,12 @@
+.Select-clear-zone {
+  color: var(--color_dark);
+}
+
+.Select-arrow {
+  border-color: var(--color_dark) transparent transparent;
+}
+
+.Select-menu-outer {
+  color: var(--color_dark);
+  cursor: pointer;
+}

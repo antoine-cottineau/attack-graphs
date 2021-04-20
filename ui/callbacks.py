@@ -2,7 +2,9 @@ import base64
 import dash_core_components as dcc
 import dash_html_components as html
 import networkx as nx
+import numpy as np
 import plotly.graph_objects as go
+import ranking.mehta as ranking
 import ui.constants
 import ui.layout
 import utils
@@ -14,21 +16,37 @@ from attack_graph_generation import Generator
 def on_tab_selected(tab: str) -> html.Div:
     if tab == "side-menu-attack_graph":
         return ui.layout.generate_menu_attack_graphs()
+    elif tab == "side-menu-ranking":
+        return ui.layout.generate_menu_ranking()
     else:
         return html.Div()
 
 
-def update_graph(context: object, data: list, filename: str,
-                 n_propositions: int, n_initial_propositions: int,
-                 n_exploits: int) -> str:
+def update_saved_attack_graph(context: object, data: list, filename: str,
+                              n_propositions: int, n_initial_propositions: int,
+                              n_exploits: int) -> str:
     if context.triggered[0]["prop_id"].split(".")[0] == "graph-upload":
-        return on_attack_graph_loaded(data, filename)
+        return load_attack_graph_from_file(data, filename)
     else:
-        return on_button_generate_clicked(n_propositions,
-                                          n_initial_propositions, n_exploits)
+        return generate_attack_graph(n_propositions, n_initial_propositions,
+                                     n_exploits)
 
 
-def on_attack_graph_loaded(data: str, filename: str) -> str:
+def update_saved_parameters(parameters: dict, ranking_method: str) -> dict:
+    if ranking_method == "none":
+        return dict()
+
+    if parameters is None:
+        new_parameters = dict()
+    else:
+        new_parameters = parameters.copy()
+
+    new_parameters["ranking_method"] = ranking_method
+
+    return new_parameters
+
+
+def load_attack_graph_from_file(data: str, filename: str) -> str:
     if data is None:
         return
 
@@ -41,15 +59,14 @@ def on_attack_graph_loaded(data: str, filename: str) -> str:
     return ag.write()
 
 
-def on_button_generate_clicked(n_propositions: int,
-                               n_initial_propositions: int,
-                               n_exploits: int) -> str:
+def generate_attack_graph(n_propositions: int, n_initial_propositions: int,
+                          n_exploits: int) -> str:
     ag = Generator(n_propositions, n_initial_propositions,
                    n_exploits).generate()
     return ag.write()
 
 
-def on_button_save_clicked(path: str, graph_json: str):
+def save_attack_graph_to_file(path: str, graph_json: str):
     if not path or not graph_json:
         return
 
@@ -61,12 +78,23 @@ def on_button_save_clicked(path: str, graph_json: str):
     ag.save(path)
 
 
-def on_attack_graph_changed(graph_json: str) -> dcc.Graph:
-    if graph_json is None:
-        return
-
+def update_displayed_attack_graph(graph_json: str,
+                                  parameters: dict) -> dcc.Graph:
     ag = AttackGraph()
     ag.parse(graph_json, "json")
+
+    n = ag.number_of_nodes()
+
+    # Apply ranking if needed
+    ranking_values = None
+    ranking_order = None
+    if parameters and "ranking_method" in parameters:
+        if parameters["ranking_method"] == "pagerank":
+            ranking_values = ranking.PageRankMethod(ag).apply()
+        elif parameters["ranking_method"] == "kuehlmann":
+            ranking_values = ranking.KuehlmannMethod(ag).apply()
+        ranking_order = np.zeros(n, dtype=int)
+        ranking_order[np.flip(np.argsort(ranking_values))] = np.arange(n) + 1
 
     # To use the multipartite layout, the nodes must be given an attribute
     # called subset and corresponding to their layer.
@@ -98,15 +126,29 @@ def on_attack_graph_changed(graph_json: str) -> dcc.Graph:
         x, y = positions[node]
         node_x.append(x)
         node_y.append(y)
-        node_hovertext.append(str(node))
+        hovertext = str("id: {}".format(node))
+        if ranking_values:
+            hovertext += "<br>ranking position: {}/{}".format(
+                ranking_order[node], n)
+            hovertext += "<br>ranking value: {:0.2E}".format(
+                ranking_values[node])
+        node_hovertext.append(hovertext)
 
     node_trace = go.Scatter(x=node_x,
                             y=node_y,
                             mode="markers",
                             hoverinfo="text",
                             hovertext=node_hovertext,
-                            marker=dict(size=10,
+                            hoverlabel=dict(font=dict(family="Montserrat")),
+                            marker=dict(size=12,
                                         color=ui.constants.color_accent))
+
+    # Add colors if ranking has been applied
+    if ranking_values:
+        node_trace.marker = dict(showscale=False,
+                                 colorscale="RdPu",
+                                 color=ranking_values,
+                                 size=10)
 
     figure = go.Figure(
         data=[edge_trace, node_trace],
@@ -121,4 +163,5 @@ def on_attack_graph_changed(graph_json: str) -> dcc.Graph:
                                     zeroline=False,
                                     showticklabels=False)),
     )
+
     return dcc.Graph(id="graph", figure=figure, config=dict(displaylogo=False))

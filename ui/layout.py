@@ -1,34 +1,28 @@
 import dash_core_components as dcc
 import dash_html_components as html
-from dash_html_components.H1 import H1
 
 
 def generate_layout() -> html.Div:
     return html.Div(id="root",
                     children=[
-                        html.Div(id="attack-graph", style={"display": "none"}),
+                        dcc.Store(id="attack-graph"),
+                        dcc.Store(id="parameters"),
                         html.Div(id="dashboard-title",
                                  children=html.H1("Dashboard")),
                         generate_side_menu(),
                         html.Div(id="tools-menu"),
-                        html.Div(id="graph-zone")
+                        html.Div(id="graph-zone"),
+                        html.Div(id="useless-div", style=dict(display="none"))
                     ])
 
 
 def generate_side_menu() -> dcc.Tabs:
-    side_menu_items = [{
-        "id": "side-menu-attack_graph",
-        "title": "Attack Graphs"
-    }, {
-        "id": "side-menu-ranking",
-        "title": "Node ranking"
-    }, {
-        "id": "side-menu-clustering",
-        "title": "Clustering"
-    }, {
-        "id": "side-menu-exploits",
-        "title": "Exploits"
-    }]
+    side_menu_items = [
+        dict(id="side-menu-attack_graph", title="Attack Graphs"),
+        dict(id="side-menu-ranking", title="Node ranking"),
+        dict(id="side-menu-clustering", title="Clustering"),
+        dict(id="side-menu-exploits", title="Exploits")
+    ]
 
     tabs = [
         dcc.Tab(value=item["id"],
@@ -142,3 +136,25 @@ def generate_menu_save() -> html.Div:
                     className="tool-button"))
 
     return html.Div(children=elements, className="tool-sub-menu")
+
+
+def generate_menu_ranking() -> html.Div:
+    elements = []
+
+    elements.append(
+        html.H2(children="Select a method",
+                className="tool-big-header",
+                style=dict(marginTop="0")))
+
+    elements.append(
+        dcc.Dropdown(id="dropdown-ranking",
+                     options=[
+                         dict(label="None", value="none"),
+                         dict(label="PageRank", value="pagerank"),
+                         dict(label="Kuehlmann", value="kuehlmann")
+                     ],
+                     value="none",
+                     clearable=False,
+                     searchable=False))
+
+    return html.Div(id="menu-ranking", children=elements)

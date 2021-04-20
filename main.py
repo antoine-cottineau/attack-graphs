@@ -16,39 +16,45 @@ def on_tab_selected(tab: str) -> html.Div:
     return ui.callbacks.on_tab_selected(tab)
 
 
-@app.callback(Output("attack-graph", "children"),
-              Input("graph-upload", "contents"),
+@app.callback(Output("attack-graph", "data"), Input("graph-upload",
+                                                    "contents"),
               Input("button-generate", "n_clicks"),
               State("graph-upload", "filename"),
               State("slider-n-propositions", "value"),
               State("slider-n-initial-propositions", "value"),
               State("slider-n-exploits", "value"))
-def update_graph(data: list, n_clicks: int, filename: str, n_propositions: int,
-                 n_initial_propositions: int, n_exploits: int) -> str:
-    if n_clicks == 0:
-        return
+def update_saved_attack_graph(data: list, _: int, filename: str,
+                              n_propositions: int, n_initial_propositions: int,
+                              n_exploits: int) -> str:
     context = dash.callback_context
-    return ui.callbacks.update_graph(context, data, filename, n_propositions,
-                                     n_initial_propositions, n_exploits)
+    return ui.callbacks.update_saved_attack_graph(context, data, filename,
+                                                  n_propositions,
+                                                  n_initial_propositions,
+                                                  n_exploits)
 
 
-@app.callback(Output("attack-graph", "className"),
+@app.callback(Output("parameters", "data"), Input("dropdown-ranking", "value"),
+              State("parameters", "data"))
+def update_saved_parameters(ranking_method: str, parameters: dict) -> dict:
+    return ui.callbacks.update_saved_parameters(parameters, ranking_method)
+
+
+@app.callback(Output("useless-div", "children"),
               Input("button-save", "n_clicks"), State("input-save", "value"),
-              State("attack-graph", "children"))
-def on_button_save_clicked(n_clicks: int, path: str, graph_json: str):
-    if n_clicks == 0:
-        return
-    ui.callbacks.on_button_save_clicked(path, graph_json)
+              State("attack-graph", "data"))
+def save_attack_graph_to_file(_: int, path: str, graph_json: str):
+    ui.callbacks.save_attack_graph_to_file(path, graph_json)
+    return dash.no_update
 
 
-@app.callback(Output("graph-zone", "children"),
-              Input("attack-graph", "children"), State("graph-zone",
-                                                       "children"))
-def on_attack_graph_changed(graph_json: str,
-                            current_graph: dcc.Graph) -> dcc.Graph:
+@app.callback(Output("graph-zone", "children"), Input("attack-graph", "data"),
+              Input("parameters", "data"))
+def update_displayed_attack_graph(graph_json: str,
+                                  parameters: dict) -> dcc.Graph:
     if graph_json is None:
-        return current_graph
-    return ui.callbacks.on_attack_graph_changed(graph_json)
+        return dash.no_update
+
+    return ui.callbacks.update_displayed_attack_graph(graph_json, parameters)
 
 
 if __name__ == "__main__":

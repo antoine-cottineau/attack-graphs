@@ -68,7 +68,7 @@ class BaseGraph(nx.DiGraph):
         with open(file, mode="w") as f:
             json.dump(data, f, indent=2)
 
-    def write(self):
+    def write(self) -> str:
         return json.dumps(self._write_data(), indent=2)
 
     def _write_data(self) -> dict:
