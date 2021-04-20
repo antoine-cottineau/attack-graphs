@@ -10,9 +10,11 @@ class PageRankMethod():
 
     def compute_normalized_adjacency_matrix(self):
         Z = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
+        node_mapping = self.ag.get_node_mapping()
         for i in self.ag.nodes():
             for j in self.ag.predecessors(i):
-                Z[i, j] = 1 / len(list(self.ag.successors(j)))
+                Z[node_mapping[i],
+                  node_mapping[j]] = 1 / len(list(self.ag.successors(j)))
 
         # In the paper, Mehta et al. indicated that a link with probability
         # 1-d should be added from each state toward the initial state.
@@ -36,7 +38,8 @@ class PageRankMethod():
         Z = self.compute_normalized_adjacency_matrix()
         R = self.compute_page_rank_vector(Z)
 
-        return [float(i) for i in R]
+        ids_nodes = list(self.ag.nodes)
+        return dict([(ids_nodes[i], float(R[i])) for i in range(len(R))])
 
 
 class KuehlmannMethod:
@@ -46,9 +49,11 @@ class KuehlmannMethod:
 
     def compute_transition_probability_matrix(self):
         P = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
+        node_mapping = self.ag.get_node_mapping()
         for i in self.ag.nodes():
             for j in self.ag.predecessors(i):
-                P[i, j] = 1 / len(list(self.ag.successors(j)))
+                P[node_mapping[i],
+                  node_mapping[j]] = 1 / len(list(self.ag.successors(j)))
         return P
 
     def apply(self, max_m: int = 100):
@@ -69,4 +74,5 @@ class KuehlmannMethod:
 
         r *= (1 - self.eta) / self.eta
 
-        return [float(i) for i in r]
+        ids_nodes = list(self.ag.nodes)
+        return dict([(ids_nodes[i], float(r[i])) for i in range(len(r))])

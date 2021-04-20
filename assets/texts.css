@@ -1,11 +1,17 @@
-.tool-small-header {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0.2rem 0;
+.section-header {
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: 1.6rem 0 0;
+  padding: 0 1.5rem 0;
 }
 
-.tool-big-header {
-  font-size: 1.6rem;
+.section-subheader {
+  font-size: 1.2rem;
   font-weight: 600;
-  margin: 2.5rem 0 1.2rem;
+  margin: 1rem 0 0;
+}
+
+.method-tooltip {
+  font-size: 1rem;
+  margin-top: 0.6rem;
 }

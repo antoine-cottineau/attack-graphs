@@ -1,9 +1,9 @@
-.Select-clear-zone {
-  color: var(--color_dark);
+#dropdown-ranking {
+  margin-top: 0.4rem;
 }
 
-.Select-arrow {
-  border-color: var(--color_dark) transparent transparent;
+.Select-clear-zone {
+  color: var(--color_dark);
 }
 
 .Select-menu-outer {

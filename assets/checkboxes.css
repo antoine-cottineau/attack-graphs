@@ -1,0 +1,12 @@
+#checklist-exploits {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.4rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 0.1rem 0;
+}

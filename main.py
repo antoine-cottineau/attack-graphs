@@ -1,19 +1,13 @@
 import dash
 import dash_core_components as dcc
-import dash_html_components as html
 import ui.callbacks
 import ui.layout
 
 from dash.dependencies import Input, Output, State
+from typing import Tuple
 
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
 app.layout = ui.layout.generate_layout()
-
-
-@app.callback(Output("tools-menu", "children"), Input("side-menu-tabs",
-                                                      "value"))
-def on_tab_selected(tab: str) -> html.Div:
-    return ui.callbacks.on_tab_selected(tab)
 
 
 @app.callback(Output("attack-graph", "data"), Input("graph-upload",
@@ -33,12 +27,6 @@ def update_saved_attack_graph(data: list, _: int, filename: str,
                                                   n_exploits)
 
 
-@app.callback(Output("parameters", "data"), Input("dropdown-ranking", "value"),
-              State("parameters", "data"))
-def update_saved_parameters(ranking_method: str, parameters: dict) -> dict:
-    return ui.callbacks.update_saved_parameters(parameters, ranking_method)
-
-
 @app.callback(Output("useless-div", "children"),
               Input("button-save", "n_clicks"), State("input-save", "value"),
               State("attack-graph", "data"))
@@ -47,14 +35,29 @@ def save_attack_graph_to_file(_: int, path: str, graph_json: str):
     return dash.no_update
 
 
+@app.callback(Output("parameters", "data"), Input("dropdown-ranking", "value"),
+              Input("checklist-exploits", "options"),
+              Input("checklist-exploits", "value"),
+              State("parameters", "data"))
+def update_saved_parameters(ranking_method: str, exploits: list,
+                            selected_exploits: list, parameters: dict) -> dict:
+    return ui.callbacks.update_saved_parameters(ranking_method, exploits,
+                                                selected_exploits, parameters)
+
+
 @app.callback(Output("graph-zone", "children"), Input("attack-graph", "data"),
               Input("parameters", "data"))
 def update_displayed_attack_graph(graph_json: str,
                                   parameters: dict) -> dcc.Graph:
-    if graph_json is None:
-        return dash.no_update
 
     return ui.callbacks.update_displayed_attack_graph(graph_json, parameters)
+
+
+@app.callback(Output("checklist-exploits", "options"),
+              Output("checklist-exploits", "value"),
+              Input("attack-graph", "data"))
+def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
+    return ui.callbacks.update_checklist_exploits(graph_json)
 
 
 if __name__ == "__main__":

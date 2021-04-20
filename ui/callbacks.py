@@ -1,4 +1,5 @@
 import base64
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import networkx as nx
@@ -11,15 +12,7 @@ import utils
 
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
-
-
-def on_tab_selected(tab: str) -> html.Div:
-    if tab == "side-menu-attack_graph":
-        return ui.layout.generate_menu_attack_graphs()
-    elif tab == "side-menu-ranking":
-        return ui.layout.generate_menu_ranking()
-    else:
-        return html.Div()
+from typing import Tuple
 
 
 def update_saved_attack_graph(context: object, data: list, filename: str,
@@ -30,20 +23,6 @@ def update_saved_attack_graph(context: object, data: list, filename: str,
     else:
         return generate_attack_graph(n_propositions, n_initial_propositions,
                                      n_exploits)
-
-
-def update_saved_parameters(parameters: dict, ranking_method: str) -> dict:
-    if ranking_method == "none":
-        return dict()
-
-    if parameters is None:
-        new_parameters = dict()
-    else:
-        new_parameters = parameters.copy()
-
-    new_parameters["ranking_method"] = ranking_method
-
-    return new_parameters
 
 
 def load_attack_graph_from_file(data: str, filename: str) -> str:
@@ -78,23 +57,72 @@ def save_attack_graph_to_file(path: str, graph_json: str):
     ag.save(path)
 
 
+def update_saved_parameters(ranking_method: str, exploits: list,
+                            selected_exploits: list, parameters: dict) -> dict:
+    if parameters is None:
+        new_parameters = dict()
+    else:
+        new_parameters = parameters.copy()
+
+    if ranking_method:
+        new_parameters["ranking_method"] = ranking_method
+
+    if exploits:
+        new_parameters["exploits"] = exploits
+
+    if selected_exploits:
+        new_parameters["selected_exploits"] = selected_exploits
+
+    return new_parameters
+
+
+def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
+
+    if graph_json is None:
+        return dash.no_update
+
+    ag = AttackGraph()
+    ag.parse(graph_json, "json")
+
+    options = [
+        dict(label=exploit[1], value=exploit[0])
+        for exploit in ag.exploits.items()
+    ]
+
+    value = [*ag.exploits]
+
+    return options, value
+
+
 def update_displayed_attack_graph(graph_json: str,
                                   parameters: dict) -> dcc.Graph:
     ag = AttackGraph()
     ag.parse(graph_json, "json")
+
+    # Prune the graph if needed
+    if parameters and "selected_exploits" in parameters:
+        ids_exploits = [int(i) for i in parameters["selected_exploits"]]
+        ag = ag.get_pruned_graph(ids_exploits)
 
     n = ag.number_of_nodes()
 
     # Apply ranking if needed
     ranking_values = None
     ranking_order = None
-    if parameters and "ranking_method" in parameters:
+    if parameters and "ranking_method" in parameters and parameters[
+            "ranking_method"] != "none":
         if parameters["ranking_method"] == "pagerank":
             ranking_values = ranking.PageRankMethod(ag).apply()
         elif parameters["ranking_method"] == "kuehlmann":
             ranking_values = ranking.KuehlmannMethod(ag).apply()
+
+        # Compute the ranking order i.e. the position of each node in the
+        # ranking
         ranking_order = np.zeros(n, dtype=int)
-        ranking_order[np.flip(np.argsort(ranking_values))] = np.arange(n) + 1
+        indices_sorting = np.flip(np.argsort(list(ranking_values.values())))
+        ranking_order[indices_sorting] = np.arange(n) + 1
+        ranking_order = dict([(id, ranking_order[i])
+                              for i, id in enumerate(ag.nodes)])
 
     # To use the multipartite layout, the nodes must be given an attribute
     # called subset and corresponding to their layer.
@@ -147,7 +175,7 @@ def update_displayed_attack_graph(graph_json: str,
     if ranking_values:
         node_trace.marker = dict(showscale=False,
                                  colorscale="RdPu",
-                                 color=ranking_values,
+                                 color=list(ranking_values.values()),
                                  size=10)
 
     figure = go.Figure(

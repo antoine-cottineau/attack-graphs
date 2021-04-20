@@ -135,7 +135,7 @@ class AttackGraph(BaseGraph):
         self.propositions = {}
         self.exploits = {}
 
-    def copy(self, as_view):
+    def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
 
         new_graph = AttackGraph()
@@ -144,14 +144,14 @@ class AttackGraph(BaseGraph):
 
         return new_graph
 
-    def get_pruned_graph(self, ids_exploits_to_remove: list):
+    def get_pruned_graph(self, ids_exploits_to_keep: list):
         # Copy this attack graph
         new_graph = self.copy()
 
         # Remove the edges corresponding to the exploits to remove
         edges_to_remove = []
         for src, dst, id_exploit in new_graph.edges(data="id_exploit"):
-            if id_exploit in ids_exploits_to_remove:
+            if id_exploit not in ids_exploits_to_keep:
                 edges_to_remove.append((src, dst))
         new_graph.remove_edges_from(edges_to_remove)
 
@@ -168,12 +168,14 @@ class AttackGraph(BaseGraph):
 
         return new_graph
 
+    def get_node_mapping(self) -> dict:
+        ids_nodes = list(self.nodes)
+        return dict([(id, i) for i, id in enumerate(ids_nodes)])
+
     def get_proposition_mapping(self) -> dict:
-        proposition_mapping = {}
         ids_propositions = [*self.propositions]
-        for i in range(len(self.propositions)):
-            proposition_mapping[ids_propositions[i]] = i
-        return proposition_mapping
+        return dict([(ids_propositions[i], i)
+                     for i in range(len(self.propositions))])
 
     def compute_adjacency_matrix(self,
                                  keep_directed: bool = True) -> coo_matrix:
