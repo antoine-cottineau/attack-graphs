@@ -1,13 +1,11 @@
 import base64
 import dash
 import dash_core_components as dcc
-import ui.constants
-import ui.graph_drawing
-import ui.layout
 import utils
 
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
+from ui.graph_drawing import GraphDrawer
 from typing import Tuple
 
 
@@ -102,4 +100,4 @@ def update_displayed_attack_graph(graph_json: str,
     ag = AttackGraph()
     ag.parse(graph_json, "json")
 
-    return ui.graph_drawing.GraphDrawer(ag, parameters).draw()
+    return GraphDrawer(ag, parameters).draw()
