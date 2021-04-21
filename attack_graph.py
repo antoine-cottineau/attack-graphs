@@ -141,6 +141,7 @@ class AttackGraph(BaseGraph):
         new_graph = AttackGraph()
         new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
+        new_graph.exploits = self.exploits.copy()
 
         return new_graph
 

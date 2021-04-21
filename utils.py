@@ -1,3 +1,4 @@
+import random
 from pathlib import Path
 
 
@@ -24,3 +25,10 @@ def create_parent_folders(file):
     """
     pathlib_file = Path(file).parent
     pathlib_file.mkdir(exist_ok=True, parents=True)
+
+
+def create_random_color() -> str:
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    return "rgb({},{},{})".format(r, g, b)

@@ -22,10 +22,13 @@ class Spectral:
         inverse_D = np.zeros(
             (self.ag.number_of_nodes(), self.ag.number_of_nodes()))
 
+        node_mapping = self.ag.get_node_mapping()
+
         for i in self.ag.nodes():
-            sum_ = np.sum(self.W[i])
-            D[i, i] = sum_
-            inverse_D[i, i] = 1 / sum_
+            pos = node_mapping[i]
+            sum_ = np.sum(self.W[pos])
+            D[node_mapping[pos], pos] = sum_
+            inverse_D[pos, pos] = 1 / sum_
 
         self.D = csr_matrix(D)
         self.inverse_D = csr_matrix(inverse_D)
@@ -83,8 +86,9 @@ class Spectral1(Spectral):
                 best_score = score
                 best_labels = labels
 
-        for i, node in self.ag.nodes(data=True):
-            node["id_cluster"] = best_labels[i]
+        ids_nodes = list(self.ag.nodes)
+        return dict([(ids_nodes[i], best_labels[i])
+                     for i in range(len(best_labels))])
 
 
 class Spectral2(Spectral):
@@ -94,15 +98,16 @@ class Spectral2(Spectral):
     def apply_for_k(self, eigenvectors: np.array, k: int, P: list):
         P_new = P.copy()
         ids_clusters = set(P)
-        state_assignments = {
-            c: np.array([i for i in self.ag.nodes() if P[i] == c])
+        node_assignments = {
+            c: np.array(
+                [i for i in range(self.ag.number_of_nodes()) if P[i] == c])
             for c in ids_clusters
         }
         has_updated = False
 
         for c in ids_clusters:
             U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
-            U_k_c = U_k[state_assignments[c]]
+            U_k_c = U_k[node_assignments[c]]
 
             sub_partition = KMeans(n_clusters=2).fit_predict(U_k_c)
             ids_states_in_new_cluster = [
@@ -111,7 +116,7 @@ class Spectral2(Spectral):
 
             P_prime = P.copy()
             new_id_cluster = P.max() + 1
-            ids_states_to_update = state_assignments[c][
+            ids_states_to_update = node_assignments[c][
                 ids_states_in_new_cluster]
             P_prime[ids_states_to_update] = new_id_cluster
 
@@ -142,5 +147,5 @@ class Spectral2(Spectral):
             else:
                 possible_splits = False
 
-        for i, node in self.ag.nodes(data=True):
-            node["id_cluster"] = P[i]
+        ids_nodes = list(self.ag.nodes)
+        return dict([(ids_nodes[i], P[i]) for i in range(len(P))])

@@ -4,7 +4,11 @@ import numpy as np
 import plotly.graph_objects as go
 import ranking.mehta as ranking
 import ui.constants
+
 from attack_graph import AttackGraph
+from clustering.drawing import ClusterDrawer
+from clustering.white_smyth import Spectral1
+from utils import create_random_color
 
 
 class GraphDrawer:
@@ -18,6 +22,7 @@ class GraphDrawer:
         self.compute_node_positions()
         self.create_node_trace()
         self.create_edge_trace()
+        self.create_cluster_trace()
         return self.create_graph()
 
     def prune_graph(self):
@@ -118,19 +123,48 @@ class GraphDrawer:
                                      line=dict(width=1.5,
                                                color=ui.constants.color_light))
 
+    def create_cluster_trace(self):
+        node_mapping = Spectral1(self.ag).apply(K=6)
+
+        clusters = sorted(np.unique(list(node_mapping.values())))
+        cluster_colors = dict([(cluster, create_random_color())
+                               for cluster in clusters])
+
+        cd = ClusterDrawer(self.ag, node_mapping)
+        cd.apply()
+
+        self.cluster_traces = []
+        for zone in cd.zones:
+            # Create the zone
+            x = []
+            y = []
+            for line in zone["contour"]:
+                start = line[0]
+                end = line[1]
+                x += [start[0], end[0], None]
+                y += [start[1], end[1], None]
+
+            # Create the trace
+            color = cluster_colors[zone["cluster"]]
+            self.cluster_traces.append(
+                go.Scatter(x=x,
+                           y=y,
+                           mode="lines",
+                           line=dict(width=4, color=color)))
+
     def create_graph(self) -> dcc.Graph:
         axis_parameters = dict(showgrid=False,
                                zeroline=False,
                                showticklabels=False)
 
-        figure = go.Figure(data=[self.edge_trace, self.node_trace],
-                           layout=go.Layout(
-                               margin=dict(b=8, l=8, r=8, t=8),
-                               showlegend=False,
-                               paper_bgcolor=ui.constants.color_dark,
-                               plot_bgcolor=ui.constants.color_dark,
-                               xaxis=axis_parameters,
-                               yaxis=axis_parameters))
+        figure = go.Figure(
+            data=[self.edge_trace, self.node_trace] + self.cluster_traces,
+            layout=go.Layout(margin=dict(b=8, l=8, r=8, t=8),
+                             showlegend=False,
+                             paper_bgcolor=ui.constants.color_dark,
+                             plot_bgcolor=ui.constants.color_dark,
+                             xaxis=axis_parameters,
+                             yaxis=axis_parameters))
 
         return dcc.Graph(id="graph",
                          figure=figure,
