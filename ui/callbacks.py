@@ -1,11 +1,8 @@
 import base64
 import dash
 import dash_core_components as dcc
-import networkx as nx
-import numpy as np
-import plotly.graph_objects as go
-import ranking.mehta as ranking
 import ui.constants
+import ui.graph_drawing
 import ui.layout
 import utils
 
@@ -105,97 +102,4 @@ def update_displayed_attack_graph(graph_json: str,
     ag = AttackGraph()
     ag.parse(graph_json, "json")
 
-    # Prune the graph if needed
-    if parameters and "selected_exploits" in parameters:
-        ids_exploits = [int(i) for i in parameters["selected_exploits"]]
-        ag = ag.get_pruned_graph(ids_exploits)
-
-    n = ag.number_of_nodes()
-
-    # Apply ranking if needed
-    ranking_values = None
-    ranking_order = None
-    if parameters and "ranking_method" in parameters and parameters[
-            "ranking_method"] != "none":
-        if parameters["ranking_method"] == "pagerank":
-            ranking_values = ranking.PageRankMethod(ag).apply()
-        elif parameters["ranking_method"] == "kuehlmann":
-            ranking_values = ranking.KuehlmannMethod(ag).apply()
-
-        # Compute the ranking order i.e. the position of each node in the
-        # ranking
-        ranking_order = np.zeros(n, dtype=int)
-        indices_sorting = np.flip(np.argsort(list(ranking_values.values())))
-        ranking_order[indices_sorting] = np.arange(n) + 1
-        ranking_order = dict([(id, ranking_order[i])
-                              for i, id in enumerate(ag.nodes)])
-
-    # To use the multipartite layout, the nodes must be given an attribute
-    # called subset and corresponding to their layer.
-    n_initial_propositions = len(ag.nodes[0]["ids_propositions"])
-    for _, node in ag.nodes(data=True):
-        node["subset"] = len(node["ids_propositions"]) - n_initial_propositions
-
-    positions = nx.drawing.layout.multipartite_layout(ag)
-
-    # Build the graph
-    edge_x = []
-    edge_y = []
-    for edge in ag.edges():
-        x0, y0 = positions[edge[0]]
-        x1, y1 = positions[edge[1]]
-        edge_x += [x0, x1, None]
-        edge_y += [y0, y1, None]
-
-    edge_trace = go.Scatter(x=edge_x,
-                            y=edge_y,
-                            mode="lines",
-                            line=dict(width=1.5,
-                                      color=ui.constants.color_light))
-
-    node_x = []
-    node_y = []
-    node_hovertext = []
-    for node in ag.nodes():
-        x, y = positions[node]
-        node_x.append(x)
-        node_y.append(y)
-        hovertext = str("id: {}".format(node))
-        if ranking_values:
-            hovertext += "<br>ranking position: {}/{}".format(
-                ranking_order[node], n)
-            hovertext += "<br>ranking value: {:0.2E}".format(
-                ranking_values[node])
-        node_hovertext.append(hovertext)
-
-    node_trace = go.Scatter(x=node_x,
-                            y=node_y,
-                            mode="markers",
-                            hoverinfo="text",
-                            hovertext=node_hovertext,
-                            hoverlabel=dict(font=dict(family="Montserrat")),
-                            marker=dict(size=12,
-                                        color=ui.constants.color_accent))
-
-    # Add colors if ranking has been applied
-    if ranking_values:
-        node_trace.marker = dict(showscale=False,
-                                 colorscale="RdPu",
-                                 color=list(ranking_values.values()),
-                                 size=10)
-
-    figure = go.Figure(
-        data=[edge_trace, node_trace],
-        layout=go.Layout(margin=dict(b=8, l=8, r=8, t=8),
-                         showlegend=False,
-                         paper_bgcolor=ui.constants.color_dark,
-                         plot_bgcolor=ui.constants.color_dark,
-                         xaxis=dict(showgrid=False,
-                                    zeroline=False,
-                                    showticklabels=False),
-                         yaxis=dict(showgrid=False,
-                                    zeroline=False,
-                                    showticklabels=False)),
-    )
-
-    return dcc.Graph(id="graph", figure=figure, config=dict(displaylogo=False))
+    return ui.graph_drawing.GraphDrawer(ag, parameters).draw()
