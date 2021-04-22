@@ -1,6 +1,9 @@
 #input-save {
   margin: 0.4rem 0 0.6rem;
-  padding: 0.7rem 0;
-  font-weight: 400;
+  padding: 0.7rem 0 0.7rem 1rem;
+  font-weight: 600;
   color: var(--color-dark);
+  background-color: var(--color-light);
+  border: none;
+  border-radius: 0.2rem;
 }
