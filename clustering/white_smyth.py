@@ -27,7 +27,7 @@ class Spectral:
         for i in self.ag.nodes():
             pos = node_mapping[i]
             sum_ = np.sum(self.W[pos])
-            D[node_mapping[pos], pos] = sum_
+            D[pos, pos] = sum_
             inverse_D[pos, pos] = 1 / sum_
 
         self.D = csr_matrix(D)
@@ -35,17 +35,25 @@ class Spectral:
 
     def compute_eigenvector_matrix(self, K: int):
         transition_matrix = self.inverse_D.dot(self.W)
-        eigenvectors = eigs(transition_matrix, k=K,
+
+        # We ideally want to compute the top K - 1 eigenvectors of the matrix
+        # because one of these eigenvectors is the trivial all-ones
+        # So, we need to compute K eigenvectors
+        # However, if K >= N - 1, the function will crash
+        # Thus, the real k we use in the eigs function is equal to
+        # min(K, N - 2)
+        real_K = min(K, self.ag.number_of_nodes() - 2)
+        eigenvectors = eigs(transition_matrix, k=real_K,
                             which="LR")[1].astype("float64")
 
         # Remove the trivial all-ones eigenvector
-        for i in range(K):
+        for i in range(real_K):
             eigenvector = eigenvectors[:, i]
             if np.linalg.norm(eigenvector - eigenvector[0], ord=2) < 1e-4:
                 break
         eigenvectors = np.delete(eigenvectors, i, axis=1)
 
-        return eigenvectors[:, :K - 1]
+        return eigenvectors
 
     def compute_Q_function(self, X: np.array, labels: list):
         return Metric.score_with_Q_function(X, labels, self.W, self.D)
@@ -62,10 +70,8 @@ class Spectral:
 
 
 class Spectral1(Spectral):
-    def __init__(self, ag: AttackGraph):
-        super().__init__(ag)
-
-    def apply_for_k(self, eigenvectors: np.array, k: int):
+    @staticmethod
+    def apply_for_k(eigenvectors: np.array, k: int):
         U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
 
         # Apply k-means on the rows of U_k
@@ -80,7 +86,7 @@ class Spectral1(Spectral):
         best_labels = None
 
         for k in range(2, K + 1):
-            U_k, labels = self.apply_for_k(eigenvectors, k)
+            U_k, labels = Spectral1.apply_for_k(eigenvectors, k)
             score = self.compute_Q_function(U_k, labels)
             if score > best_score:
                 best_score = score
@@ -92,9 +98,6 @@ class Spectral1(Spectral):
 
 
 class Spectral2(Spectral):
-    def __init__(self, ag: AttackGraph):
-        super().__init__(ag)
-
     def apply_for_k(self, eigenvectors: np.array, k: int, P: list):
         P_new = P.copy()
         ids_clusters = set(P)

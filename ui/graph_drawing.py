@@ -22,7 +22,7 @@ class GraphDrawer:
         self.compute_node_positions()
         self.create_node_trace()
         self.create_edge_trace()
-        # self.create_cluster_trace()
+        self.create_cluster_trace()
         return self.create_graph()
 
     def prune_graph(self):
@@ -124,7 +124,7 @@ class GraphDrawer:
                                                color=ui.constants.color_light))
 
     def create_cluster_trace(self):
-        node_mapping = Spectral1(self.ag).apply(K=6)
+        node_mapping = Spectral1(self.ag).apply(K=10)
 
         clusters = sorted(np.unique(list(node_mapping.values())))
         cluster_colors = dict([(cluster, create_random_color())
