@@ -149,6 +149,7 @@ class GraphDrawer:
             self.cluster_traces.append(
                 go.Scatter(x=x,
                            y=y,
+                           hoverinfo="skip",
                            mode="lines",
                            line=dict(width=4, color=color)))
 
