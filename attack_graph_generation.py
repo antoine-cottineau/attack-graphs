@@ -44,6 +44,10 @@ class Generator:
             ag.propositions[i] = "Randomly generated proposition ({})".format(
                 i)
 
+        # Add the ids of the initial and final nodes
+        ag.initial_node = 0
+        ag.set_final_node_id()
+
         return ag
 
     def generate_exploits(self):

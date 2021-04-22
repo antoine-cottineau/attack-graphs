@@ -22,7 +22,7 @@ class GraphDrawer:
         self.compute_node_positions()
         self.create_node_trace()
         self.create_edge_trace()
-        self.create_cluster_trace()
+        # self.create_cluster_trace()
         return self.create_graph()
 
     def prune_graph(self):
@@ -158,14 +158,18 @@ class GraphDrawer:
                                zeroline=False,
                                showticklabels=False)
 
-        figure = go.Figure(
-            data=[self.edge_trace, self.node_trace] + self.cluster_traces,
-            layout=go.Layout(margin=dict(b=8, l=8, r=8, t=8),
-                             showlegend=False,
-                             paper_bgcolor=ui.constants.color_dark,
-                             plot_bgcolor=ui.constants.color_dark,
-                             xaxis=axis_parameters,
-                             yaxis=axis_parameters))
+        data = [self.node_trace, self.edge_trace]
+        if hasattr(self, "cluster_traces"):
+            data += self.cluster_traces
+
+        figure = go.Figure(data=data,
+                           layout=go.Layout(
+                               margin=dict(b=8, l=8, r=8, t=8),
+                               showlegend=False,
+                               paper_bgcolor=ui.constants.color_dark,
+                               plot_bgcolor=ui.constants.color_dark,
+                               xaxis=axis_parameters,
+                               yaxis=axis_parameters))
 
         return dcc.Graph(id="graph",
                          figure=figure,

@@ -409,5 +409,7 @@
     "13": "RULE 2 (remote exploit of a server program)",
     "15": "RULE 6 (direct network access)",
     "22": "RULE 17 (NFS shell)"
-  }
+  },
+  "initial_node": 0,
+  "final_node": 7
 }

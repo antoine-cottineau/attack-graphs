@@ -134,6 +134,8 @@ class AttackGraph(BaseGraph):
 
         self.propositions = {}
         self.exploits = {}
+        self.initial_node = None
+        self.final_node = None
 
     def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
@@ -142,6 +144,8 @@ class AttackGraph(BaseGraph):
         new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
         new_graph.exploits = self.exploits.copy()
+        new_graph.initial_node = self.initial_node
+        new_graph.final_node = self.final_node
 
         return new_graph
 
@@ -156,14 +160,25 @@ class AttackGraph(BaseGraph):
                 edges_to_remove.append((src, dst))
         new_graph.remove_edges_from(edges_to_remove)
 
-        # The nodes that have no predecessors (except the initial node) must be
-        # removed
         has_removed_nodes = True
         while has_removed_nodes:
             nodes_to_remove = []
-            for i in new_graph.nodes:
-                if i != 0 and len(list(new_graph.predecessors(i))) == 0:
+            for i, ids_propositions in new_graph.nodes(
+                    data="ids_propositions"):
+                # The initial node can't be removed
+                if i == 0:
+                    continue
+
+                # The nodes that have no predecessors must be removed
+                if len(list(new_graph.predecessors(i))) == 0:
                     nodes_to_remove.append(i)
+
+                # The nodes that have no successors (except the final node)
+                # must be removed
+                if i != new_graph.final_node and len(
+                        list(new_graph.successors(i))) == 0:
+                    nodes_to_remove.append(i)
+
             new_graph.remove_nodes_from(nodes_to_remove)
             has_removed_nodes = len(nodes_to_remove) > 0
 
@@ -185,6 +200,12 @@ class AttackGraph(BaseGraph):
         else:
             network = nx.Graph(self)
         return nx.adjacency_matrix(network)
+
+    def set_final_node_id(self):
+        self.final_node = max(
+            [(i, len(ids_propositions))
+             for i, ids_propositions in self.nodes(data="ids_propositions")],
+            key=lambda node: node[1])[0]
 
     def _load_xml(self, path: str = None, string: str = None):
         mag = MulvalAttackGraph()
@@ -219,9 +240,9 @@ class AttackGraph(BaseGraph):
         # Fill the graph
         self._fill_graph_recursively(mag, initial_node, ids_edges)
 
-        # Create a mapping between the id of each proposition and an integer
-        # between 0 and len(self.propositions) - 1
-        self.get_proposition_mapping()
+        # Set the initial and final nodes
+        self.initial_node = 0
+        self.set_final_node_id()
 
     def _fill_graph_recursively(self, mag: MulvalAttackGraph, node: tuple,
                                 ids_edges: list):
@@ -280,9 +301,13 @@ class AttackGraph(BaseGraph):
     def _load_other_elements_from_json(self, data: dict):
         self.propositions = data["propositions"]
         self.exploits = data["exploits"]
+        self.initial_node = data["initial_node"]
+        self.final_node = data["final_node"]
 
     def _write_other_elements_in_data(self, data: dict) -> dict:
         new_data = data.copy()
         new_data["propositions"] = self.propositions
         new_data["exploits"] = self.exploits
+        new_data["initial_node"] = self.initial_node
+        new_data["final_node"] = self.final_node
         return new_data
