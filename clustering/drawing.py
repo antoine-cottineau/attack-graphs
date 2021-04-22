@@ -160,19 +160,16 @@ class ClusterDrawer:
 
         self.zones = zones
 
-    def get_point(self,
-                  node: int,
-                  side: str,
-                  offset: float = 0.3) -> Tuple[float, float]:
+    def get_point(self, node: int, side: str) -> Tuple[float, float]:
         x, y = self.positions[node]
         if side == "left":
-            return x - offset * self.horizontal_distance, y
+            return x - 0.2 * self.horizontal_distance, y
         elif side == "right":
-            return x + offset * self.horizontal_distance, y
+            return x + 0.2 * self.horizontal_distance, y
         elif side == "top":
-            return x, y + offset * self.vertical_distance
+            return x, y + 0.3 * self.vertical_distance
         else:
-            return x, y - offset * self.vertical_distance
+            return x, y - 0.3 * self.vertical_distance
 
     def add_zone_points(self):
         for zone in self.zones:
