@@ -58,10 +58,10 @@ def update_saved_parameters(ranking_method: str, exploits: list,
                                                 selected_exploits, parameters)
 
 
-@app.callback(Output("graph-zone", "children"), Input("attack-graph", "data"),
-              Input("parameters", "data"))
-def update_displayed_attack_graph(graph_json: str,
-                                  parameters: dict) -> dcc.Graph:
+@app.callback(Output("graph-zone", "children"), Input("parameters", "data"),
+              State("attack-graph", "data"))
+def update_displayed_attack_graph(parameters: dict,
+                                  graph_json: str) -> dcc.Graph:
 
     return ui.callbacks.update_displayed_attack_graph(graph_json, parameters)
 
