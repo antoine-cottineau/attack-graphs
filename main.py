@@ -49,12 +49,15 @@ def save_attack_graph_to_file(_: int, path: str, graph_json: str):
 
 
 @app.callback(Output("parameters", "data"), Input("dropdown-ranking", "value"),
+              Input("dropdown-clustering", "value"),
               Input("checklist-exploits", "options"),
               Input("checklist-exploits", "value"),
               State("parameters", "data"))
-def update_saved_parameters(ranking_method: str, exploits: list,
-                            selected_exploits: list, parameters: dict) -> dict:
-    return ui.callbacks.update_saved_parameters(ranking_method, exploits,
+def update_saved_parameters(ranking_method: str, clustering_method: str,
+                            exploits: list, selected_exploits: list,
+                            parameters: dict) -> dict:
+    return ui.callbacks.update_saved_parameters(ranking_method,
+                                                clustering_method, exploits,
                                                 selected_exploits, parameters)
 
 

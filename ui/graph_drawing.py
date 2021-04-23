@@ -2,12 +2,12 @@ import dash_core_components as dcc
 import networkx as nx
 import numpy as np
 import plotly.graph_objects as go
-import ranking.mehta as ranking
 import ui.constants
 
 from attack_graph import AttackGraph
 from clustering.drawing import ClusterDrawer
-from clustering.white_smyth import Spectral1
+from clustering.white_smyth import Spectral1, Spectral2
+from ranking.mehta import PageRankMethod, KuehlmannMethod
 from utils import create_random_color
 
 
@@ -41,9 +41,9 @@ class GraphDrawer:
 
         # Apply the appropriate ranking method
         if self.parameters["ranking_method"] == "pagerank":
-            ranking_values = ranking.PageRankMethod(self.ag).apply()
+            ranking_values = PageRankMethod(self.ag).apply()
         else:
-            ranking_values = ranking.KuehlmannMethod(self.ag).apply()
+            ranking_values = KuehlmannMethod(self.ag).apply()
 
         # Compute the ranking order i.e. the position of each node in the
         # ranking
@@ -124,7 +124,16 @@ class GraphDrawer:
                                                color=ui.constants.color_light))
 
     def create_cluster_trace(self):
-        node_mapping = Spectral1(self.ag).apply(K=15)
+        if not self.parameters or "clustering_method" not in self.parameters:
+            return
+
+        if self.parameters["clustering_method"] == "none":
+            return
+
+        if self.parameters["clustering_method"] == "spectral1":
+            node_mapping = Spectral1(self.ag).apply(K=15)
+        else:
+            node_mapping = Spectral2(self.ag).apply(k_min=1, K=15)
 
         clusters = sorted(np.unique(list(node_mapping.values())))
         cluster_colors = dict([(cluster, create_random_color())

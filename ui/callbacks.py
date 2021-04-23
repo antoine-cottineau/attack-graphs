@@ -51,8 +51,9 @@ def save_attack_graph_to_file(path: str, graph_json: str):
     ag.save(path)
 
 
-def update_saved_parameters(ranking_method: str, exploits: list,
-                            selected_exploits: list, parameters: dict) -> dict:
+def update_saved_parameters(ranking_method: str, clustering_method: str,
+                            exploits: list, selected_exploits: list,
+                            parameters: dict) -> dict:
     if parameters is None:
         new_parameters = dict()
     else:
@@ -60,6 +61,9 @@ def update_saved_parameters(ranking_method: str, exploits: list,
 
     if ranking_method:
         new_parameters["ranking_method"] = ranking_method
+
+    if clustering_method:
+        new_parameters["clustering_method"] = clustering_method
 
     if exploits:
         new_parameters["exploits"] = exploits

@@ -17,7 +17,8 @@ def generate_section() -> html.Section:
                      ],
                      value="none",
                      clearable=False,
-                     searchable=False))
+                     searchable=False,
+                     className="dropdown"))
 
     return html.Section(id="section-ranking",
                         children=children,
