@@ -97,13 +97,16 @@ class GraphDrawer:
             hoverlabel=dict(font=dict(family="Montserrat")),
             marker=dict(size=marker_size, color=ui.constants.color_accent))
 
+        font = dict(family="Montserrat", color=ui.constants.color_light)
         # Update the color of the nodes if ranking has been applied
         if hasattr(self, "ranking_values"):
-            self.node_trace.marker = dict(size=marker_size,
-                                          showscale=False,
-                                          colorscale="Reds",
-                                          color=list(
-                                              self.ranking_values.values()))
+            self.node_trace.marker = dict(
+                size=marker_size,
+                showscale=True,
+                colorscale="Reds",
+                color=list(self.ranking_values.values()),
+                colorbar=dict(tickfont=font,
+                              title=dict(text="Ranking score", font=font)))
 
     def create_edge_trace(self):
         x = []
