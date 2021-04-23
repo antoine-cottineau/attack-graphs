@@ -124,7 +124,7 @@ class GraphDrawer:
                                                color=ui.constants.color_light))
 
     def create_cluster_trace(self):
-        node_mapping = Spectral1(self.ag).apply(K=10)
+        node_mapping = Spectral1(self.ag).apply(K=15)
 
         clusters = sorted(np.unique(list(node_mapping.values())))
         cluster_colors = dict([(cluster, create_random_color())

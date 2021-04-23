@@ -33,21 +33,23 @@ class Spectral:
         self.D = csr_matrix(D)
         self.inverse_D = csr_matrix(inverse_D)
 
-    def compute_eigenvector_matrix(self, K: int):
-        transition_matrix = self.inverse_D.dot(self.W)
-
+    def get_real_K(self, K: int):
         # We ideally want to compute the top K - 1 eigenvectors of the matrix
         # because one of these eigenvectors is the trivial all-ones
         # So, we need to compute K eigenvectors
         # However, if K >= N - 1, the function will crash
         # Thus, the real k we use in the eigs function is equal to
         # min(K, N - 2)
-        real_K = min(K, self.ag.number_of_nodes() - 2)
-        eigenvectors = eigs(transition_matrix, k=real_K,
+        return min(K, self.ag.number_of_nodes() - 2)
+
+    def compute_eigenvector_matrix(self, K: int):
+        transition_matrix = self.inverse_D.dot(self.W)
+
+        eigenvectors = eigs(transition_matrix, k=K,
                             which="LR")[1].astype("float64")
 
         # Remove the trivial all-ones eigenvector
-        for i in range(real_K):
+        for i in range(K):
             eigenvector = eigenvectors[:, i]
             if np.linalg.norm(eigenvector - eigenvector[0], ord=2) < 1e-4:
                 break
@@ -81,11 +83,13 @@ class Spectral1(Spectral):
         return U_k, labels
 
     def apply(self, K: int):
-        eigenvectors = self.compute_eigenvector_matrix(K)
+        real_K = self.get_real_K(K)
+
+        eigenvectors = self.compute_eigenvector_matrix(real_K)
         best_score = -np.inf
         best_labels = None
 
-        for k in range(2, K + 1):
+        for k in range(2, real_K + 1):
             U_k, labels = Spectral1.apply_for_k(eigenvectors, k)
             score = self.compute_Q_function(U_k, labels)
             if score > best_score:
@@ -133,7 +137,9 @@ class Spectral2(Spectral):
         return P_new, has_updated
 
     def apply(self, k_min: int, K: int):
-        eigenvectors = self.compute_eigenvector_matrix(K)
+        real_K = self.get_real_K(K)
+
+        eigenvectors = self.compute_eigenvector_matrix(real_K)
 
         k = k_min
         P = np.zeros(self.ag.number_of_nodes(), dtype=int)
@@ -143,7 +149,7 @@ class Spectral2(Spectral):
 
         k += 1
         possible_splits = True
-        while k <= K and possible_splits:
+        while k <= real_K and possible_splits:
             P, has_updated = self.apply_for_k(eigenvectors, k, P)
             if has_updated:
                 k += 1
