@@ -76,5 +76,14 @@ def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
     return ui.callbacks.update_checklist_exploits(graph_json)
 
 
+@app.callback(Output("useless-div", "style"),
+              Input("button-apply-node-embedding", "n_clicks"),
+              State("dropdown-node-embedding", "value"),
+              State("input-node-embedding", "value"),
+              State("attack-graph", "data"))
+def apply_node_embedding(_: int, method: str, path: str, graph_json: str):
+    return ui.callbacks.apply_node_embedding(method, path, graph_json)
+
+
 if __name__ == "__main__":
     app.run_server(debug=True)

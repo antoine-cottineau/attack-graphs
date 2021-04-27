@@ -1,8 +1,8 @@
 import numpy as np
+import utils
 
 from attack_graph import AttackGraph
 from clustering.clustering import Clustering
-from pathlib import Path
 
 
 class Embedding:
@@ -13,9 +13,8 @@ class Embedding:
         self.embedding = np.zeros((ag.number_of_nodes(), dim_embedding))
 
     def save_embedding_in_file(self, path: str):
-        Path(path).parent.mkdir(exist_ok=True, parents=True)
+        utils.create_parent_folders(path)
         np.save(path, self.embedding)
-        print("Embedding saved in file \"{}\".".format(path))
 
     def cluster(self):
         # Cluster the graph

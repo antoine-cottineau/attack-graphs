@@ -13,7 +13,7 @@ class Hope(Embedding):
         self.measurement = measurement
 
     def run(self):
-        self.A = nx.linalg.graphmatrix.adjacency_matrix(self.ag)
+        self.A = self.ag.compute_adjacency_matrix().astype("f")
         self.createS(self.measurement)
 
         U, sigmas, Vt = sps.linalg.svds(self.S, k=int(self.dim_embedding / 2))

@@ -5,6 +5,9 @@ import utils
 
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
+from embedding.deepwalk import DeepWalk
+from embedding.graphsage import Graphsage
+from embedding.hope import Hope
 from ui.graph_drawing import GraphDrawer
 from typing import Tuple
 
@@ -101,7 +104,30 @@ def update_section_visibility(current_visibility: str) -> Tuple[dict, str]:
 
 def update_displayed_attack_graph(graph_json: str,
                                   parameters: dict) -> dcc.Graph:
+    if graph_json is None:
+        return dash.no_update
+
     ag = AttackGraph()
     ag.parse(graph_json, "json")
 
     return GraphDrawer(ag, parameters).draw()
+
+
+def apply_node_embedding(method: str, path: str, graph_json: str):
+    if graph_json is None or method is None or path is None:
+        return dash.no_update
+
+    ag = AttackGraph()
+    ag.parse(graph_json, "json")
+
+    if method == "deepwalk":
+        embedding = DeepWalk(ag, 8)
+    elif method == "graphsage":
+        embedding = Graphsage(ag, 8, "ui")
+    else:
+        embedding = Hope(ag, 8, "cn")
+
+    embedding.run()
+    embedding.save_embedding_in_file(path)
+
+    return dash.no_update

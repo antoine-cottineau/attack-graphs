@@ -89,15 +89,18 @@ def generate_subsection_generate() -> html.Div:
 
 
 def generate_subsection_save() -> html.Div:
-    elements = []
+    children = []
 
-    elements.append(
-        dcc.Input(id="input-save", placeholder="File location", type="text"))
+    children.append(
+        dcc.Input(id="input-save",
+                  placeholder="File location",
+                  type="text",
+                  className="input"))
 
-    elements.append(
+    children.append(
         html.Button("Save",
                     id="button-save",
                     n_clicks=0,
                     className="section-button"))
 
-    return html.Div(children=elements, className="subsection")
+    return html.Div(children=children, className="subsection")

@@ -83,7 +83,7 @@ class FileCreator:
 
         for i, node in self.ag.nodes(data=True):
             for id_proposition in node["ids_propositions"]:
-                feats[i, self.ag.proposition_mapping[id_proposition]] = 1
+                feats[i, self.ag.get_node_mapping()[id_proposition]] = 1
 
         np.save("{}/{}-feats.npy".format(self.base_folder, self.prefix), feats)
 
