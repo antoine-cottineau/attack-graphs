@@ -1,3 +1,4 @@
+from typing import Dict
 import numpy as np
 
 from attack_graph import AttackGraph
@@ -34,7 +35,7 @@ class PageRankMethod():
         R[0] = 0
         return R
 
-    def apply(self):
+    def apply(self) -> Dict[int, float]:
         Z = self.compute_normalized_adjacency_matrix()
         R = self.compute_page_rank_vector(Z)
 
@@ -56,7 +57,7 @@ class KuehlmannMethod:
                   node_mapping[j]] = 1 / len(list(self.ag.successors(j)))
         return P
 
-    def apply(self, max_m: int = 100):
+    def apply(self, max_m: int = 100) -> Dict[int, float]:
         P = self.compute_transition_probability_matrix()
         s = np.zeros(self.ag.number_of_nodes())
         s[0] = 1
