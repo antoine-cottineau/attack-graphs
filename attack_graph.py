@@ -1,5 +1,6 @@
 import bisect
 import json
+from typing import Dict
 import networkx as nx
 import xml.etree.ElementTree as ET
 
@@ -206,6 +207,14 @@ class AttackGraph(BaseGraph):
             [(i, len(ids_propositions))
              for i, ids_propositions in self.nodes(data="ids_propositions")],
             key=lambda node: node[1])[0]
+
+    def get_nodes_layers(self) -> Dict[int, int]:
+        nodes_layers = dict()
+        n_initial_propositions = len(self.nodes[0]["ids_propositions"])
+        for id_node, ids_propositions in self.nodes(data="ids_propositions"):
+            layer = len(ids_propositions) - n_initial_propositions
+            nodes_layers[id_node] = layer
+        return nodes_layers
 
     def _load_xml(self, path: str = None, string: str = None):
         mag = MulvalAttackGraph()
