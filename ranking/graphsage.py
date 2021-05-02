@@ -13,9 +13,6 @@ from typing import Dict, List
 
 
 class GraphSageRanking:
-    def __init__(self, n_graphs: int):
-        self.n_graphs = n_graphs
-
     def create_model(self):
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
@@ -49,9 +46,9 @@ class GraphSageRanking:
 
         return list_rankings
 
-    def train(self, n_epochs=10):
+    def train(self, n_graphs: int = 10, n_epochs: int = 10):
         # Create the data
-        list_data = self.create_data()
+        list_data = self.create_data(n_graphs=n_graphs)
         data = Batch.from_data_list(list_data)
 
         # Create a loader
@@ -97,10 +94,31 @@ class GraphSageRanking:
 
         return total_loss / len(self.train_loader)
 
-    def create_data(self, graphs=None, with_targets=True) -> List[Data]:
+    def evaluate(self, n_graphs: int = 5):
+        list_data = self.create_data(n_graphs=n_graphs)
+        data = Batch.from_data_list(list_data)
+
+        # Create a loader
+        loader = NeighborSampler(data.edge_index,
+                                 node_idx=None,
+                                 sizes=[-1],
+                                 batch_size=1024,
+                                 num_workers=4)
+
+        x = data.x.to(self.device)
+        self.model.eval()
+        out = self.model.infer(x, loader, self.device).squeeze()
+
+        loss = float(F.mse_loss(data.y, out))
+        return loss / len(loader)
+
+    def create_data(self,
+                    n_graphs: int = None,
+                    graphs: List[AttackGraph] = None,
+                    with_targets: bool = True) -> List[Data]:
         list_data = []
         if graphs is None:
-            graphs = GraphSageRanking.generate_graphs(self.n_graphs)
+            graphs = GraphSageRanking.generate_graphs(n_graphs)
 
         if with_targets:
             list_rankings = GraphSageRanking.generate_rankings(graphs)
@@ -185,7 +203,7 @@ class Sage(torch.nn.Module):
         for i, (edge_index, _, size) in enumerate(adjs):
             x_target = x[:size[1]]
             x = self.conv_layers[i]((x, x_target), edge_index)
-            if i == 0:
+            if i != len(self.conv_layers) - 1:
                 x = F.relu(x)
                 x = F.dropout(x, p=0.5, training=self.training)
         return x
@@ -200,7 +218,7 @@ class Sage(torch.nn.Module):
                 current_x_target = current_x[:size[1]]
                 current_x = self.conv_layers[i]((current_x, current_x_target),
                                                 edge_index)
-                if i == 0:
+                if i != len(self.conv_layers) - 1:
                     current_x = F.relu(current_x)
                 representations.append(current_x.cpu())
 
