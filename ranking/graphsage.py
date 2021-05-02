@@ -1,5 +1,6 @@
 import torch
 import torch.nn.functional as F
+import utils
 
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
@@ -13,6 +14,9 @@ from typing import Dict, List
 
 
 class GraphSageRanking:
+
+    path = "methods_output/graphsage_ranking/weights.pth"
+
     def create_model(self):
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
@@ -136,6 +140,17 @@ class GraphSageRanking:
             list_data.append(data)
 
         return list_data
+
+    def save_model(self):
+        utils.create_parent_folders(GraphSageRanking.path)
+        torch.save(self.model.state_dict(), GraphSageRanking.path)
+
+    def load_model(self):
+        self.device = torch.device(
+            "cuda" if torch.cuda.is_available() else "cpu")
+        self.model = Sage(3, 16, 1)
+        self.model.load_state_dict(torch.load(GraphSageRanking.path))
+        self.model = self.model.to(self.device)
 
     @staticmethod
     def generate_graphs(n_graphs) -> List[AttackGraph]:
