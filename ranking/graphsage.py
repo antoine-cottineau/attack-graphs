@@ -133,7 +133,7 @@ class GraphSageRanking:
         list_data = []
         if graphs is None:
             if load_graphs:
-                GraphSageRanking.load_graphs(n_graphs)
+                graphs = GraphSageRanking.load_graphs(n_graphs)
             else:
                 graphs = GraphSageRanking.generate_graphs(n_graphs)
 
@@ -149,8 +149,7 @@ class GraphSageRanking:
 
             data = Data(x=features, edge_index=connectivity)
             if with_targets:
-                rankings = list_rankings[i]
-                targets = GraphSageRanking.create_targets(rankings)
+                targets = list_rankings[i]
                 data.y = targets
 
             list_data.append(data)
@@ -182,8 +181,8 @@ class GraphSageRanking:
         i = 0
         while i < n_graphs and i < len(files):
             graph = AttackGraph()
-            graphs.append(
-                graph.load("{}/{}".format(GraphSageRanking.path_graphs, i)))
+            graph.load("{}/{}.json".format(GraphSageRanking.path_graphs, i))
+            graphs.append(graph)
             i += 1
 
         return graphs
@@ -202,10 +201,14 @@ class GraphSageRanking:
         return graphs
 
     @staticmethod
-    def generate_rankings(graphs: List[AttackGraph]) -> List[List[float]]:
+    def generate_rankings(graphs: List[AttackGraph]) -> List[torch.Tensor]:
         list_rankings = []
         for graph in graphs:
-            list_rankings.append(list(PageRankMethod(graph).apply().values()))
+            rankings = list(PageRankMethod(graph).apply().values())
+            rankings = torch.tensor(rankings, dtype=torch.float)
+            norm = torch.linalg.norm(rankings)
+            rankings = rankings / norm
+            list_rankings.append(rankings)
         return list_rankings
 
     @staticmethod
@@ -238,10 +241,6 @@ class GraphSageRanking:
         connectivity = connectivity.t().contiguous()
         return connectivity
 
-    @staticmethod
-    def create_targets(rankings: List[float]) -> torch.Tensor:
-        return torch.tensor(rankings, dtype=torch.float)
-
 
 class Sage(torch.nn.Module):
     def __init__(self, dim_in: int, dim_hidden: int, dim_out: int):
@@ -258,7 +257,7 @@ class Sage(torch.nn.Module):
             if i != len(self.conv_layers) - 1:
                 x = F.relu(x)
                 x = F.dropout(x, p=0.5, training=self.training)
-        return x
+        return torch.sigmoid(x)
 
     def infer(self, x: torch.Tensor, loader: NeighborSampler,
               device: torch.device) -> torch.Tensor:
@@ -272,6 +271,7 @@ class Sage(torch.nn.Module):
                                                 edge_index)
                 if i != len(self.conv_layers) - 1:
                     current_x = F.relu(current_x)
+                current_x = torch.sigmoid(current_x)
                 representations.append(current_x.cpu())
 
             x = torch.cat(representations, dim=0)
