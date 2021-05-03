@@ -172,7 +172,7 @@ class GraphSageRanking:
     def save_graphs(graphs: List[AttackGraph]):
         utils.create_folders(GraphSageRanking.path_graphs)
         for i, graph in enumerate(graphs):
-            graph.save("{}/{}.npy".format(GraphSageRanking.path_graphs, i))
+            graph.save("{}/{}.json".format(GraphSageRanking.path_graphs, i))
 
     @staticmethod
     def load_graphs(n_graphs: int) -> List[AttackGraph]:
@@ -190,12 +190,13 @@ class GraphSageRanking:
 
     @staticmethod
     def generate_graphs(n_graphs: int) -> List[AttackGraph]:
-        generator = Generator(n_propositions=30, n_exploits=30)
 
         # Create the n_graphs that will be necessary to create the input data
         # and apply PageRank ranking on each one of them
         graphs = []
-        for _ in range(n_graphs):
+        for i in range(n_graphs):
+            n = 15 + int(20 * i / n_graphs)
+            generator = Generator(n_propositions=n, n_exploits=n)
             graphs.append(generator.generate())
 
         return graphs
