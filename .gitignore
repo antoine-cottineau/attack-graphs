@@ -2,5 +2,5 @@
 __pycache__
 temp
 test.py
-methods_input/graphsage_ranking/*
-methods_output/graphsage_ranking/*
+methods_input
+methods_output
