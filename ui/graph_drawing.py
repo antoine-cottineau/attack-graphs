@@ -7,6 +7,7 @@ import ui.constants
 from attack_graph import AttackGraph
 from clustering.drawing import ClusterDrawer
 from clustering.white_smyth import Spectral1, Spectral2
+from ranking.graphsage import GraphSageRanking
 from ranking.mehta import PageRankMethod, KuehlmannMethod
 from utils import create_random_color
 
@@ -42,8 +43,12 @@ class GraphDrawer:
         # Apply the appropriate ranking method
         if self.parameters["ranking_method"] == "pagerank":
             ranking_values = PageRankMethod(self.ag).apply()
-        else:
+        elif self.parameters["ranking_method"] == "kuehlmann":
             ranking_values = KuehlmannMethod(self.ag).apply()
+        else:
+            model = GraphSageRanking()
+            model.load_model()
+            ranking_values = model.apply([self.ag])[0]
 
         # Compute the ranking order i.e. the position of each node in the
         # ranking

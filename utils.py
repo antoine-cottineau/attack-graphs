@@ -1,5 +1,6 @@
 import random
 from pathlib import Path
+from typing import List
 
 
 def get_file_extension(file) -> str:
@@ -16,6 +17,11 @@ def get_file_extension(file) -> str:
     return pathlib_file.suffix[1:]
 
 
+def create_folders(path):
+    pathlib_file = Path(path)
+    pathlib_file.mkdir(exist_ok=True, parents=True)
+
+
 def create_parent_folders(file):
     """Creates the parent folders of the file.
 
@@ -24,7 +30,12 @@ def create_parent_folders(file):
     leading to the location of the file.
     """
     pathlib_file = Path(file).parent
-    pathlib_file.mkdir(exist_ok=True, parents=True)
+    create_folders(pathlib_file)
+
+
+def list_files_in_directory(directory) -> List[Path]:
+    files = Path(directory).glob("**/*")
+    return [file for file in files if file.is_file()]
 
 
 def create_random_color() -> str:

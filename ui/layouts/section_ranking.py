@@ -13,7 +13,8 @@ def generate_section() -> html.Section:
                      options=[
                          dict(label="None", value="none"),
                          dict(label="PageRank", value="pagerank"),
-                         dict(label="Kuehlmann", value="kuehlmann")
+                         dict(label="Kuehlmann", value="kuehlmann"),
+                         dict(label="GraphSAGE", value="graphsage")
                      ],
                      value="none",
                      clearable=False,

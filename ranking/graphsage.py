@@ -15,7 +15,8 @@ from typing import Dict, List
 
 class GraphSageRanking:
 
-    path = "methods_output/graphsage_ranking/weights.pth"
+    path_weights = "methods_output/graphsage_ranking/weights.pth"
+    path_graphs = "methods_input/graphsage_ranking"
 
     def create_model(self):
         self.device = torch.device(
@@ -50,9 +51,16 @@ class GraphSageRanking:
 
         return list_rankings
 
-    def train(self, n_graphs: int = 10, n_epochs: int = 10):
+    def train(self,
+              n_epochs: int = 10,
+              n_graphs: int = 10,
+              load_graphs: bool = False,
+              save_generated_graphs: bool = False):
         # Create the data
-        list_data = self.create_data(n_graphs=n_graphs)
+        list_data = self.create_data(
+            n_graphs=n_graphs,
+            load_graphs=load_graphs,
+            save_generated_graphs=save_generated_graphs)
         data = Batch.from_data_list(list_data)
 
         # Create a loader
@@ -72,7 +80,7 @@ class GraphSageRanking:
         # Train the model
         for i_epoch in range(1, n_epochs + 1):
             loss = self.train_one_epoch(i_epoch)
-            print("Loss at epoch {}: {:.4f}".format(i_epoch, loss))
+            print("Loss at epoch {}: {:.2E}".format(i_epoch, loss))
 
     def train_one_epoch(self, i_epoch: int):
         self.model.train()
@@ -119,10 +127,18 @@ class GraphSageRanking:
     def create_data(self,
                     n_graphs: int = None,
                     graphs: List[AttackGraph] = None,
+                    load_graphs: bool = False,
+                    save_generated_graphs: bool = False,
                     with_targets: bool = True) -> List[Data]:
         list_data = []
         if graphs is None:
-            graphs = GraphSageRanking.generate_graphs(n_graphs)
+            if load_graphs:
+                GraphSageRanking.load_graphs(n_graphs)
+            else:
+                graphs = GraphSageRanking.generate_graphs(n_graphs)
+
+        if save_generated_graphs:
+            GraphSageRanking.save_graphs(graphs)
 
         if with_targets:
             list_rankings = GraphSageRanking.generate_rankings(graphs)
@@ -142,19 +158,39 @@ class GraphSageRanking:
         return list_data
 
     def save_model(self):
-        utils.create_parent_folders(GraphSageRanking.path)
-        torch.save(self.model.state_dict(), GraphSageRanking.path)
+        utils.create_parent_folders(GraphSageRanking.path_weights)
+        torch.save(self.model.state_dict(), GraphSageRanking.path_weights)
 
     def load_model(self):
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
         self.model = Sage(3, 16, 1)
-        self.model.load_state_dict(torch.load(GraphSageRanking.path))
+        self.model.load_state_dict(torch.load(GraphSageRanking.path_weights))
         self.model = self.model.to(self.device)
 
     @staticmethod
-    def generate_graphs(n_graphs) -> List[AttackGraph]:
-        generator = Generator()
+    def save_graphs(graphs: List[AttackGraph]):
+        utils.create_folders(GraphSageRanking.path_graphs)
+        for i, graph in enumerate(graphs):
+            graph.save("{}/{}.npy".format(GraphSageRanking.path_graphs, i))
+
+    @staticmethod
+    def load_graphs(n_graphs: int) -> List[AttackGraph]:
+        graphs = []
+
+        files = utils.list_files_in_directory(GraphSageRanking.path_graphs)
+        i = 0
+        while i < n_graphs and i < len(files):
+            graph = AttackGraph()
+            graphs.append(
+                graph.load("{}/{}".format(GraphSageRanking.path_graphs, i)))
+            i += 1
+
+        return graphs
+
+    @staticmethod
+    def generate_graphs(n_graphs: int) -> List[AttackGraph]:
+        generator = Generator(n_propositions=30, n_exploits=30)
 
         # Create the n_graphs that will be necessary to create the input data
         # and apply PageRank ranking on each one of them
