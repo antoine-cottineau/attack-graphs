@@ -5,211 +5,192 @@ import utils
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
 from ranking.mehta import PageRankMethod
-from torch_geometric.data import Data
-from torch_geometric.data.batch import Batch
-from torch_geometric.data.sampler import NeighborSampler
+from torch_geometric.data import Data, NeighborSampler
 from torch_geometric.nn import SAGEConv
-from tqdm import tqdm
 from typing import Dict, List
 
 
 class GraphSageRanking:
 
     path_weights = "methods_output/graphsage_ranking/weights.pth"
-    path_graphs = "methods_input/graphsage_ranking"
+    path_graphs = "methods_input/generated_graphs"
 
-    def create_model(self):
+    def __init__(self, dim_hidden: int, verbose=False, with_ppce=False):
+        self.dim_hidden = dim_hidden
+        self.verbose = verbose
+        self.with_ppce = with_ppce
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
-        self.model = Sage(3, 16, 1)
+
+    def create_model(self):
+        if hasattr(self, "model"):
+            return
+
+        self.model = Sage(3, self.dim_hidden, 1)
         self.model = self.model.to(self.device)
 
-    def apply(self, graphs: List[AttackGraph]) -> List[Dict[int, float]]:
-        list_data = self.create_data(graphs=graphs, with_targets=False)
-        data = Batch.from_data_list(list_data)
-
-        # Create a loader
-        loader = NeighborSampler(data.edge_index,
-                                 node_idx=None,
-                                 sizes=[-1],
-                                 batch_size=1024,
-                                 num_workers=4)
-
-        x = data.x.to(self.device)
-        self.model.eval()
-        out = self.model.infer(x, loader, self.device)
-
-        list_rankings = []
-        start = 0
-        for graph in graphs:
-            n = graph.number_of_nodes()
-            rankings = out[start:start + n].squeeze()
-            ids = list(graph.nodes)
-            list_rankings.append(
-                dict([(ids[i], float(rankings[i])) for i in range(n)]))
-            start += n
-
-        return list_rankings
-
     def train(self,
-              n_epochs: int = 10,
-              n_graphs: int = 10,
+              n_epochs: int = 20,
+              n_graphs: int = 30,
               load_graphs: bool = False,
-              save_generated_graphs: bool = False):
-        # Create the data
-        list_data = self.create_data(
-            n_graphs=n_graphs,
-            load_graphs=load_graphs,
-            save_generated_graphs=save_generated_graphs)
-        data = Batch.from_data_list(list_data)
+              save_graphs: bool = False):
+        # Create the input data
+        if load_graphs:
+            graphs = self.load_graphs(n_graphs)
+        else:
+            graphs = self.create_graphs(n_graphs)
 
-        # Create a loader
-        self.train_loader = NeighborSampler(data.edge_index,
-                                            sizes=[15, 5],
-                                            batch_size=256,
-                                            shuffle=True,
-                                            num_workers=4)
+        if save_graphs:
+            self.save_graphs(graphs)
+
+        rankings = self.create_rankings(graphs)
+
+        self.show_message(
+            "Generating the input data from the graphs and rankings")
+        self.data_list: List[Data] = []
+        for i, graph in enumerate(graphs):
+            x = GraphSageRanking.create_node_feature_matrix(graph)
+            edge_index = GraphSageRanking.create_graph_connectivity(graph)
+            y = rankings[i]
+
+            graph_data = Data(x=x, edge_index=edge_index, y=y)
+            self.data_list.append(graph_data)
+
+        # Create the model
+        self.create_model()
 
         # Create the optimizer
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=1e-2)
 
-        # Move the data to the device
-        self.x: torch.Tensor = data.x.to(self.device)
-        self.y: torch.Tensor = data.y.to(self.device)
-
         # Train the model
-        for i_epoch in range(1, n_epochs + 1):
-            loss = self.train_one_epoch(i_epoch)
-            print("Loss at epoch {}: {:.2E}".format(i_epoch, loss))
-
-    def train_one_epoch(self, i_epoch: int):
+        self.show_message("Training the model")
         self.model.train()
+        for i_epoch in range(1, n_epochs + 1):
+            self.show_message("Epoch {}".format(i_epoch))
+            loss = self.train_one_epoch()
+            self.show_message("Loss at epoch {}: {:.2E}".format(i_epoch, loss))
 
-        pbar = tqdm(total=self.x.shape[0])
-        pbar.set_description("Epoch {}".format(i_epoch))
-
+    def train_one_epoch(self):
         total_loss = 0
+        n_nodes = 0
+        for data in self.data_list:
+            # Create a sampler
+            sampler = NeighborSampler(edge_index=data.edge_index,
+                                      sizes=[15, 5],
+                                      batch_size=32,
+                                      shuffle=True,
+                                      num_workers=4)
 
-        for batch_size, n_id, adjs in self.train_loader:
-            adjs = [adj.to(self.device) for adj in adjs]
+            # Move the data to the device
+            x: torch.Tensor = data.x.to(self.device)
+            y: torch.Tensor = data.y.to(self.device)
 
-            self.optimizer.zero_grad()
-            out = self.model(self.x[n_id], adjs).squeeze()
-            loss = F.mse_loss(out, self.y[n_id[:batch_size]])
-            loss.backward()
-            self.optimizer.step()
+            for batch_size, n_id, adjs in sampler:
+                moved_adjs = [adj.to(self.device) for adj in adjs]
 
-            total_loss += float(loss)
-            pbar.update(batch_size)
+                self.optimizer.zero_grad()
+                out = self.model(x[n_id], moved_adjs).squeeze()
+                targets = y[n_id[:batch_size]]
+                loss = F.mse_loss(out, targets)
+                loss.backward()
+                self.optimizer.step()
 
-        pbar.close()
+                total_loss += float(loss)
 
-        return total_loss / len(self.train_loader)
+                if self.with_ppce and self.verbose and n_nodes % 200 == 0:
+                    ppce = self.apply_ppce(targets, out)
+                    self.show_message("PPCE: {:.0f}".format(ppce * 100))
 
-    def evaluate(self, n_graphs: int = 5):
-        list_data = self.create_data(n_graphs=n_graphs)
-        data = Batch.from_data_list(list_data)
+            n_nodes += x.size(0)
 
-        # Create a loader
-        loader = NeighborSampler(data.edge_index,
-                                 node_idx=None,
-                                 sizes=[-1],
-                                 batch_size=1024,
-                                 num_workers=4)
+        return total_loss / n_nodes
 
-        x = data.x.to(self.device)
+    def apply(self, graphs: List[AttackGraph]) -> List[Dict[int, float]]:
+        rankings = []
+        for graph in graphs:
+            graph_rankings = self.apply_to_one_graph(graph)
+            rankings.append(graph_rankings)
+        return rankings
+
+    def apply_to_one_graph(self, graph: AttackGraph) -> Dict[int, float]:
+        # Generate the input data
+        self.show_message("Generating the input data from the graphs")
+        x = GraphSageRanking.create_node_feature_matrix(graph)
+        edge_index = GraphSageRanking.create_graph_connectivity(graph)
+        data = Data(x=x, edge_index=edge_index)
+
+        # Create the model
+        self.create_model()
+
+        # Create a sampler
+        sampler = NeighborSampler(data.edge_index,
+                                  sizes=[-1],
+                                  batch_size=1024,
+                                  num_workers=4)
+
+        # Apply the model
+        self.show_message("Applying the model")
         self.model.eval()
-        out = self.model.infer(x, loader, self.device).squeeze()
+        out = self.model.infer(data, sampler, self.device).squeeze().detach()
 
-        loss = float(F.mse_loss(data.y, out))
-        return loss / len(loader)
+        # Create the rankings dictionary
+        ids = list(graph.nodes)
+        rankings = dict([(ids[i], out[i])
+                         for i in range(graph.number_of_nodes())])
+        return rankings
 
-    def create_data(self,
-                    n_graphs: int = None,
-                    graphs: List[AttackGraph] = None,
-                    load_graphs: bool = False,
-                    save_generated_graphs: bool = False,
-                    with_targets: bool = True) -> List[Data]:
-        list_data = []
-        if graphs is None:
-            if load_graphs:
-                graphs = GraphSageRanking.load_graphs(n_graphs)
-            else:
-                graphs = GraphSageRanking.generate_graphs(n_graphs)
-
-        if save_generated_graphs:
-            GraphSageRanking.save_graphs(graphs)
-
-        if with_targets:
-            list_rankings = GraphSageRanking.generate_rankings(graphs)
-
-        for i, graph in enumerate(graphs):
-            features = GraphSageRanking.create_node_feature_matrix(graph)
-            connectivity = GraphSageRanking.create_graph_connectivity(graph)
-
-            data = Data(x=features, edge_index=connectivity)
-            if with_targets:
-                targets = list_rankings[i]
-                data.y = targets
-
-            list_data.append(data)
-
-        return list_data
-
-    def save_model(self):
-        utils.create_parent_folders(GraphSageRanking.path_weights)
-        torch.save(self.model.state_dict(), GraphSageRanking.path_weights)
-
-    def load_model(self):
-        self.device = torch.device(
-            "cuda" if torch.cuda.is_available() else "cpu")
-        self.model = Sage(3, 16, 1)
-        self.model.load_state_dict(torch.load(GraphSageRanking.path_weights))
-        self.model = self.model.to(self.device)
-
-    @staticmethod
-    def save_graphs(graphs: List[AttackGraph]):
-        utils.create_folders(GraphSageRanking.path_graphs)
-        for i, graph in enumerate(graphs):
-            graph.save("{}/{}.json".format(GraphSageRanking.path_graphs, i))
-
-    @staticmethod
-    def load_graphs(n_graphs: int) -> List[AttackGraph]:
+    def create_graphs(self, n_graphs: int) -> List[AttackGraph]:
+        self.show_message("Creating {} graphs".format(n_graphs))
         graphs = []
+        for i in range(n_graphs):
+            complexity = 20 + int(10 * i / n_graphs)
+            generator = Generator(n_propositions=complexity,
+                                  n_exploits=complexity)
+            self.show_message("Generating graph {} with complexity {}".format(
+                i, complexity))
+            graph = generator.generate()
+            graphs.append(graph)
+            self.show_message("Generated graph {} with {} nodes".format(
+                i, graph.number_of_nodes()))
+        return graphs
 
+    def load_graphs(self, n_graphs: int) -> List[AttackGraph]:
+        self.show_message("Loading {} graphs".format(n_graphs))
+
+        graphs = []
         files = utils.list_files_in_directory(GraphSageRanking.path_graphs)
         i = 0
         while i < n_graphs and i < len(files):
             graph = AttackGraph()
-            graph.load("{}/{}.json".format(GraphSageRanking.path_graphs, i))
+            path = "{}/{}.json".format(GraphSageRanking.path_graphs, i)
+            self.show_message("Loading graph {}".format(path))
+            graph.load(path)
+            self.show_message("Loaded graph {} with {} nodes".format(
+                path, graph.number_of_nodes()))
             graphs.append(graph)
             i += 1
 
         return graphs
 
-    @staticmethod
-    def generate_graphs(n_graphs: int) -> List[AttackGraph]:
+    def save_graphs(self, graphs: List[AttackGraph]):
+        utils.create_folders(GraphSageRanking.path_graphs)
+        for i, graph in enumerate(graphs):
+            path = "{}/{}.json".format(GraphSageRanking.path_graphs, i)
+            self.show_message("Saving graph {}".format(path))
+            graph.save(path)
 
-        # Create the n_graphs that will be necessary to create the input data
-        # and apply PageRank ranking on each one of them
-        graphs = []
-        for i in range(n_graphs):
-            n = 15 + int(20 * i / n_graphs)
-            generator = Generator(n_propositions=n, n_exploits=n)
-            graphs.append(generator.generate())
+    def create_rankings(self, graphs: List[AttackGraph]) -> List[torch.Tensor]:
+        self.show_message("Creating the rankings")
+        rankings = []
+        for i, graph in enumerate(graphs):
+            self.show_message("Creating the rankings for graph {}".format(i))
 
-        return graphs
+            graph_rankings = list(PageRankMethod(graph).apply().values())
+            graph_rankings = torch.tensor(graph_rankings, dtype=torch.float)
+            graph_rankings /= torch.linalg.norm(graph_rankings)
 
-    @staticmethod
-    def generate_rankings(graphs: List[AttackGraph]) -> List[torch.Tensor]:
-        list_rankings = []
-        for graph in graphs:
-            rankings = list(PageRankMethod(graph).apply().values())
-            rankings = torch.tensor(rankings, dtype=torch.float)
-            norm = torch.linalg.norm(rankings)
-            rankings = rankings / norm
-            list_rankings.append(rankings)
-        return list_rankings
+            rankings.append(graph_rankings)
+        return rankings
 
     @staticmethod
     def create_node_feature_matrix(graph: AttackGraph) -> torch.Tensor:
@@ -219,7 +200,7 @@ class GraphSageRanking:
         # First feature: the layer of a node normalized by the number of layers
         nodes_layers = torch.tensor(list(graph.get_nodes_layers().values()),
                                     dtype=torch.float)
-        nodes_layers = nodes_layers / max(nodes_layers)
+        nodes_layers = nodes_layers / torch.max(nodes_layers)
 
         # Second feature: the number of incoming edges
         incoming_degrees = torch.tensor(
@@ -241,6 +222,40 @@ class GraphSageRanking:
         connectivity = connectivity.t().contiguous()
         return connectivity
 
+    @staticmethod
+    def apply_ppce(true_rankings: torch.tensor,
+                   output_rankings: torch.tensor) -> float:
+        n = true_rankings.size(0)
+        n_total = 0
+        n_errors = 0
+
+        true_positions = torch.argsort(true_rankings)
+        output_positions = torch.argsort(output_rankings)
+        for i in range(n):
+            for j in range(n):
+                if i != j:
+                    n_total += 1
+                    if true_positions[i] < true_positions[
+                            j] and output_positions[i] > output_positions[j]:
+                        n_errors += 1
+                    if true_positions[i] > true_positions[
+                            j] and output_positions[i] < output_positions[j]:
+                        n_errors += 1
+        return n_errors / n_total
+
+    def save_model(self):
+        utils.create_parent_folders(GraphSageRanking.path_weights)
+        torch.save(self.model.state_dict(), GraphSageRanking.path_weights)
+
+    def load_model(self):
+        self.model = Sage(3, self.dim_hidden, 1)
+        self.model.load_state_dict(torch.load(GraphSageRanking.path_weights))
+        self.model = self.model.to(self.device)
+
+    def show_message(self, message: str):
+        if self.verbose:
+            print(message)
+
 
 class Sage(torch.nn.Module):
     def __init__(self, dim_in: int, dim_hidden: int, dim_out: int):
@@ -256,24 +271,24 @@ class Sage(torch.nn.Module):
             x = self.conv_layers[i]((x, x_target), edge_index)
             if i != len(self.conv_layers) - 1:
                 x = F.relu(x)
-                x = F.dropout(x, p=0.5, training=self.training)
         return torch.sigmoid(x)
 
-    def infer(self, x: torch.Tensor, loader: NeighborSampler,
+    def infer(self, data: Data, sampler: NeighborSampler,
               device: torch.device) -> torch.Tensor:
+        x_all = data.x
         for i in range(2):
-            representations = []
-            for _, n_id, adj in loader:
+            outputs = []
+            for _, n_id, adj in sampler:
                 edge_index, _, size = adj.to(device)
-                current_x = x[n_id].to(device)
-                current_x_target = current_x[:size[1]]
-                current_x = self.conv_layers[i]((current_x, current_x_target),
-                                                edge_index)
-                if i != len(self.conv_layers) - 1:
-                    current_x = F.relu(current_x)
-                current_x = torch.sigmoid(current_x)
-                representations.append(current_x.cpu())
+                x: torch.Tensor = x_all[n_id].to(device)
+                x_target = x[:size[1]]
+                x = self.conv_layers[i]((x, x_target), edge_index)
+                if i != 1:
+                    x = F.relu(x)
+                else:
+                    x = torch.sigmoid(x)
+                outputs.append(x.cpu())
 
-            x = torch.cat(representations, dim=0)
+            x_all = torch.cat(outputs, dim=0)
 
-        return x
+        return x_all
