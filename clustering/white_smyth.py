@@ -103,9 +103,7 @@ class Spectral1(SpectralMethod):
                 best_score = score
                 best_labels = labels
 
-        ids_nodes = list(self.ag.nodes)
-        return dict([(ids_nodes[i], best_labels[i])
-                     for i in range(len(best_labels))])
+        self.update_clusters(best_labels)
 
 
 class Spectral2(SpectralMethod):
@@ -171,5 +169,4 @@ class Spectral2(SpectralMethod):
             else:
                 possible_splits = False
 
-        ids_nodes = list(self.ag.nodes)
-        return dict([(ids_nodes[i], P[i]) for i in range(len(P))])
+        self.update_clusters(P)

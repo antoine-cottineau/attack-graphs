@@ -11,17 +11,39 @@ class ClusteringMethod:
         self.ag = ag
 
         # By default, all the nodes are grouped into a unique cluster
-        self.clusters = dict()
+        self.node_mapping = dict()
         for node in self.ag.nodes:
-            self.clusters[node] = 0
+            self.node_mapping[node] = 0
 
     def cluster(self):
         pass
 
     def update_clusters(self, node_mapping: List[int]):
-        self.clusters = dict()
+        self.node_mapping = dict()
         for i, node in enumerate(self.ag.nodes):
-            self.clusters[node] = node_mapping[i]
+            self.node_mapping[node] = node_mapping[i]
+
+    def evaluate_modularity(self) -> float:
+        modularity = 0
+
+        adjacency_matrix = self.ag.compute_adjacency_matrix()
+        node_mapping = list(self.node_mapping.values())
+        clusters = np.unique(node_mapping)
+
+        sum_all_weights = adjacency_matrix.sum()
+
+        for cluster in clusters:
+            adj_matrix_cluster = adjacency_matrix[
+                node_mapping == cluster][:, node_mapping == cluster]
+            adj_matrix_out_cluster = adjacency_matrix[
+                node_mapping != cluster][:, node_mapping != cluster]
+            sum_within_cluster = adj_matrix_cluster.sum()
+            sum_all_cluster = sum_all_weights - adj_matrix_out_cluster.sum()
+
+            modularity += sum_within_cluster / sum_all_weights
+            modularity -= (sum_all_cluster / sum_all_weights)**2
+
+        return modularity
 
     @staticmethod
     def evaluate_space_clustering(X: np.array,
