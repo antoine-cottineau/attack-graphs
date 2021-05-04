@@ -1,13 +1,14 @@
+from clustering.clustering import ClusteringMethod
 import numpy as np
 
 from attack_graph import AttackGraph
-from clustering.metric import Metric
+from clustering.space_metrics import score_with_Q_function
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigs
 from sklearn.cluster import KMeans
 
 
-class Spectral:
+class SpectralMethod(ClusteringMethod):
     def __init__(self, ag: AttackGraph):
         self.ag = ag
 
@@ -58,7 +59,7 @@ class Spectral:
         return eigenvectors
 
     def compute_Q_function(self, X: np.array, labels: list):
-        return Metric.score_with_Q_function(X, labels, self.W, self.D)
+        return score_with_Q_function(X, labels, self.W, self.D)
 
     @staticmethod
     def extract_and_normalize_eigenvectors(eigenvectors: np.array, k: int):
@@ -71,10 +72,16 @@ class Spectral:
         return U_k
 
 
-class Spectral1(Spectral):
+class Spectral1(SpectralMethod):
+    def __init__(self, ag: AttackGraph, K: int):
+        super().__init__(ag)
+
+        self.K = K
+
     @staticmethod
     def apply_for_k(eigenvectors: np.array, k: int):
-        U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
+        U_k = SpectralMethod.extract_and_normalize_eigenvectors(
+            eigenvectors, k)
 
         # Apply k-means on the rows of U_k
         k_means = KMeans(n_clusters=k)
@@ -82,8 +89,8 @@ class Spectral1(Spectral):
 
         return U_k, labels
 
-    def apply(self, K: int):
-        real_K = self.get_real_K(K)
+    def cluster(self):
+        real_K = self.get_real_K(self.K)
 
         eigenvectors = self.compute_eigenvector_matrix(real_K)
         best_score = -np.inf
@@ -101,7 +108,13 @@ class Spectral1(Spectral):
                      for i in range(len(best_labels))])
 
 
-class Spectral2(Spectral):
+class Spectral2(SpectralMethod):
+    def __init__(self, ag: AttackGraph, K: int, k_min: int = 2):
+        super().__init__(ag)
+
+        self.K = K
+        self.k_min = k_min
+
     def apply_for_k(self, eigenvectors: np.array, k: int, P: list):
         P_new = P.copy()
         ids_clusters = set(P)
@@ -113,7 +126,8 @@ class Spectral2(Spectral):
         has_updated = False
 
         for c in ids_clusters:
-            U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
+            U_k = SpectralMethod.extract_and_normalize_eigenvectors(
+                eigenvectors, k)
             U_k_c = U_k[node_assignments[c]]
 
             sub_partition = KMeans(n_clusters=2).fit_predict(U_k_c)
@@ -136,15 +150,16 @@ class Spectral2(Spectral):
 
         return P_new, has_updated
 
-    def apply(self, k_min: int, K: int):
-        real_K = self.get_real_K(K)
+    def cluster(self):
+        real_K = self.get_real_K(self.K)
 
         eigenvectors = self.compute_eigenvector_matrix(real_K)
 
-        k = k_min
+        k = self.k_min
         P = np.zeros(self.ag.number_of_nodes(), dtype=int)
         if k > 1:
-            U_k = Spectral.extract_and_normalize_eigenvectors(eigenvectors, k)
+            U_k = SpectralMethod.extract_and_normalize_eigenvectors(
+                eigenvectors, k)
             P = KMeans(n_clusters=k).fit_predict(U_k)
 
         k += 1

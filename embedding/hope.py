@@ -1,18 +1,20 @@
-import networkx as nx
 import numpy as np
 import scipy.sparse as sps
 
 from attack_graph import AttackGraph
-from embedding.embedding import Embedding
+from embedding.embedding import EmbeddingMethod
 
 
-class Hope(Embedding):
-    def __init__(self, ag: AttackGraph, dim_embedding: int, measurement: str):
+class Hope(EmbeddingMethod):
+    def __init__(self,
+                 ag: AttackGraph,
+                 dim_embedding: int,
+                 measurement: str = "cn"):
         super().__init__(ag, dim_embedding)
 
         self.measurement = measurement
 
-    def run(self):
+    def embed(self):
         self.A = self.ag.compute_adjacency_matrix().astype("f")
         self.createS(self.measurement)
 
@@ -23,7 +25,6 @@ class Hope(Embedding):
 
         self.embedding = np.concatenate([left_embedding, right_embedding],
                                         axis=1)
-        self.save_embedding_in_file("methods_output/hope/embedding.npy")
 
     def createS(self, measurement: str):
         if measurement == "cn":

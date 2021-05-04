@@ -4,8 +4,90 @@ import numpy as np
 
 from attack_graph import AttackGraph
 from docker_handler import DockerHandler
-from embedding.embedding import Embedding
+from embedding.embedding import EmbeddingMethod
 from pathlib import Path
+
+
+class Graphsage(EmbeddingMethod):
+
+    input_folder = "methods_input/graphsage"
+    output_folder = "methods_output/graphsage"
+
+    def __init__(self,
+                 ag: AttackGraph,
+                 dim_embedding: int,
+                 prefix: str,
+                 dim_layer_1: int = 16):
+        super().__init__(ag, dim_embedding)
+
+        self.prefix = prefix
+        self.dim_layer_1 = dim_layer_1
+
+        self.dh = DockerHandler("graphsage")
+
+    def embed(self):
+        # Create the input files
+        fc = FileCreator(self.ag, self.prefix)
+        fc.create_files()
+
+        # Run the container
+        self.dh.run_container()
+
+        # Transfer the input files
+        self.dh.transfer_folder(Graphsage.input_folder, "/notebooks",
+                                self.prefix)
+
+        # Run Graphsage
+        # The size of the output layer should be equal to half the size of
+        # dim_embedding if the aggregator is concatenating
+        self.run_graphsage(size_layer_1=self.dim_layer_1,
+                           size_layer_2=self.dim_embedding // 2)
+
+        # Create the embedding from the output files
+        self.create_embedding()
+
+    def run_graphsage(self, size_layer_1=16, size_layer_2=8):
+        prefix_path = "./{}/{}".format(self.input_folder, self.prefix)
+
+        # Build the command line
+        # Start by choosing the unsupervised model
+        command = "python -m graphsage.unsupervised_train "
+
+        # Add the prefix of the input files
+        command += "--train_prefix {} ".format(prefix_path)
+
+        # Specify the type of aggregator
+        command += "--model graphsage_mean "
+
+        # Add the size of the layers
+        command += "--dim_1 {} --dim_2 {} ".format(size_layer_1, size_layer_2)
+
+        # Add various parameters
+        command += "--max_total_steps 1000 --validate_iter 10"
+
+        self.dh.run_command(command)
+
+    def create_embedding(self):
+        # Find the path to the result files and extract the most recent one
+        folder = self.dh.list_elements_in_container("unsup-graphsage")[0]
+
+        # Copy the folder to a tar file
+        container_path = "/notebooks/unsup-graphsage/{}".format(folder)
+        file_filter = ["val.txt", "val.npy"]
+
+        self.dh.copy_folder_from_container(container_path, self.output_folder,
+                                           file_filter)
+
+        # Extract information from the files
+        with open("{}/val.txt".format(self.output_folder)) as f:
+            order = [int(i) for i in f.read().split("\n")]
+
+        embedding = np.load("{}/val.npy".format(self.output_folder))
+        sorted_embedding = np.zeros_like(embedding)
+        for i in range(len(embedding)):
+            sorted_embedding[order[i]] = embedding[i]
+
+        self.embedding = sorted_embedding
 
 
 class FileCreator:
@@ -116,81 +198,3 @@ class FileCreator:
         with open("{}/{}-walks.txt".format(self.base_folder, self.prefix),
                   "w") as f:
             f.write("\n".join([str(p[0]) + "\t" + str(p[1]) for p in pairs]))
-
-
-class Graphsage(Embedding):
-    def __init__(self, ag: AttackGraph, dim_embedding: int, prefix: str):
-        super().__init__(ag, dim_embedding)
-
-        self.prefix = prefix
-
-        self.dh = DockerHandler("graphsage")
-        self.input_folder = "methods_input/graphsage"
-        self.output_folder = "methods_output/graphsage"
-
-    def run(self, size_layer_1=16):
-        # Create the input files
-        fc = FileCreator(self.ag, self.prefix)
-        fc.create_files()
-
-        # Run the container
-        self.dh.run_container()
-
-        # Transfer the input files
-        self.dh.transfer_folder(self.input_folder, "/notebooks", self.prefix)
-
-        # Run Graphsage
-        # The size of the output layer should be equal to half the size of
-        # dim_embedding if the aggregator is concatenating
-        self.run_graphsage(size_layer_1=size_layer_1,
-                           size_layer_2=self.dim_embedding // 2)
-
-        # Create the embedding from the output files
-        self.create_embedding()
-
-        # Save the embedding
-        self.save_embedding_in_file("{}/embedding.npy".format(
-            self.output_folder))
-
-    def run_graphsage(self, size_layer_1=16, size_layer_2=8):
-        prefix_path = "./{}/{}".format(self.input_folder, self.prefix)
-
-        # Build the command line
-        # Start by choosing the unsupervised model
-        command = "python -m graphsage.unsupervised_train "
-
-        # Add the prefix of the input files
-        command += "--train_prefix {} ".format(prefix_path)
-
-        # Specify the type of aggregator
-        command += "--model graphsage_mean "
-
-        # Add the size of the layers
-        command += "--dim_1 {} --dim_2 {} ".format(size_layer_1, size_layer_2)
-
-        # Add various parameters
-        command += "--max_total_steps 1000 --validate_iter 10"
-
-        self.dh.run_command(command)
-
-    def create_embedding(self):
-        # Find the path to the result files and extract the most recent one
-        folder = self.dh.list_elements_in_container("unsup-graphsage")[0]
-
-        # Copy the folder to a tar file
-        container_path = "/notebooks/unsup-graphsage/{}".format(folder)
-        file_filter = ["val.txt", "val.npy"]
-
-        self.dh.copy_folder_from_container(container_path, self.output_folder,
-                                           file_filter)
-
-        # Extract information from the files
-        with open("{}/val.txt".format(self.output_folder)) as f:
-            order = [int(i) for i in f.read().split("\n")]
-
-        embedding = np.load("{}/val.npy".format(self.output_folder))
-        sorted_embedding = np.zeros_like(embedding)
-        for i in range(len(embedding)):
-            sorted_embedding[order[i]] = embedding[i]
-
-        self.embedding = sorted_embedding

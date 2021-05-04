@@ -134,9 +134,9 @@ class GraphDrawer:
             return
 
         if self.parameters["clustering_method"] == "spectral1":
-            node_mapping = Spectral1(self.ag).apply(K=15)
+            node_mapping = Spectral1(self.ag).cluster(K=15)
         else:
-            node_mapping = Spectral2(self.ag).apply(k_min=1, K=15)
+            node_mapping = Spectral2(self.ag).cluster(k_min=1, K=15)
 
         clusters = sorted(np.unique(list(node_mapping.values())))
         cluster_colors = dict([(cluster, create_random_color())

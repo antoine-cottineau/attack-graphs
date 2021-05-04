@@ -1,41 +1,55 @@
 import numpy as np
+import clustering.space_metrics as space_metrics
 
 from attack_graph import AttackGraph
-from clustering.metric import Metric
 from sklearn.cluster import KMeans
+from typing import List
 
 
-class Clustering:
+class ClusteringMethod:
     def __init__(self, ag: AttackGraph):
         self.ag = ag
 
-    def find_optimal_number_of_clusters(self,
-                                        X: np.array,
-                                        k_min: int,
-                                        k_max: int,
-                                        metric: str = "silhouette"):
+        # By default, all the nodes are grouped into a unique cluster
+        self.clusters = dict()
+        for node in self.ag.nodes:
+            self.clusters[node] = 0
+
+    def cluster(self):
+        pass
+
+    def update_clusters(self, node_mapping: List[int]):
+        self.clusters = dict()
+        for i, node in enumerate(self.ag.nodes):
+            self.clusters[node] = node_mapping[i]
+
+    @staticmethod
+    def evaluate_space_clustering(X: np.array,
+                                  k_min: int,
+                                  k_max: int,
+                                  metric: str = "silhouette") -> List[int]:
         best_score = -np.inf
-        best_labels = None
-        best_k = k_min
+        best_node_mapping = None
 
         for k in range(k_min, k_max + 1):
             # Apply k-means with k clusters
-            labels = KMeans(n_clusters=k).fit_predict(X)
+            node_mapping = KMeans(n_clusters=k).fit_predict(X)
 
             # Compute the score
             if metric == "silhouette":
-                score = Metric.score_with_silhouette(X, labels)
+                score = space_metrics.score_with_silhouette(X, node_mapping)
             elif metric == "ch":
-                score = Metric.score_with_calinski_harabasz(X, labels)
+                score = space_metrics.score_with_calinski_harabasz(
+                    X, node_mapping)
             elif metric == "db":
-                score = Metric.score_with_davies_bouldin(X, labels)
+                score = space_metrics.score_with_davies_bouldin(
+                    X, node_mapping)
             else:
                 raise Exception(
                     "The metric {} has not been implemented".format(metric))
 
             if score > best_score:
                 best_score = score
-                best_labels = labels
-                best_k = k
+                best_node_mapping = node_mapping
 
-        return best_labels, best_k, best_score
+        return best_node_mapping
