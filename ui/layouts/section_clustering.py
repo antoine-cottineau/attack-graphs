@@ -13,7 +13,10 @@ def generate_section() -> html.Section:
                      options=[
                          dict(label="None", value="none"),
                          dict(label="Spectral 1", value="spectral1"),
-                         dict(label="Spectral 2", value="spectral2")
+                         dict(label="Spectral 2", value="spectral2"),
+                         dict(label="DeepWalk", value="deepwalk"),
+                         dict(label="GraphSAGE", value="graphsage"),
+                         dict(label="HOPE", value="hope"),
                      ],
                      value="none",
                      clearable=False,

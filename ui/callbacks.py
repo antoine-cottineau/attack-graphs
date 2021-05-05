@@ -6,7 +6,7 @@ import utils
 from attack_graph import AttackGraph
 from attack_graph_generation import Generator
 from embedding.deepwalk import DeepWalk
-from embedding.graphsage import Graphsage
+from embedding.graphsage import GraphSage
 from embedding.hope import Hope
 from ui.graph_drawing import GraphDrawer
 from typing import Tuple
@@ -123,7 +123,7 @@ def apply_node_embedding(method: str, path: str, graph_json: str):
     if method == "deepwalk":
         embedding = DeepWalk(ag, 8)
     elif method == "graphsage":
-        embedding = Graphsage(ag, 8, "ui")
+        embedding = GraphSage(ag, 8, "ui")
     else:
         embedding = Hope(ag, 8, "cn")
 

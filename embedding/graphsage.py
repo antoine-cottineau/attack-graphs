@@ -8,34 +8,33 @@ from embedding.embedding import EmbeddingMethod
 from pathlib import Path
 
 
-class Graphsage(EmbeddingMethod):
+class GraphSage(EmbeddingMethod):
 
     input_folder = "methods_input/graphsage"
     output_folder = "methods_output/graphsage"
+    prefix = "master_thesis"
 
     def __init__(self,
                  ag: AttackGraph,
                  dim_embedding: int,
-                 prefix: str,
                  dim_layer_1: int = 16):
         super().__init__(ag, dim_embedding)
 
-        self.prefix = prefix
         self.dim_layer_1 = dim_layer_1
 
         self.dh = DockerHandler("graphsage")
 
     def embed(self):
         # Create the input files
-        fc = FileCreator(self.ag, self.prefix)
+        fc = FileCreator(self.ag, GraphSage.prefix)
         fc.create_files()
 
         # Run the container
         self.dh.run_container()
 
         # Transfer the input files
-        self.dh.transfer_folder(Graphsage.input_folder, "/notebooks",
-                                self.prefix)
+        self.dh.transfer_folder(GraphSage.input_folder, "/notebooks",
+                                GraphSage.prefix)
 
         # Run Graphsage
         # The size of the output layer should be equal to half the size of
@@ -47,7 +46,7 @@ class Graphsage(EmbeddingMethod):
         self.create_embedding()
 
     def run_graphsage(self, size_layer_1=16, size_layer_2=8):
-        prefix_path = "./{}/{}".format(self.input_folder, self.prefix)
+        prefix_path = "./{}/{}".format(self.input_folder, GraphSage.prefix)
 
         # Build the command line
         # Start by choosing the unsupervised model
@@ -93,7 +92,7 @@ class Graphsage(EmbeddingMethod):
 class FileCreator:
     def __init__(self, ag: AttackGraph, prefix: str):
         self.ag = ag
-        self.prefix = prefix
+        GraphSage.prefix = prefix
 
         self.base_folder = "methods_input/graphsage"
 
@@ -135,7 +134,7 @@ class FileCreator:
             }
             G["links"].append(link)
 
-        with open("{}/{}-G.json".format(self.base_folder, self.prefix),
+        with open("{}/{}-G.json".format(self.base_folder, GraphSage.prefix),
                   "w") as f:
             json.dump(G, f, indent=2)
 
@@ -145,8 +144,9 @@ class FileCreator:
         for i in self.ag.nodes():
             id_map[i] = i
 
-        with open("{}/{}-id_map.json".format(self.base_folder, self.prefix),
-                  "w") as f:
+        with open(
+                "{}/{}-id_map.json".format(self.base_folder, GraphSage.prefix),
+                "w") as f:
             json.dump(id_map, f, indent=2)
 
     def create_class_map(self):
@@ -155,8 +155,9 @@ class FileCreator:
         for i in self.ag.nodes():
             class_map[i] = [1]
 
-        with open("{}/{}-class_map.json".format(self.base_folder, self.prefix),
-                  "w") as f:
+        with open(
+                "{}/{}-class_map.json".format(self.base_folder,
+                                              GraphSage.prefix), "w") as f:
             json.dump(class_map, f, indent=2)
 
     def create_feats(self):
@@ -167,7 +168,8 @@ class FileCreator:
             for id_proposition in node["ids_propositions"]:
                 feats[i, self.ag.get_node_mapping()[id_proposition]] = 1
 
-        np.save("{}/{}-feats.npy".format(self.base_folder, self.prefix), feats)
+        np.save("{}/{}-feats.npy".format(self.base_folder, GraphSage.prefix),
+                feats)
 
     def create_walks(self, walk_len=5, n_walks=50):
         # TODO: change to take into account test and val nodes
@@ -195,6 +197,6 @@ class FileCreator:
 
                     current_state_id = next_state_id
 
-        with open("{}/{}-walks.txt".format(self.base_folder, self.prefix),
+        with open("{}/{}-walks.txt".format(self.base_folder, GraphSage.prefix),
                   "w") as f:
             f.write("\n".join([str(p[0]) + "\t" + str(p[1]) for p in pairs]))

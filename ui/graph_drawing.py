@@ -7,6 +7,9 @@ import ui.constants
 from attack_graph import AttackGraph
 from clustering.drawing import ClusterDrawer
 from clustering.white_smyth import Spectral1, Spectral2
+from embedding.deepwalk import DeepWalk
+from embedding.graphsage import GraphSage
+from embedding.hope import Hope
 from ranking.mehta import PageRankMethod, KuehlmannMethod
 from utils import create_random_color
 
@@ -133,16 +136,29 @@ class GraphDrawer:
         if self.parameters["clustering_method"] == "none":
             return
 
-        if self.parameters["clustering_method"] == "spectral1":
-            node_mapping = Spectral1(self.ag).cluster(K=15)
+        chosen_method = self.parameters["clustering_method"]
+        if chosen_method == "spectral1":
+            method = Spectral1(self.ag, 10)
+        elif chosen_method == "spectral2":
+            method = Spectral2(self.ag, 10)
+        elif chosen_method == "deepwalk":
+            method = DeepWalk(self.ag, 16)
+            method.embed()
+        elif chosen_method == "graphsage":
+            method = GraphSage(self.ag, 16)
+            method.embed()
+        elif chosen_method == "hope":
+            method = Hope(self.ag, 16)
+            method.embed()
         else:
-            node_mapping = Spectral2(self.ag).cluster(k_min=1, K=15)
+            return
 
-        clusters = sorted(np.unique(list(node_mapping.values())))
+        method.cluster()
+        clusters = sorted(np.unique(list(method.node_mapping.values())))
         cluster_colors = dict([(cluster, create_random_color())
                                for cluster in clusters])
 
-        cd = ClusterDrawer(self.ag, node_mapping)
+        cd = ClusterDrawer(self.ag, method.node_mapping)
         cd.apply()
 
         self.cluster_traces = []
