@@ -94,6 +94,36 @@ class ClusteringMethod:
 
         return mean_silhouette_index
 
+    def evaluate_external_conductance(self) -> float:
+        adjacency_matrix = self.ag.compute_adjacency_matrix()
+        clusters = self.get_clusters()
+        node_positions = self.ag.get_node_mapping()
+
+        # Compute the external conductance for each cluster
+        cluster_conductances = np.zeros(len(clusters))
+        for cluster in clusters:
+            nodes = [
+                node for node in self.ag.nodes
+                if self.node_mapping[node] == cluster
+            ]
+            cluster_node_positions = [node_positions[node] for node in nodes]
+            complement_node_positions = [
+                node_positions[node] for node in self.ag.nodes
+                if node not in nodes
+            ]
+            numerator = adjacency_matrix[
+                cluster_node_positions][:, complement_node_positions].sum()
+
+            a_cluster = adjacency_matrix[cluster_node_positions].sum()
+            a_complement = adjacency_matrix[complement_node_positions].sum()
+            denominator = min(a_cluster, a_complement)
+
+            cluster_conductances[cluster] = numerator / denominator
+
+        mean_cluster_conductance = cluster_conductances.mean()
+
+        return mean_cluster_conductance
+
     @staticmethod
     def evaluate_space_clustering(X: np.array,
                                   k_min: int,
