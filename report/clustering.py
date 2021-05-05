@@ -77,6 +77,7 @@ def compare_methods_by_metric():
 
         # Add various information on the figure
         ax.set_xlabel(metric)
+        ax.invert_yaxis()
 
         # Save the figure
         path = Path("report/figures", files[i_metric])
