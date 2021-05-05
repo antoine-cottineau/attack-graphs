@@ -1,5 +1,6 @@
-import numpy as np
 import clustering.space_metrics as space_metrics
+import networkx as nx
+import numpy as np
 
 from attack_graph import AttackGraph
 from sklearn.cluster import KMeans
@@ -23,12 +24,16 @@ class ClusteringMethod:
         for i, node in enumerate(self.ag.nodes):
             self.node_mapping[node] = node_mapping[i]
 
+    def get_clusters(self) -> np.array:
+        node_mapping = list(self.node_mapping.values())
+        return np.unique(node_mapping)
+
     def evaluate_modularity(self) -> float:
         modularity = 0
 
         adjacency_matrix = self.ag.compute_adjacency_matrix()
         node_mapping = list(self.node_mapping.values())
-        clusters = np.unique(node_mapping)
+        clusters = self.get_clusters()
 
         sum_all_weights = adjacency_matrix.sum()
 
@@ -44,6 +49,50 @@ class ClusteringMethod:
             modularity -= (sum_all_cluster / sum_all_weights)**2
 
         return modularity
+
+    def evaluate_mean_silhouette_index(self) -> float:
+        n = self.ag.number_of_nodes()
+        node_indices = self.ag.get_node_mapping()
+        clusters = self.get_clusters()
+
+        distance_matrix = np.zeros((n, n))
+
+        # Fill distance_matrix
+        distances = nx.shortest_path_length(
+            nx.Graph(incoming_graph_data=self.ag))
+        for result in enumerate(distances):
+            i = node_indices[result[0]]
+            for dst, distance in result[1][1].items():
+                j = node_indices[dst]
+                distance_matrix[i][j] = distance
+
+        # Compute silhouette index node by node
+        nodes_silhouette_index = np.zeros(n)
+        clusters_content = [[
+            node_indices[node] for node in self.ag.nodes
+            if self.node_mapping[node] == cluster
+        ] for cluster in clusters]
+        for node in self.ag.nodes:
+            i = node_indices[node]
+            node_cluster = self.node_mapping[node]
+
+            mean_cluster_distances = [
+                distance_matrix[i][clusters_content[cluster]].mean()
+                for cluster in clusters
+            ]
+
+            a = mean_cluster_distances[node_cluster]
+            b = min([
+                distance
+                for cluster, distance in enumerate(mean_cluster_distances)
+                if cluster != node_cluster
+            ])
+
+            nodes_silhouette_index[i] = (b - a) / max(a, b)
+
+        mean_silhouette_index = nodes_silhouette_index.mean()
+
+        return mean_silhouette_index
 
     @staticmethod
     def evaluate_space_clustering(X: np.array,
