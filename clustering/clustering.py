@@ -31,7 +31,8 @@ class ClusteringMethod:
     def evaluate_modularity(self) -> float:
         modularity = 0
 
-        adjacency_matrix = self.ag.compute_adjacency_matrix()
+        adjacency_matrix = self.ag.compute_adjacency_matrix(
+            keep_directed=False)
         node_mapping = list(self.node_mapping.values())
         clusters = self.get_clusters()
 
@@ -94,12 +95,13 @@ class ClusteringMethod:
 
         return mean_silhouette_index
 
-    def evaluate_external_conductance(self) -> float:
-        adjacency_matrix = self.ag.compute_adjacency_matrix()
+    def evaluate_mean_conductance(self) -> float:
+        adjacency_matrix = self.ag.compute_adjacency_matrix(
+            keep_directed=False)
         clusters = self.get_clusters()
         node_positions = self.ag.get_node_mapping()
 
-        # Compute the external conductance for each cluster
+        # Compute the conductance for each cluster
         cluster_conductances = np.zeros(len(clusters))
         for cluster in clusters:
             nodes = [
@@ -123,6 +125,30 @@ class ClusteringMethod:
         mean_cluster_conductance = cluster_conductances.mean()
 
         return mean_cluster_conductance
+
+    def evaluate_mean_coverage(self) -> float:
+        adjacency_matrix = self.ag.compute_adjacency_matrix(
+            keep_directed=False)
+        clusters = self.get_clusters()
+        node_positions = self.ag.get_node_mapping()
+
+        # Compute the coverage for each cluster
+        cluster_coverages = np.zeros(len(clusters))
+        for cluster in clusters:
+            nodes = [
+                node for node in self.ag.nodes
+                if self.node_mapping[node] == cluster
+            ]
+            cluster_node_positions = [node_positions[node] for node in nodes]
+            numerator = adjacency_matrix[
+                cluster_node_positions][:, cluster_node_positions].sum()
+            denominator = adjacency_matrix.sum()
+
+            cluster_coverages[cluster] = numerator / denominator
+
+        mean_cluster_coverage = cluster_coverages.mean()
+
+        return mean_cluster_coverage
 
     @staticmethod
     def evaluate_space_clustering(X: np.array,
