@@ -1,202 +1,149 @@
-import json
-import networkx as nx
-import numpy as np
-
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 from attack_graph import AttackGraph
-from docker_handler import DockerHandler
 from embedding.embedding import EmbeddingMethod
-from pathlib import Path
+from torch_cluster import random_walk
+from torch_geometric.nn import SAGEConv
+from torch_geometric.data import Data, NeighborSampler as RawNeighborSampler
 
 
 class GraphSage(EmbeddingMethod):
-
-    input_folder = "methods_input/graphsage"
-    output_folder = "methods_output/graphsage"
-    prefix = "master_thesis"
-
     def __init__(self,
                  ag: AttackGraph,
                  dim_embedding: int,
-                 dim_layer_1: int = 16):
+                 dim_hidden_layer: int = 16,
+                 n_epochs: int = 50,
+                 device: str = None,
+                 verbose: bool = False):
         super().__init__(ag, dim_embedding)
 
-        self.dim_layer_1 = dim_layer_1
+        self.dim_hidden_layer = dim_hidden_layer
+        self.n_epochs = n_epochs
+        self.device = device
+        self.verbose = verbose
 
-        self.dh = DockerHandler("graphsage")
+        if self.device is None:
+            self.device = torch.device(
+                "cuda" if torch.cuda.is_available() else "cpu")
 
     def embed(self):
-        # Create the input files
-        fc = FileCreator(self.ag, GraphSage.prefix)
-        fc.create_files()
+        # Train the model
+        self.train()
 
-        # Run the container
-        self.dh.run_container()
+        # Move the edge_index to the device
+        edge_index = self.data.edge_index.to(self.device)
 
-        # Transfer the input files
-        self.dh.transfer_folder(GraphSage.input_folder, "/notebooks",
-                                GraphSage.prefix)
+        # Apply the model
+        self.model.eval()
+        self.embedding = self.model.full_forward(
+            self.x, edge_index).cpu().detach().numpy()
 
-        # Run Graphsage
-        # The size of the output layer should be equal to half the size of
-        # dim_embedding if the aggregator is concatenating
-        self.run_graphsage(size_layer_1=self.dim_layer_1,
-                           size_layer_2=self.dim_embedding // 2)
+    def train(self):
+        self.create_model_and_optimizer()
+        self.create_data()
+        self.create_neighbor_sampler()
 
-        # Create the embedding from the output files
-        self.create_embedding()
+        # Move the data to the device
+        self.x = self.data.x.to(self.device)
 
-    def run_graphsage(self, size_layer_1=16, size_layer_2=8):
-        prefix_path = "./{}/{}".format(self.input_folder, GraphSage.prefix)
+        # Train the model
+        self.model.train()
+        for i_epoch in range(self.n_epochs):
+            loss = self.train_one_epoch()
+            self.show_message("Epoch {}, loss: {:.2f}".format(
+                i_epoch + 1, loss))
 
-        # Build the command line
-        # Start by choosing the unsupervised model
-        command = "python -m graphsage.unsupervised_train "
+    def train_one_epoch(self) -> float:
+        total_loss = 0
+        for _, n_id, adjs in self.neighbor_sampler:
+            moved_adjs = [adj.to(self.device) for adj in adjs]
+            self.optimizer.zero_grad()
 
-        # Add the prefix of the input files
-        command += "--train_prefix {} ".format(prefix_path)
+            out: torch.Tensor = self.model(self.x[n_id], moved_adjs)
+            out, pos_out, neg_out = out.split(out.size(0) // 3, dim=0)
 
-        # Specify the type of aggregator
-        command += "--model graphsage_mean "
+            pos_loss = F.logsigmoid((out * pos_out).sum(-1)).mean()
+            neg_loss = F.logsigmoid(-(out * neg_out).sum(-1)).mean()
+            loss = -pos_loss - neg_loss
+            loss.backward()
+            self.optimizer.step()
 
-        # Add the size of the layers
-        command += "--dim_1 {} --dim_2 {} ".format(size_layer_1, size_layer_2)
+            total_loss += float(loss) * out.size(0)
 
-        # Add various parameters
-        command += "--max_total_steps 1000 --validate_iter 10"
+        return total_loss / self.data.num_nodes
 
-        self.dh.run_command(command)
+    def create_model_and_optimizer(self):
+        self.model = Sage(self.ag.number_of_nodes(), self.dim_hidden_layer,
+                          self.dim_embedding)
+        self.model = self.model.to(self.device)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.01)
 
-    def create_embedding(self):
-        # Find the path to the result files and extract the most recent one
-        folder = self.dh.list_elements_in_container("unsup-graphsage")[0]
+    def create_data(self):
+        x = torch.eye(self.ag.number_of_nodes())
+        edge_index = torch.tensor(list(self.ag.edges), dtype=torch.long)
+        edge_index = edge_index.t().contiguous()
 
-        # Copy the folder to a tar file
-        container_path = "/notebooks/unsup-graphsage/{}".format(folder)
-        file_filter = ["val.txt", "val.npy"]
+        self.data = Data(x=x, edge_index=edge_index)
 
-        self.dh.copy_folder_from_container(container_path, self.output_folder,
-                                           file_filter)
+    def create_neighbor_sampler(self):
+        self.neighbor_sampler = NeighborSampler(self.data.edge_index,
+                                                sizes=[10, 10],
+                                                batch_size=256,
+                                                shuffle=True,
+                                                num_nodes=self.data.num_nodes)
 
-        # Extract information from the files
-        with open("{}/val.txt".format(self.output_folder)) as f:
-            order = [int(i) for i in f.read().split("\n")]
-
-        embedding = np.load("{}/val.npy".format(self.output_folder))
-        sorted_embedding = np.zeros_like(embedding)
-        for i in range(len(embedding)):
-            sorted_embedding[order[i]] = embedding[i]
-
-        self.embedding = sorted_embedding
+    def show_message(self, message: str):
+        if self.verbose:
+            print(message)
 
 
-class FileCreator:
-    def __init__(self, ag: AttackGraph, prefix: str):
-        self.ag = ag
-        GraphSage.prefix = prefix
+class Sage(nn.Module):
+    def __init__(self, dim_input: int, dim_hidden_1, dim_output):
+        super().__init__()
 
-        self.base_folder = "methods_input/graphsage"
+        self.layer_1 = SAGEConv(dim_input, dim_hidden_1)
+        self.layer_2 = SAGEConv(dim_hidden_1, dim_output)
 
-    def create_files(self):
-        Path(self.base_folder).mkdir(exist_ok=True, parents=True)
+    def forward(self, x, adjs):
+        # First layer
+        edge_index, _, size = adjs[0]
+        x_target = x[:size[1]]
+        out = self.layer_1((x, x_target), edge_index)
+        out = F.relu(out)
+        out = F.dropout(out, p=0.5, training=self.training)
 
-        self.create_G()
-        self.create_id_map()
-        self.create_class_map()
-        self.create_feats()
-        self.create_walks()
+        # Second layer
+        edge_index, _, size = adjs[1]
+        x_target = out[:size[1]]
+        out = self.layer_2((out, x_target), edge_index)
 
-    def create_G(self):
-        G = {
-            "directed": False,
-            "graph": {
-                "name": "graph"
-            },
-            "nodes": [],
-            "links": []
-        }
+        return out
 
-        for i in self.ag.nodes():
-            node = {
-                "feature": [],
-                "id": i,
-                "label": [1],
-                "test": False,
-                "val": False
-            }
-            G["nodes"].append(node)
+    def full_forward(self, x, edge_index):
+        out = self.layer_1(x, edge_index)
+        out = F.relu(out)
+        out = F.dropout(out, p=0.5, training=self.training)
+        out = self.layer_2(out, edge_index)
 
-        for (src, dst) in self.ag.edges():
-            link = {
-                "source": src,
-                "target": dst,
-                "test_removed": False,
-                "train_removed": False
-            }
-            G["links"].append(link)
+        return out
 
-        with open("{}/{}-G.json".format(self.base_folder, GraphSage.prefix),
-                  "w") as f:
-            json.dump(G, f, indent=2)
 
-    def create_id_map(self):
-        id_map = {}
+class NeighborSampler(RawNeighborSampler):
+    def sample(self, batch):
+        new_batch = torch.tensor(batch)
+        row, col, _ = self.adj_t.coo()
 
-        for i in self.ag.nodes():
-            id_map[i] = i
+        pos_batch = random_walk(row,
+                                col,
+                                new_batch,
+                                walk_length=1,
+                                coalesced=False)[:, 1]
 
-        with open(
-                "{}/{}-id_map.json".format(self.base_folder, GraphSage.prefix),
-                "w") as f:
-            json.dump(id_map, f, indent=2)
+        neg_batch = torch.randint(0,
+                                  self.adj_t.size(1), (new_batch.numel(), ),
+                                  dtype=torch.long)
 
-    def create_class_map(self):
-        class_map = {}
+        new_batch = torch.cat([new_batch, pos_batch, neg_batch], dim=0)
 
-        for i in self.ag.nodes():
-            class_map[i] = [1]
-
-        with open(
-                "{}/{}-class_map.json".format(self.base_folder,
-                                              GraphSage.prefix), "w") as f:
-            json.dump(class_map, f, indent=2)
-
-    def create_feats(self):
-        feats = np.zeros(
-            (self.ag.number_of_nodes(), len(self.ag.propositions)))
-
-        for i, node in self.ag.nodes(data=True):
-            for id_proposition in node["ids_propositions"]:
-                feats[i, self.ag.get_node_mapping()[id_proposition]] = 1
-
-        np.save("{}/{}-feats.npy".format(self.base_folder, GraphSage.prefix),
-                feats)
-
-    def create_walks(self, walk_len=5, n_walks=50):
-        # TODO: change to take into account test and val nodes
-        pairs = []
-        for id_ in self.ag.nodes():
-
-            # If the node is isolated, it is impossible to perform random
-            # walks
-            if not nx.all_neighbors(self.ag, id_):
-                continue
-
-            # Perform n_walks random walks
-            for i in range(n_walks):
-                current_state_id = id_
-
-                # Perform a random walk
-                for j in range(walk_len):
-                    ids_neighbours = list(
-                        nx.all_neighbors(self.ag, current_state_id))
-                    next_state_id = int(np.random.choice(ids_neighbours))
-
-                    # Don't save self occurences
-                    if current_state_id != id_:
-                        pairs.append((id_, current_state_id))
-
-                    current_state_id = next_state_id
-
-        with open("{}/{}-walks.txt".format(self.base_folder, GraphSage.prefix),
-                  "w") as f:
-            f.write("\n".join([str(p[0]) + "\t" + str(p[1]) for p in pairs]))
+        return super().sample(new_batch)

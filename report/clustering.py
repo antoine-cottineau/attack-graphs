@@ -7,13 +7,14 @@ from clustering.clustering import ClusteringMethod
 from clustering.white_smyth import Spectral1, Spectral2
 from embedding.deepwalk import DeepWalk
 from embedding.embedding import EmbeddingMethod
+from embedding.graphsage import GraphSage
 from embedding.hope import Hope
 from typing import List
 
 
 def compare_methods_by_metric():
     n_graphs = 2
-    n_methods = 4
+    n_methods = 5
     n_metrics = 4
 
     # Start by generating n_graphs graphs
@@ -31,6 +32,10 @@ def compare_methods_by_metric():
             Spectral1(graph, K=10),
             Spectral2(graph, K=10),
             DeepWalk(graph, dim_embedding=16),
+            GraphSage(graph,
+                      dim_embedding=16,
+                      dim_hidden_layer=16,
+                      n_epochs=50),
             Hope(graph, dim_embedding=16, measurement="katz")
         ]
 
@@ -56,7 +61,7 @@ def compare_methods_by_metric():
         "Modularity", "Mean silhouette index", "Mean conductance",
         "Mean coverage"
     ]
-    methods = ["Spectral 1", "Spectral 2", "DeepWalk", "HOPE"]
+    methods = ["Spectral 1", "Spectral 2", "DeepWalk", "GraphSAGE", "HOPE"]
     files = [
         "modularity.png", "mean_silhouette_index.png", "mean_conductance.png",
         "mean_coverage.png"
