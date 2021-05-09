@@ -138,9 +138,9 @@ class GraphDrawer:
 
         chosen_method = self.parameters["clustering_method"]
         if chosen_method == "spectral1":
-            method = Spectral1(self.ag, 10)
+            method = Spectral1(self.ag, 15)
         elif chosen_method == "spectral2":
-            method = Spectral2(self.ag, 10)
+            method = Spectral2(self.ag, 15, 1)
         elif chosen_method == "deepwalk":
             method = DeepWalk(self.ag, 16)
             method.embed()
@@ -154,11 +154,11 @@ class GraphDrawer:
             return
 
         method.cluster()
-        clusters = sorted(np.unique(list(method.node_mapping.values())))
+        clusters = sorted(np.unique(list(method.node_assignment.values())))
         cluster_colors = dict([(cluster, create_random_color())
                                for cluster in clusters])
 
-        cd = ClusterDrawer(self.ag, method.node_mapping)
+        cd = ClusterDrawer(self.ag, method.node_assignment)
         cd.apply()
 
         self.cluster_traces = []

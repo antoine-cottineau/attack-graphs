@@ -12,44 +12,25 @@ class ClusteringMethod:
         self.ag = ag
 
         # By default, all the nodes are grouped into a unique cluster
-        self.node_mapping = dict()
+        self.node_assignment = dict()
         for node in self.ag.nodes:
-            self.node_mapping[node] = 0
+            self.node_assignment[node] = 0
 
     def cluster(self):
         pass
 
-    def update_clusters(self, node_mapping: List[int]):
-        self.node_mapping = dict()
+    def update_clusters(self, node_assignment: List[int]):
+        self.node_assignment = dict()
         for i, node in enumerate(self.ag.nodes):
-            self.node_mapping[node] = node_mapping[i]
+            self.node_assignment[node] = node_assignment[i]
 
     def get_clusters(self) -> np.array:
-        node_mapping = list(self.node_mapping.values())
-        return np.unique(node_mapping)
+        node_assignment = list(self.node_assignment.values())
+        return np.unique(node_assignment)
 
     def evaluate_modularity(self) -> float:
-        modularity = 0
-
-        adjacency_matrix = self.ag.compute_adjacency_matrix(
-            keep_directed=False)
-        node_mapping = list(self.node_mapping.values())
-        clusters = self.get_clusters()
-
-        sum_all_weights = adjacency_matrix.sum()
-
-        for cluster in clusters:
-            adj_matrix_cluster = adjacency_matrix[
-                node_mapping == cluster][:, node_mapping == cluster]
-            adj_matrix_out_cluster = adjacency_matrix[
-                node_mapping != cluster][:, node_mapping != cluster]
-            sum_within_cluster = adj_matrix_cluster.sum()
-            sum_all_cluster = sum_all_weights - adj_matrix_out_cluster.sum()
-
-            modularity += sum_within_cluster / sum_all_weights
-            modularity -= (sum_all_cluster / sum_all_weights)**2
-
-        return modularity
+        node_assignment = list(self.node_assignment.values())
+        return ClusteringMethod.modularity(self.ag, node_assignment)
 
     def evaluate_mean_silhouette_index(self) -> float:
         n = self.ag.number_of_nodes()
@@ -71,11 +52,11 @@ class ClusteringMethod:
         nodes_silhouette_index = np.zeros(n)
         clusters_content = [[
             node_indices[node] for node in self.ag.nodes
-            if self.node_mapping[node] == cluster
+            if self.node_assignment[node] == cluster
         ] for cluster in clusters]
         for node in self.ag.nodes:
             i = node_indices[node]
-            node_cluster = self.node_mapping[node]
+            node_cluster = self.node_assignment[node]
 
             mean_cluster_distances = [
                 distance_matrix[i][clusters_content[cluster]].mean()
@@ -106,7 +87,7 @@ class ClusteringMethod:
         for cluster in clusters:
             nodes = [
                 node for node in self.ag.nodes
-                if self.node_mapping[node] == cluster
+                if self.node_assignment[node] == cluster
             ]
             cluster_node_positions = [node_positions[node] for node in nodes]
             complement_node_positions = [
@@ -137,7 +118,7 @@ class ClusteringMethod:
         for cluster in clusters:
             nodes = [
                 node for node in self.ag.nodes
-                if self.node_mapping[node] == cluster
+                if self.node_assignment[node] == cluster
             ]
             cluster_node_positions = [node_positions[node] for node in nodes]
             numerator = adjacency_matrix[
@@ -151,32 +132,54 @@ class ClusteringMethod:
         return mean_cluster_coverage
 
     @staticmethod
+    def modularity(ag: AttackGraph, node_assignment: List[int]) -> float:
+        modularity = 0
+
+        adjacency_matrix = ag.compute_adjacency_matrix(keep_directed=False)
+        clusters = np.unique(node_assignment)
+
+        sum_all_weights = adjacency_matrix.sum()
+
+        for cluster in clusters:
+            adj_matrix_cluster = adjacency_matrix[
+                node_assignment == cluster][:, node_assignment == cluster]
+            adj_matrix_out_cluster = adjacency_matrix[
+                node_assignment != cluster][:, node_assignment != cluster]
+            sum_within_cluster = adj_matrix_cluster.sum()
+            sum_all_cluster = sum_all_weights - adj_matrix_out_cluster.sum()
+
+            modularity += sum_within_cluster / sum_all_weights
+            modularity -= (sum_all_cluster / sum_all_weights)**2
+
+        return modularity
+
+    @staticmethod
     def evaluate_space_clustering(X: np.array,
                                   k_min: int,
                                   k_max: int,
                                   metric: str = "silhouette") -> List[int]:
         best_score = -np.inf
-        best_node_mapping = None
+        best_node_assignment = None
 
         for k in range(k_min, k_max + 1):
             # Apply k-means with k clusters
-            node_mapping = KMeans(n_clusters=k).fit_predict(X)
+            node_assignment = KMeans(n_clusters=k).fit_predict(X)
 
             # Compute the score
             if metric == "silhouette":
-                score = space_metrics.score_with_silhouette(X, node_mapping)
+                score = space_metrics.score_with_silhouette(X, node_assignment)
             elif metric == "ch":
                 score = space_metrics.score_with_calinski_harabasz(
-                    X, node_mapping)
+                    X, node_assignment)
             elif metric == "db":
                 score = space_metrics.score_with_davies_bouldin(
-                    X, node_mapping)
+                    X, node_assignment)
             else:
                 raise Exception(
                     "The metric {} has not been implemented".format(metric))
 
             if score > best_score:
                 best_score = score
-                best_node_mapping = node_mapping
+                best_node_assignment = node_assignment
 
-        return best_node_mapping
+        return best_node_assignment
