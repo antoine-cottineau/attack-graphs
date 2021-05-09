@@ -1,8 +1,6 @@
 import numpy as np
 import sklearn.metrics as metrics
 
-from scipy.sparse import csr_matrix
-
 
 def score_with_silhouette(X: np.array, labels: list):
     return metrics.silhouette_score(X, labels)
