@@ -8,7 +8,7 @@ from embedding.embedding import EmbeddingMethod
 class Hope(EmbeddingMethod):
     def __init__(self,
                  ag: AttackGraph,
-                 dim_embedding: int,
+                 dim_embedding: int = 16,
                  measurement: str = "katz"):
         super().__init__(ag, dim_embedding)
 

@@ -7,7 +7,7 @@ from sklearn.cluster import KMeans
 
 
 class SpectralMethod(ClusteringMethod):
-    def __init__(self, ag: AttackGraph, K: int):
+    def __init__(self, ag: AttackGraph, K: int = 15):
         super().__init__(ag)
 
         self.K = min(K, self.ag.number_of_nodes() - 2)
@@ -66,7 +66,7 @@ class Spectral1(SpectralMethod):
 
 
 class Spectral2(SpectralMethod):
-    def __init__(self, ag: AttackGraph, K: int, k_min: int):
+    def __init__(self, ag: AttackGraph, K: int = 15, k_min: int = 2):
         super().__init__(ag, K)
 
         self.k_min = k_min

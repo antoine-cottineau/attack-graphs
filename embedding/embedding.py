@@ -6,7 +6,7 @@ from clustering.clustering import ClusteringMethod
 
 
 class EmbeddingMethod(ClusteringMethod):
-    def __init__(self, ag: AttackGraph, dim_embedding: int):
+    def __init__(self, ag: AttackGraph, dim_embedding: int = 16):
         super().__init__(ag)
 
         self.ag = ag

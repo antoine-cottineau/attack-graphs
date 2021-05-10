@@ -11,7 +11,7 @@ from torch_geometric.data import Data, NeighborSampler as RawNeighborSampler
 class GraphSage(EmbeddingMethod):
     def __init__(self,
                  ag: AttackGraph,
-                 dim_embedding: int,
+                 dim_embedding: int = 16,
                  dim_hidden_layer: int = 16,
                  n_epochs: int = 50,
                  device: str = None,

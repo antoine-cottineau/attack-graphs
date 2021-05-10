@@ -9,12 +9,15 @@ from time import time
 class DatasetLoader:
     path_dataset = "methods_input/dataset"
 
-    def __init__(self):
+    def __init__(self, max_n_files: int = None):
         self.files = [
             file
             for file in pathlib.Path(DatasetLoader.path_dataset).glob("*.json")
         ]
         self.sort_files()
+        if max_n_files is not None:
+            self.files = self.files[:max_n_files]
+            self.number_of_nodes = self.number_of_nodes[:max_n_files]
         self.i = 0
 
     def sort_files(self):
@@ -33,14 +36,20 @@ class DatasetLoader:
             new_files.append(self.files[i])
         self.files = new_files
 
+    def reinitialize(self):
+        self.i = 0
+
+    def get(self, i) -> AttackGraph:
+        return self.files[i]
+
     def __iter__(self):
         return self
 
     def __next__(self) -> AttackGraph:
-        self.i += 1
         if self.i < len(self.files):
             ag = AttackGraph()
             ag.load(self.files[self.i])
+            self.i += 1
             return ag
         else:
             raise StopIteration
