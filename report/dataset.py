@@ -9,7 +9,6 @@ from typing import List
 class Dataset:
     def __init__(self) -> None:
         self.set_sizes = [20, 20, 7]
-        # self.set_sizes = [2, 2, 0]
         self.set_max_n_nodes = [1000, 10000, None]
         self.n_graphs = sum(self.set_sizes)
         self.base_path = "methods_input/dataset"
