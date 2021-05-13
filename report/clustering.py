@@ -1,8 +1,8 @@
-from clustering.clustering import ClusteringMethod
-from clustering.white_smyth import Spectral1, Spectral2
 import numpy as np
 import utils
 from attack_graph import AttackGraph
+from clustering.clustering import ClusteringMethod
+from clustering.white_smyth import Spectral1, Spectral2
 from embedding.deepwalk import DeepWalk
 from embedding.embedding import EmbeddingMethod
 from embedding.graphsage import GraphSage
@@ -10,6 +10,7 @@ from embedding.hope import Hope
 from matplotlib.pyplot import subplots
 from pathlib import Path
 from report.dataset import Dataset
+from time import time
 from typing import List, Tuple
 
 
@@ -329,3 +330,89 @@ class MethodsComparator:
             utils.create_parent_folders(files[i_metric])
             fig.tight_layout()
             fig.savefig(files[i_metric])
+
+    def compare_execution_times(self, only_plot=False):
+        if not only_plot:
+            self.apply_execution_times_comparison()
+        self.plot_execution_time_comparison()
+
+    def apply_execution_times_comparison(self):
+        results = np.zeros((self.dataset.n_graphs, len(self.methods)))
+
+        # for i_graph in range(self.dataset.n_graphs):
+        for i_graph in range(15):
+            graph = self.dataset.load(i_graph)
+            print("Comparing execution times on graph {}/{} ({} nodes)".format(
+                i_graph + 1, self.dataset.n_graphs, graph.number_of_nodes()))
+
+            # Create an instance of each method with default parameters
+            methods: List[ClusteringMethod] = [
+                Spectral1(graph),
+                Spectral2(graph),
+                DeepWalk(graph),
+                GraphSage(graph),
+                Hope(graph)
+            ]
+
+            # Apply clustering with each method
+            for i_method, method in enumerate(methods):
+                print("Applying {}".format(self.methods[i_method]))
+                starting_time = time()
+                if isinstance(method, EmbeddingMethod):
+                    method.embed()
+
+                method.cluster()
+                results[i_graph, i_method] = time() - starting_time
+
+        # Save the results
+        path = Path("report/data/comparison_execution_times.npy")
+        utils.create_parent_folders(path)
+        np.save(path, results)
+
+    def plot_execution_time_comparison(self):
+        path = Path("report/data/comparison_execution_times.npy")
+
+        results = np.load(path)
+
+        # Create a histogram comparing the execution time of the methods
+        bar_width = 0.2
+        fig, ax = subplots()
+
+        # Split the results by set
+        n_bars = len(self.dataset.set_sizes)
+        sets_results = [
+            results[sum(self.dataset.set_sizes[:i]):sum(self.dataset.
+                                                        set_sizes[:i + 1]), :]
+            for i in range(n_bars)
+        ]
+        x = np.arange(n_bars)
+
+        # Compute the position of the sub bars
+        n_sub_bars = len(self.methods)
+        sub_bars_positions = np.arange(n_sub_bars,
+                                       dtype=float) - n_sub_bars // 2
+        sub_bars_positions *= bar_width
+        if n_sub_bars % 2 == 0:
+            sub_bars_positions += bar_width / 2
+
+        for i_method, method in enumerate(self.methods):
+            # Create the histogram thanks to the results
+            y = [set_result[:, i_method].sum() for set_result in sets_results]
+
+            ax.bar(x + sub_bars_positions[i_method],
+                   y,
+                   bar_width,
+                   label=str(method))
+
+        # Add various information on the figure
+        ax.set_xlabel("Group")
+        ax.set_ylabel("Total execution time (s)")
+        ax.set_xticks(x)
+        ax.set_xticklabels(["Small", "Medium", "Large"])
+        ax.legend(title="Method")
+
+        # Save the figure
+        output_path = Path("report/figures/comparison_execution_times.png")
+        utils.create_parent_folders(output_path)
+        fig.tight_layout()
+        fig.savefig(output_path)
