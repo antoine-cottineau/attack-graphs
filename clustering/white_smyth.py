@@ -104,6 +104,11 @@ class Spectral2(SpectralMethod):
                 nodes_in_cluster = np.arange(self.ag.number_of_nodes())[
                     best_node_assignment == i_cluster]
 
+                # If there is only one node in the cluster, we can't split it
+                if len(nodes_in_cluster) == 1:
+                    i_cluster += 1
+                    continue
+
                 # Perform K-means with 2 clusters on the involved rows of the
                 # eigenvectors matrix
                 cluster_eigenvectors = eigenvectors[nodes_in_cluster]

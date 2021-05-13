@@ -1,276 +1,331 @@
-import matplotlib.pyplot as plt
+from clustering.clustering import ClusteringMethod
+from clustering.white_smyth import Spectral1, Spectral2
 import numpy as np
 import utils
 from attack_graph import AttackGraph
-from clustering.clustering import ClusteringMethod
-from clustering.white_smyth import Spectral1, Spectral2
 from embedding.deepwalk import DeepWalk
 from embedding.embedding import EmbeddingMethod
 from embedding.graphsage import GraphSage
 from embedding.hope import Hope
+from matplotlib.pyplot import subplots
 from pathlib import Path
-from report.dataset import DatasetLoader
-from time import time
-from typing import List
-
-METRICS = [
-    "Modularity", "Mean silhouette index", "Mean conductance", "Mean coverage"
-]
+from report.dataset import Dataset
+from typing import List, Tuple
 
 
-def compare_methods_by_metric(dl: DatasetLoader):
-    methods = ["Spectral 1", "Spectral 2", "DeepWalk", "GraphSAGE", "HOPE"]
-
-    n_graphs = len(dl.files)
-    n_methods = len(methods)
-    n_metrics = len(METRICS)
-
-    # Create the array containing all the results
-    results = np.zeros((n_graphs, n_methods, n_metrics))
-
-    # For each graph, apply each method and apply each metric on the resulting
-    # clustering
-    for i_graph, graph in enumerate(dl):
-        # Create an instance of each method
-        methods: List[ClusteringMethod] = [
-            Spectral1(graph),
-            Spectral2(graph),
-            DeepWalk(graph),
-            GraphSage(graph),
-            Hope(graph)
+class MethodsOptimizer:
+    def __init__(self) -> None:
+        self.dataset = Dataset()
+        self.methods = ["DeepWalk", "GraphSAGE", "HOPE"]
+        self.metrics = [
+            "Modularity", "Mean silhouette index", "Mean conductance",
+            "Mean coverage"
         ]
 
-        # For each method which is an embedding method, call the embed function
-        for method in methods:
-            if isinstance(method, EmbeddingMethod):
-                method.embed()
+    def optimize(self, only_plot=False):
+        parameters = [[("Embedding dimension", [8, 16, 32, 64, 128]),
+                       ("Walk length", [20, 40, 80]),
+                       ("Window size", [3, 5, 7])],
+                      [("Embedding dimension", [8, 16, 32, 64, 128]),
+                       ("Hidden layer dimension", [8, 16, 32, 64, 128])],
+                      [("Embedding dimension", [8, 16, 32, 64, 128]),
+                       ("Measurement", ["cn", "katz", "pagerank", "aa"])]]
 
-        # For each method, apply clustering and measure it with all the metrics
-        for i_method, method in enumerate(methods):
-            method.cluster()
+        for i_method, method in enumerate(self.methods):
+            for parameter in parameters[i_method]:
+                print("Optimizing parameter {} of method {}".format(
+                    parameter[0], method))
+                if not only_plot:
+                    self.optimize_embedding_method(method, parameter)
+                self.plot_method_optimization(method, parameter)
 
-            for i_metric, metric in enumerate(METRICS):
-                results[i_graph, i_method,
-                        i_metric] = applyMetric(method, metric)
+    def optimize_embedding_method(self, method: str,
+                                  parameter: Tuple[str, List[int]]):
+        results = np.zeros(
+            (self.dataset.n_graphs, len(self.metrics), len(parameter[1])))
 
-    files = ["{}.png".format(sanitize(metric)) for metric in METRICS]
+        # For each graph, apply the method with each possible value of the
+        # parameter and measure the resulting clustering with each metric
+        for i_graph in range(self.dataset.n_graphs):
+            graph = self.dataset.load(i_graph)
 
-    # Create 4 histograms: one for each metric
-    for i_metric, metric in enumerate(METRICS):
-        fig, ax = plt.subplots()
+            # Apply the method
+            print("Applying {} on graph {}/{} ({} nodes)".format(
+                method, i_graph + 1, self.dataset.n_graphs,
+                graph.number_of_nodes()))
+            if method == "DeepWalk":
+                method_results = self.apply_deepwalk(graph, parameter)
+            elif method == "GraphSAGE":
+                method_results = self.apply_graphsage(graph, parameter)
+            elif method == "HOPE":
+                method_results = self.apply_hope(graph, parameter)
 
-        # Create the histogram thanks to the results
-        x = np.arange(len(methods))
+            # Store the results
+            results[i_graph] = method_results
 
-        metric_results: np.ndarray = results[:, :, i_metric]
-        y = metric_results.mean(axis=0)
-        deviations = metric_results.std(axis=0)
-
-        ax.barh(x, y, tick_label=methods, xerr=deviations)
-
-        # Add various information on the figure
-        ax.set_xlabel(metric)
-        ax.invert_yaxis()
-
-        # Save the figure
-        path = Path("report/figures", files[i_metric])
+        # Save the results
+        path = Path(
+            "report/data", "{}/{}_{}.npy".format(utils.sanitize(method),
+                                                 utils.sanitize(method),
+                                                 utils.sanitize(parameter[0])))
         utils.create_parent_folders(path)
-        fig.tight_layout()
-        fig.savefig(path)
+        np.save(path, results)
+
+    def plot_method_optimization(self, method: str,
+                                 parameter: Tuple[str, List[int]]):
+        path = Path(
+            "report/data", "{}/{}_{}.npy".format(utils.sanitize(method),
+                                                 utils.sanitize(method),
+                                                 utils.sanitize(parameter[0])))
+        results = np.load(path)
+
+        files = [
+            Path(
+                "report/figures",
+                "{}_{}_{}.png".format(utils.sanitize(method),
+                                      utils.sanitize(parameter[0]),
+                                      utils.sanitize(metric)))
+            for metric in self.metrics
+        ]
+
+        # Create histograms comparing the performance of the method for
+        # various values of the parameter
+        bar_width = 0.2
+        for i_metric, metric in enumerate(self.metrics):
+            fig, ax = subplots()
+
+            # Split the results by set
+            n_bars = len(self.dataset.set_sizes)
+            sets_results = [
+                results[sum(self.dataset.set_sizes[:i]
+                            ):sum(self.dataset.set_sizes[:i + 1]), i_metric, :]
+                for i in range(n_bars)
+            ]
+            x = np.arange(n_bars)
+
+            # Compute the position of the sub bars
+            n_sub_bars = len(parameter[1])
+            sub_bars_positions = np.arange(n_sub_bars,
+                                           dtype=float) - n_sub_bars // 2
+            sub_bars_positions *= bar_width
+            if n_sub_bars % 2 == 0:
+                sub_bars_positions += bar_width / 2
+
+            for i_value, value in enumerate(parameter[1]):
+                # Create the histogram thanks to the results
+                y = [
+                    set_result[:, i_value].mean()
+                    for set_result in sets_results
+                ]
+                errors = [
+                    set_result[:, i_value].std() for set_result in sets_results
+                ]
+
+                ax.bar(x + sub_bars_positions[i_value],
+                       y,
+                       bar_width,
+                       yerr=errors,
+                       label=str(value))
+
+            # Add various information on the figure
+            ax.set_xlabel("Group")
+            ax.set_ylabel(metric)
+            ax.set_xticks(x)
+            ax.set_xticklabels(["Small", "Medium", "Large"])
+            ax.legend(title=parameter[0])
+
+            # Save the figure
+            utils.create_parent_folders(files[i_metric])
+            fig.tight_layout()
+            fig.savefig(files[i_metric])
+
+    def apply_deepwalk(self, graph: AttackGraph,
+                       parameter: Tuple[str, List[int]]) -> np.ndarray:
+        results = np.zeros((len(self.metrics), len(parameter[1])))
+
+        for i_value, value in enumerate(parameter[1]):
+            if parameter[0] == "Embedding dimension":
+                deepwalk = DeepWalk(graph, dim_embedding=value)
+            elif parameter[0] == "Walk length":
+                deepwalk = DeepWalk(graph, walk_length=value)
+            elif parameter[0] == "Window size":
+                deepwalk = DeepWalk(graph, window_size=value)
+
+            print("Applying DeepWalk with parameter {} set to {}".format(
+                parameter[0], value))
+            results[:, i_value] = self.compute_all_metrics(deepwalk)
+
+        return results
+
+    def apply_graphsage(self, graph: AttackGraph,
+                        parameter: Tuple[str, List[int]]) -> np.ndarray:
+        results = np.zeros((len(self.metrics), len(parameter[1])))
+
+        for i_value, value in enumerate(parameter[1]):
+            if parameter[0] == "Embedding dimension":
+                graphsage = GraphSage(graph, dim_embedding=value)
+            elif parameter[0] == "Hidden layer dimension":
+                graphsage = GraphSage(graph, dim_hidden_layer=value)
+
+            print("Applying GraphSage with parameter {} set to {}".format(
+                parameter[0], value))
+            results[:, i_value] = self.compute_all_metrics(graphsage)
+
+        return results
+
+    def apply_hope(self, graph: AttackGraph,
+                   parameter: Tuple[str, List[int]]) -> np.ndarray:
+        results = np.zeros((len(self.metrics), len(parameter[1])))
+
+        for i_value, value in enumerate(parameter[1]):
+            if parameter[0] == "Embedding dimension":
+                hope = Hope(graph, dim_embedding=value)
+            elif parameter[0] == "Hidden layer dimension":
+                hope = Hope(graph, dim_hidden_layer=value)
+
+            print("Applying HOPE with parameter {} set to {}".format(
+                parameter[0], value))
+            results[:, i_value] = self.compute_all_metrics(hope)
+
+        return results
+
+    def compute_all_metrics(self, method: EmbeddingMethod) -> np.ndarray:
+        results = np.zeros(len(self.metrics))
+
+        method.embed()
+        method.cluster()
+
+        for i_metric in range(len(self.metrics)):
+            if i_metric == 0:
+                result = method.evaluate_modularity()
+            elif i_metric == 1:
+                result = method.evaluate_mean_silhouette_index()
+            elif i_metric == 2:
+                result = method.evaluate_mean_conductance()
+            elif i_metric == 3:
+                result = method.evaluate_mean_coverage()
+            results[i_metric] = result
+
+        return results
 
 
-def optimize_methods_parameters(max_n_files: int = None):
-    dl = DatasetLoader(max_n_files=max_n_files)
-    parameters = dict(deepwalk=dict(embedding_dimension=[8, 16, 32, 64, 128],
-                                    walk_length=[20, 40, 80],
-                                    window_size=[3, 5, 7]),
-                      graphsage=dict(dim_embedding=[8, 16, 32, 64, 128],
-                                     dim_hidden_layer=[8, 16, 32, 64, 128]),
-                      hope=dict(dim_embedding=[8, 16, 32, 64, 128],
-                                measurement=["cn", "katz", "pagerank", "aa"]))
+class MethodsComparator:
+    def __init__(self):
+        self.dataset = Dataset()
+        self.methods = [
+            "Spectral1", "Spectral2", "DeepWalk", "GraphSAGE", "HOPE"
+        ]
+        self.metrics = [
+            "Modularity", "Mean silhouette index", "Mean conductance",
+            "Mean coverage"
+        ]
 
-    for method, method_parameters in parameters.items():
-        for method_parameter, values in method_parameters.items():
-            print("-" * 100)
-            print("Optimizing parameter {} of method {}".format(
-                method_parameter, method))
-            print("-" * 100)
-            dl.reinitialize()
-            path = optimize_embedding_method(dl, method, method_parameter,
-                                             values)
-            plot_embedding_method_optimization(dl, method, method_parameter,
-                                               values, path)
+    def compare(self, only_plot=False):
+        if not only_plot:
+            self.apply_comparison()
+        self.plot_comparison()
 
+    def apply_comparison(self):
+        results = np.zeros(
+            (self.dataset.n_graphs, len(self.methods), len(self.metrics)))
 
-def optimize_embedding_method(dl: DatasetLoader, method: str, parameter: str,
-                              values: list) -> Path:
-    n_graphs = len(dl.files)
-    n_metrics = len(METRICS)
-    n_values = len(values)
+        for i_graph in range(self.dataset.n_graphs):
+            graph = self.dataset.load(i_graph)
+            print("Comparing methods on graph {}/{} ({} nodes)".format(
+                i_graph + 1, self.dataset.n_graphs, graph.number_of_nodes()))
 
-    results = np.zeros((n_graphs, n_metrics, n_values))
+            # Create an instance of each method with default parameters
+            methods: List[ClusteringMethod] = [
+                Spectral1(graph),
+                Spectral2(graph),
+                DeepWalk(graph),
+                GraphSage(graph),
+                Hope(graph)
+            ]
 
-    for i_graph, graph in enumerate(dl):
-        print("Applying {} on graph {}/{} ({} nodes)".format(
-            method, i_graph + 1, n_graphs, graph.number_of_nodes()))
+            # Apply clustering with each method
+            for i_method, method in enumerate(methods):
+                print("Applying {}".format(self.methods[i_method]))
+                if isinstance(method, EmbeddingMethod):
+                    method.embed()
 
-        # Call the right method
-        if method == "deepwalk":
-            method_results = applyDeepWalk(graph, parameter, values)
-        elif method == "graphsage":
-            method_results = applyGraphSage(graph, parameter, values)
-        else:
-            method_results = applyHope(graph, parameter, values)
+                method.cluster()
 
-        # Store the results
-        results[i_graph] = method_results
+                # Apply each metric
+                for i_metric in range(len(self.metrics)):
+                    if i_metric == 0:
+                        result = method.evaluate_modularity()
+                    elif i_metric == 1:
+                        result = method.evaluate_mean_silhouette_index()
+                    elif i_metric == 2:
+                        result = method.evaluate_mean_conductance()
+                    elif i_metric == 3:
+                        result = method.evaluate_mean_coverage()
+                    results[i_graph, i_method, i_metric] = result
 
-    path = Path("report/data/{}/{}_{}.npy".format(method, method, parameter))
-    utils.create_parent_folders(path)
-    np.save(path, results)
-    return path
-
-
-def plot_embedding_method_optimization(dl: DatasetLoader, method: str,
-                                       parameter: str, values: list,
-                                       path: Path):
-    results = np.load(path)
-
-    files = [
-        "{}_{}_{}.png".format(method, sanitize(parameter), sanitize(metric))
-        for metric in METRICS
-    ]
-
-    for i_metric, metric in enumerate(METRICS):
-        fig, ax = plt.subplots()
-
-        x = dl.number_of_nodes
-        for i_value, value in enumerate(values):
-            y: np.ndarray = results[:, i_metric, i_value]
-            ax.plot(x, y, label=str(value))
-
-        ax.set_xlabel("Number of nodes")
-        ax.set_ylabel(metric)
-        ax.legend(title=parameter)
-
-        path = Path("report/figures/{}".format(method), files[i_metric])
+        # Save the results
+        path = Path("report/data/comparison_methods.npy")
         utils.create_parent_folders(path)
-        fig.tight_layout()
-        fig.savefig(path)
+        np.save(path, results)
 
+    def plot_comparison(self):
+        path = Path("report/data/comparison_methods.npy")
 
-def applyDeepWalk(graph: AttackGraph, parameter: str,
-                  values: list) -> np.ndarray:
-    results = np.zeros((len(METRICS), len(values)))
+        results = np.load(path)
 
-    for i_value, value in enumerate(values):
-        if parameter == "embedding_dimension":
-            deepwalk = DeepWalk(graph, dim_embedding=value)
-        elif parameter == "walk_length":
-            deepwalk = DeepWalk(graph, walk_length=value)
-        else:
-            deepwalk = DeepWalk(graph, window_size=value)
+        files = [
+            Path("report/figures",
+                 "comparison_{}.png".format(utils.sanitize(metric)))
+            for metric in self.metrics
+        ]
 
-        print("Applying DeepWalk with parameter {} set to {}".format(
-            parameter, value))
-        deepwalk.embed()
-        deepwalk.cluster()
+        # Create histograms comparing the performance of the methods
+        bar_width = 0.2
+        for i_metric, metric in enumerate(self.metrics):
+            fig, ax = subplots()
 
-        for i_metric, metric in enumerate(METRICS):
-            results[i_metric, i_value] = applyMetric(deepwalk,
-                                                     sanitize(metric))
+            # Split the results by set
+            n_bars = len(self.dataset.set_sizes)
+            sets_results = [
+                results[sum(self.dataset.set_sizes[:i]
+                            ):sum(self.dataset.set_sizes[:i + 1]), :, i_metric]
+                for i in range(n_bars)
+            ]
+            x = np.arange(n_bars)
 
-    return results
+            # Compute the position of the sub bars
+            n_sub_bars = len(self.methods)
+            sub_bars_positions = np.arange(n_sub_bars,
+                                           dtype=float) - n_sub_bars // 2
+            sub_bars_positions *= bar_width
+            if n_sub_bars % 2 == 0:
+                sub_bars_positions += bar_width / 2
 
+            for i_method, method in enumerate(self.methods):
+                # Create the histogram thanks to the results
+                y = [
+                    set_result[:, i_method].mean()
+                    for set_result in sets_results
+                ]
+                errors = [
+                    set_result[:, i_method].std()
+                    for set_result in sets_results
+                ]
 
-def applyGraphSage(graph: AttackGraph, parameter: str,
-                   values: list) -> np.ndarray:
-    results = np.zeros((len(METRICS), len(values)))
+                ax.bar(x + sub_bars_positions[i_method],
+                       y,
+                       bar_width,
+                       yerr=errors,
+                       label=str(method))
 
-    for i_value, value in enumerate(values):
-        if parameter == "dim_embedding":
-            graphsage = GraphSage(graph, dim_embedding=value, device="cpu")
-        else:
-            graphsage = GraphSage(graph, dim_hidden_layer=value, device="cpu")
+            # Add various information on the figure
+            ax.set_xlabel("Group")
+            ax.set_ylabel(metric)
+            ax.set_xticks(x)
+            ax.set_xticklabels(["Small", "Medium", "Large"])
+            ax.legend(title="Method")
 
-        print("Applying GraphSAGE with parameter {} set to {}".format(
-            parameter, value))
-        graphsage.embed()
-        graphsage.cluster()
-
-        for i_metric, metric in enumerate(METRICS):
-            results[i_metric, i_value] = applyMetric(graphsage,
-                                                     sanitize(metric))
-
-    return results
-
-
-def applyHope(graph: AttackGraph, parameter: str, values: list) -> np.ndarray:
-    results = np.zeros((len(METRICS), len(values)))
-
-    for i_value, value in enumerate(values):
-        if parameter == "dim_embedding":
-            hope = Hope(graph, dim_embedding=value)
-        else:
-            hope = Hope(graph, measurement=value)
-
-        print("Applying HOPE with parameter {} set to {}".format(
-            parameter, value))
-        hope.embed()
-        hope.cluster()
-
-        for i_metric, metric in enumerate(METRICS):
-            results[i_metric, i_value] = applyMetric(hope, sanitize(metric))
-
-    return results
-
-
-def applyMetric(method: ClusteringMethod, metric: str) -> float:
-    if metric == "modularity":
-        return method.evaluate_modularity()
-    elif metric == "mean_silhouette_index":
-        return method.evaluate_mean_silhouette_index()
-    elif metric == "mean_conductance":
-        return method.evaluate_mean_conductance()
-    else:
-        return method.evaluate_mean_coverage()
-
-
-def sanitize(string: str):
-    return string.replace(" ", "_").lower()
-
-
-def measure_execution_times(dl: DatasetLoader):
-    method_labels = [
-        "Spectral 1", "Spectral 2", "DeepWalk", "GraphSAGE", "HOPE"
-    ]
-
-    i_graphs = [0, len(dl.files) // 2, len(dl.files)]
-    graphs = [dl.get(i) for i in i_graphs]
-
-    execution_times = np.zeros((len(method_labels), len(graphs)))
-
-    for i_method, method_label in enumerate(method_labels):
-        for i_graph, graph in graphs:
-            if method_label == "Spectral 1":
-                method = Spectral1(graph)
-            elif method_label == "Spectral 2":
-                method = Spectral2(graph)
-            elif method_label == "DeepWalk":
-                method = DeepWalk(graph)
-            elif method_label == "GraphSAGE":
-                method = GraphSage(graph)
-            elif method_label == "HOPE":
-                method = Hope(graph)
-
-            start_time = time()
-
-            if isinstance(method, EmbeddingMethod):
-                method.embed()
-            method.cluster()
-
-            execution_times[i_method, i_graph] = time() - start_time
-
-    path = Path("report/data/execution_times.npy")
-    utils.create_parent_folders(path)
-    np.save(path, execution_times)
+            # Save the figure
+            utils.create_parent_folders(files[i_metric])
+            fig.tight_layout()
+            fig.savefig(files[i_metric])

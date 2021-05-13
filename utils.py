@@ -43,3 +43,7 @@ def create_random_color() -> str:
     g = random.randint(0, 255)
     b = random.randint(0, 255)
     return "rgb({},{},{})".format(r, g, b)
+
+
+def sanitize(text: str) -> str:
+    return text.replace(" ", "_").lower()
