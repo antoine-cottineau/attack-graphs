@@ -1,14 +1,14 @@
 import networkx as nx
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from embedding.embedding import EmbeddingMethod
 from karateclub import DeepWalk as DW
 
 
 class DeepWalk(EmbeddingMethod):
     def __init__(self,
-                 ag: AttackGraph,
+                 ag: StateAttackGraph,
                  dim_embedding: int = 16,
                  walk_length: int = 80,
                  window_size: int = 5):

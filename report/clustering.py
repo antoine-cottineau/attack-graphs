@@ -1,6 +1,6 @@
 import numpy as np
 import utils
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from clustering.clustering import ClusteringMethod
 from clustering.white_smyth import Spectral1, Spectral2
 from embedding.deepwalk import DeepWalk
@@ -143,7 +143,7 @@ class MethodsOptimizer:
             fig.tight_layout()
             fig.savefig(files[i_metric])
 
-    def apply_deepwalk(self, graph: AttackGraph,
+    def apply_deepwalk(self, graph: StateAttackGraph,
                        parameter: Tuple[str, List[int]]) -> np.ndarray:
         results = np.zeros((len(self.metrics), len(parameter[1])))
 
@@ -161,7 +161,7 @@ class MethodsOptimizer:
 
         return results
 
-    def apply_graphsage(self, graph: AttackGraph,
+    def apply_graphsage(self, graph: StateAttackGraph,
                         parameter: Tuple[str, List[int]]) -> np.ndarray:
         results = np.zeros((len(self.metrics), len(parameter[1])))
 
@@ -177,7 +177,7 @@ class MethodsOptimizer:
 
         return results
 
-    def apply_hope(self, graph: AttackGraph,
+    def apply_hope(self, graph: StateAttackGraph,
                    parameter: Tuple[str, List[int]]) -> np.ndarray:
         results = np.zeros((len(self.metrics), len(parameter[1])))
 

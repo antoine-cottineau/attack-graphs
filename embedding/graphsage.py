@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from embedding.embedding import EmbeddingMethod
 from torch_cluster import random_walk
 from torch_geometric.nn import SAGEConv
@@ -10,7 +10,7 @@ from torch_geometric.data import Data, NeighborSampler as RawNeighborSampler
 
 class GraphSage(EmbeddingMethod):
     def __init__(self,
-                 ag: AttackGraph,
+                 ag: StateAttackGraph,
                  dim_embedding: int = 16,
                  dim_hidden_layer: int = 16,
                  n_epochs: int = 50,

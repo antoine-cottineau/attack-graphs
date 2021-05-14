@@ -3,7 +3,7 @@ import dash
 import dash_core_components as dcc
 import utils
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from attack_graph_generation import Generator
 from embedding.deepwalk import DeepWalk
 from embedding.graphsage import GraphSage
@@ -29,7 +29,7 @@ def load_attack_graph_from_file(data: str, filename: str) -> str:
     decoded_string = base64.b64decode(data.split(",")[1])
     extension = utils.get_file_extension(filename)
 
-    ag = AttackGraph()
+    ag = StateAttackGraph()
     ag.parse(decoded_string, extension)
 
     return ag.write()
@@ -49,7 +49,7 @@ def save_attack_graph_to_file(path: str, graph_json: str):
     if utils.get_file_extension(path) != "json":
         return
 
-    ag = AttackGraph()
+    ag = StateAttackGraph()
     ag.parse(graph_json, "json")
     ag.save(path)
 
@@ -82,7 +82,7 @@ def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
     if graph_json is None:
         return dash.no_update
 
-    ag = AttackGraph()
+    ag = StateAttackGraph()
     ag.parse(graph_json, "json")
 
     options = [
@@ -107,7 +107,7 @@ def update_displayed_attack_graph(graph_json: str,
     if graph_json is None:
         return dash.no_update
 
-    ag = AttackGraph()
+    ag = StateAttackGraph()
     ag.parse(graph_json, "json")
 
     return GraphDrawer(ag, parameters).draw()
@@ -117,7 +117,7 @@ def apply_node_embedding(method: str, path: str, graph_json: str):
     if graph_json is None or method is None or path is None:
         return dash.no_update
 
-    ag = AttackGraph()
+    ag = StateAttackGraph()
     ag.parse(graph_json, "json")
 
     if method == "deepwalk":

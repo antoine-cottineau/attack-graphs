@@ -2,11 +2,11 @@ from typing import Tuple
 import networkx as nx
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 
 
 class ClusterDrawer:
-    def __init__(self, ag: AttackGraph, clusters: dict):
+    def __init__(self, ag: StateAttackGraph, clusters: dict):
         self.ag = ag
         self.clusters = clusters
 

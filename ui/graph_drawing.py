@@ -4,7 +4,7 @@ import numpy as np
 import plotly.graph_objects as go
 import ui.constants
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from clustering.drawing import ClusterDrawer
 from clustering.white_smyth import Spectral1, Spectral2
 from embedding.deepwalk import DeepWalk
@@ -15,7 +15,7 @@ from utils import create_random_color
 
 
 class GraphDrawer:
-    def __init__(self, ag: AttackGraph, parameters: dict):
+    def __init__(self, ag: StateAttackGraph, parameters: dict):
         self.ag = ag
         self.parameters = parameters
 

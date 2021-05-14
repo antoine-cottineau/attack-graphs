@@ -1,10 +1,10 @@
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 
 
 class ValueIteration:
-    def __init__(self, ag: AttackGraph):
+    def __init__(self, ag: StateAttackGraph):
         self.ag = ag
 
     def run(self, precision: float = 1e-4, lamb: float = 0.9):

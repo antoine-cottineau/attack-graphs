@@ -2,7 +2,7 @@ import bisect
 import networkx as nx
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 
 
 class Generator:
@@ -31,7 +31,7 @@ class Generator:
         self.add_nodes(initial_node, exploits, graph)
 
         # Create the attack graph
-        ag = AttackGraph()
+        ag = StateAttackGraph()
         ag.load_nodes_and_edges(graph)
 
         # Add the dictionnary of exploits to the attack graph
@@ -46,7 +46,7 @@ class Generator:
 
         # Add the ids of the initial and final nodes
         ag.initial_node = 0
-        ag.set_final_node_id()
+        ag.find_final_node()
 
         return ag
 

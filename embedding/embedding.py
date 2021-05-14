@@ -1,12 +1,12 @@
 import numpy as np
 import utils
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from clustering.clustering import ClusteringMethod
 
 
 class EmbeddingMethod(ClusteringMethod):
-    def __init__(self, ag: AttackGraph, dim_embedding: int = 16):
+    def __init__(self, ag: StateAttackGraph, dim_embedding: int = 16):
         super().__init__(ag)
 
         self.ag = ag

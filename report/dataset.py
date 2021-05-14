@@ -1,6 +1,6 @@
 import numpy as np
 import utils
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from attack_graph_generation import Generator
 from pathlib import Path
 from typing import List
@@ -21,7 +21,7 @@ class Dataset:
         min_complexity = 20
         max_complexity = 40
 
-        sets: List[List[AttackGraph]] = []
+        sets: List[List[StateAttackGraph]] = []
         for _ in range(len(self.set_sizes)):
             sets.append([])
 
@@ -86,11 +86,11 @@ class Dataset:
                 graph.save("{}/{}.json".format(path, i_graph))
                 i_graph += 1
 
-    def load(self, i_graph: int) -> AttackGraph:
+    def load(self, i_graph: int) -> StateAttackGraph:
         path = [
             file
             for file in Path(self.base_path).glob("*/{}.json".format(i_graph))
         ][0]
-        graph = AttackGraph()
+        graph = StateAttackGraph()
         graph.load(path)
         return graph

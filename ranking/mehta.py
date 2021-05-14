@@ -1,11 +1,11 @@
 from typing import Dict
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 
 
 class PageRankMethod():
-    def __init__(self, ag: AttackGraph, d: float = 0.85):
+    def __init__(self, ag: StateAttackGraph, d: float = 0.85):
         self.ag = ag
         self.d = d
 
@@ -44,7 +44,7 @@ class PageRankMethod():
 
 
 class KuehlmannMethod:
-    def __init__(self, ag: AttackGraph, eta: float = 0.85):
+    def __init__(self, ag: StateAttackGraph, eta: float = 0.85):
         self.ag = ag
         self.eta = eta
 

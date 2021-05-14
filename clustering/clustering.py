@@ -2,13 +2,13 @@ import clustering.space_metrics as space_metrics
 import networkx as nx
 import numpy as np
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from sklearn.cluster import KMeans
 from typing import List
 
 
 class ClusteringMethod:
-    def __init__(self, ag: AttackGraph):
+    def __init__(self, ag: StateAttackGraph):
         self.ag = ag
 
         # By default, all the nodes are grouped into a unique cluster
@@ -132,7 +132,7 @@ class ClusteringMethod:
         return mean_cluster_coverage
 
     @staticmethod
-    def modularity(ag: AttackGraph, node_assignment: List[int]) -> float:
+    def modularity(ag: StateAttackGraph, node_assignment: List[int]) -> float:
         modularity = 0
 
         adjacency_matrix = ag.compute_adjacency_matrix(keep_directed=False)

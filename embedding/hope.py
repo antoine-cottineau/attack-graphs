@@ -1,13 +1,13 @@
 import numpy as np
 import scipy.sparse as sps
 
-from attack_graph import AttackGraph
+from attack_graph import StateAttackGraph
 from embedding.embedding import EmbeddingMethod
 
 
 class Hope(EmbeddingMethod):
     def __init__(self,
-                 ag: AttackGraph,
+                 ag: StateAttackGraph,
                  dim_embedding: int = 16,
                  measurement: str = "katz"):
         super().__init__(ag, dim_embedding)
