@@ -210,7 +210,7 @@ class DependencyAttackGraph(BaseGraph):
         i_node = 0
 
         # Add the nodes that correspond to the propositions
-        for id in self.propositions.keys():
+        for id in self.propositions:
             self.add_node(i_node, id_proposition=id)
             i_node += 1
 
@@ -241,11 +241,6 @@ class DependencyAttackGraph(BaseGraph):
 
 
 class StateAttackGraph(BaseGraph):
-    def __init__(self):
-        super().__init__()
-
-        self.final_node = None
-
     def fill_graph(self):
         # Get the list of propositions that are true at the beginning
         ids_propositions = [
@@ -308,7 +303,9 @@ class StateAttackGraph(BaseGraph):
             else:
                 # Add a new node
                 new_node = self.number_of_nodes()
-                self.add_node(new_node, ids_propositions=new_ids_propositions)
+                self.add_node(
+                    new_node,
+                    ids_propositions=[int(i) for i in new_ids_propositions])
 
                 # Add a new edge
                 self.add_edge(node, new_node, id_exploit=id_exploit)
@@ -323,7 +320,6 @@ class StateAttackGraph(BaseGraph):
         new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
         new_graph.exploits = self.exploits.copy()
-        new_graph.initial_node = self.initial_node
         new_graph.final_node = self.final_node
 
         return new_graph

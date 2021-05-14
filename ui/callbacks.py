@@ -38,7 +38,7 @@ def load_attack_graph_from_file(data: str, filename: str) -> str:
 def generate_attack_graph(n_propositions: int, n_initial_propositions: int,
                           n_exploits: int) -> str:
     ag = Generator(n_propositions, n_initial_propositions,
-                   n_exploits).generate()
+                   n_exploits).generate_state_attack_graph()
     return ag.write()
 
 
