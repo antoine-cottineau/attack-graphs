@@ -54,15 +54,18 @@ class MethodsOptimizer:
             print("Applying {} on graph {}/{} ({} nodes)".format(
                 method, i_graph + 1, self.dataset.n_graphs,
                 graph.number_of_nodes()))
-            if method == "DeepWalk":
-                method_results = self.apply_deepwalk(graph, parameter)
-            elif method == "GraphSAGE":
-                method_results = self.apply_graphsage(graph, parameter)
-            elif method == "HOPE":
-                method_results = self.apply_hope(graph, parameter)
+            try:
+                if method == "DeepWalk":
+                    method_results = self.apply_deepwalk(graph, parameter)
+                elif method == "GraphSAGE":
+                    method_results = self.apply_graphsage(graph, parameter)
+                elif method == "HOPE":
+                    method_results = self.apply_hope(graph, parameter)
 
-            # Store the results
-            results[i_graph] = method_results
+                # Store the results
+                results[i_graph] = method_results
+            except Exception:
+                print("Failed to apply the method")
 
         # Save the results
         path = Path(

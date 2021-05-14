@@ -31,8 +31,9 @@ class Dataset:
         while not are_sets_filled:
             # Generate a graph with the current complexity
             print("Generating graph with complexity {}".format(complexity))
-            graph = Generator(n_propositions=complexity,
-                              n_exploits=complexity).generate()
+            graph = Generator(
+                n_propositions=complexity,
+                n_exploits=complexity).generate_state_attack_graph()
 
             # Find the appropriate set for this graph
             n_nodes = graph.number_of_nodes()
