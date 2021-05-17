@@ -1,5 +1,5 @@
 import numpy as np
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph
 from clustering.clustering import ClusteringMethod
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import eigs
@@ -7,10 +7,10 @@ from sklearn.cluster import KMeans
 
 
 class SpectralMethod(ClusteringMethod):
-    def __init__(self, ag: StateAttackGraph, K: int = 15):
-        super().__init__(ag)
+    def __init__(self, graph: BaseGraph, K: int = 15):
+        super().__init__(graph)
 
-        self.K = min(K, self.ag.number_of_nodes() - 2)
+        self.K = min(K, self.graph.number_of_nodes() - 2)
 
     def cluster(self):
         self.create_W()
@@ -19,7 +19,7 @@ class SpectralMethod(ClusteringMethod):
         self.compute_top_eigenvectors()
 
     def create_W(self):
-        self.W = self.ag.compute_adjacency_matrix(keep_directed=False)
+        self.W = self.graph.compute_adjacency_matrix(directed=False)
 
     def create_D(self):
         d = self.W.sum(axis=0).A1
@@ -56,7 +56,8 @@ class Spectral1(SpectralMethod):
             eigenvectors = self.get_first_eigenvectors(k - 1)
 
             node_assignment = KMeans(n_clusters=k).fit_predict(eigenvectors)
-            modularity = ClusteringMethod.modularity(self.ag, node_assignment)
+            modularity = ClusteringMethod.modularity(self.graph,
+                                                     node_assignment)
 
             if modularity > best_modularity:
                 best_node_assignment = node_assignment
@@ -66,8 +67,8 @@ class Spectral1(SpectralMethod):
 
 
 class Spectral2(SpectralMethod):
-    def __init__(self, ag: StateAttackGraph, K: int = 15, k_min: int = 2):
-        super().__init__(ag, K)
+    def __init__(self, graph: BaseGraph, k_min: int = 2, K: int = 15):
+        super().__init__(graph, K=K)
 
         self.k_min = k_min
 
@@ -78,7 +79,7 @@ class Spectral2(SpectralMethod):
 
         # Initialize the best node assignment
         if k == 1:
-            best_node_assignment = np.zeros(self.ag.number_of_nodes(),
+            best_node_assignment = np.zeros(self.graph.number_of_nodes(),
                                             dtype=int)
         else:
             eigenvectors = self.get_first_eigenvectors(k - 1)
@@ -87,7 +88,8 @@ class Spectral2(SpectralMethod):
         k += 1
 
         # Measure the current modularity
-        modularity = ClusteringMethod.modularity(self.ag, best_node_assignment)
+        modularity = ClusteringMethod.modularity(self.graph,
+                                                 best_node_assignment)
 
         # Main loop
         cant_improve = False
@@ -101,7 +103,7 @@ class Spectral2(SpectralMethod):
             i_cluster = 0
             while i_cluster < len(clusters) and not has_improved:
                 # Get the nodes in the cluster
-                nodes_in_cluster = np.arange(self.ag.number_of_nodes())[
+                nodes_in_cluster = np.arange(self.graph.number_of_nodes())[
                     best_node_assignment == i_cluster]
 
                 # If there is only one node in the cluster, we can't split it
@@ -122,7 +124,7 @@ class Spectral2(SpectralMethod):
 
                 # Measure if there has been an improvement
                 new_modularity = ClusteringMethod.modularity(
-                    self.ag, new_node_assignment)
+                    self.graph, new_node_assignment)
 
                 if new_modularity > modularity:
                     # If there has been an improvement, we keep the changes

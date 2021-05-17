@@ -1,21 +1,21 @@
 import numpy as np
 import scipy.sparse as sps
-
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph
 from embedding.embedding import EmbeddingMethod
 
 
 class Hope(EmbeddingMethod):
     def __init__(self,
-                 ag: StateAttackGraph,
+                 graph: BaseGraph,
                  dim_embedding: int = 16,
                  measurement: str = "katz"):
-        super().__init__(ag, dim_embedding)
+        super().__init__(graph, dim_embedding)
 
         self.measurement = measurement
 
     def embed(self):
-        self.A: sps.coo_matrix = self.ag.compute_adjacency_matrix().astype("f")
+        self.A: sps.coo_matrix = self.graph.compute_adjacency_matrix().astype(
+            "f")
         self.createS(self.measurement)
 
         U, sigmas, Vt = sps.linalg.svds(self.S, k=int(self.dim_embedding / 2))
@@ -48,7 +48,7 @@ class Hope(EmbeddingMethod):
         self.S: sps.coo_matrix = self.A.dot(self.A)
 
     def createSWithKatz(self, beta: float = 0.1):
-        Mg = sps.identity(self.ag.number_of_nodes()) - beta * self.A
+        Mg = sps.identity(self.graph.number_of_nodes()) - beta * self.A
         Ml = beta * self.A
 
         self.S: sps.coo_matrix = sps.linalg.inv(Mg).dot(Ml)
@@ -58,13 +58,14 @@ class Hope(EmbeddingMethod):
         sum_ = np.where(sum_ == 0, 1, sum_)
         P = sps.coo_matrix(self.A / sum_)
 
-        Mg = sps.identity(self.ag.number_of_nodes()) - alpha * P
+        Mg = sps.identity(self.graph.number_of_nodes()) - alpha * P
 
         self.S: sps.coo_matrix = (1 - alpha) * sps.linalg.inv(Mg)
 
     def createSWithAdamicAdar(self):
-        D = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
-        for i in range(self.ag.number_of_nodes()):
+        D = np.zeros(
+            (self.graph.number_of_nodes(), self.graph.number_of_nodes()))
+        for i in range(self.graph.number_of_nodes()):
             D[i, i] = 1 / (self.A[i].sum() + self.A[:, i].sum())
         D = sps.coo_matrix(D)
 

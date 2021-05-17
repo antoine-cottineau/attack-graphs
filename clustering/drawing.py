@@ -1,8 +1,7 @@
-from typing import Tuple
 import networkx as nx
 import numpy as np
-
 from attack_graph import StateAttackGraph
+from typing import Tuple
 
 
 class ClusterDrawer:

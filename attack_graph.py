@@ -204,6 +204,17 @@ class BaseGraph(nx.DiGraph):
         data["propositions"] = self.propositions
         data["exploits"] = self.exploits
 
+    def get_node_ordering(self) -> dict:
+        ids_nodes = list(self.nodes)
+        return dict([(id, i) for i, id in enumerate(ids_nodes)])
+
+    def compute_adjacency_matrix(self, directed: bool = True) -> coo_matrix:
+        if directed:
+            network = self
+        else:
+            network = self.to_undirected()
+        return nx.adjacency_matrix(network)
+
 
 class DependencyAttackGraph(BaseGraph):
     def fill_graph(self):
@@ -368,14 +379,6 @@ class StateAttackGraph(BaseGraph):
         ids_propositions = [*self.propositions]
         return dict([(ids_propositions[i], i)
                      for i in range(len(self.propositions))])
-
-    def compute_adjacency_matrix(self,
-                                 keep_directed: bool = True) -> coo_matrix:
-        if keep_directed:
-            network = self
-        else:
-            network = nx.Graph(self)
-        return nx.adjacency_matrix(network)
 
     def _load_other_elements_from_json(self, data: dict):
         self.final_node = data["final_node"]

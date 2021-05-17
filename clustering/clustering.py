@@ -1,27 +1,25 @@
 import clustering.space_metrics as space_metrics
 import networkx as nx
 import numpy as np
-
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph
 from sklearn.cluster import KMeans
-from typing import List
+from typing import Dict, List
 
 
 class ClusteringMethod:
-    def __init__(self, ag: StateAttackGraph):
-        self.ag = ag
+    def __init__(self, graph: BaseGraph):
+        self.graph = graph
 
         # By default, all the nodes are grouped into a unique cluster
-        self.node_assignment = dict()
-        for node in self.ag.nodes:
+        self.node_assignment: Dict[int, int] = dict()
+        for node in self.graph.nodes:
             self.node_assignment[node] = 0
 
     def cluster(self):
         pass
 
     def update_clusters(self, node_assignment: List[int]):
-        self.node_assignment = dict()
-        for i, node in enumerate(self.ag.nodes):
+        for i, node in enumerate(self.graph.nodes):
             self.node_assignment[node] = node_assignment[i]
 
     def get_clusters(self) -> np.array:
@@ -30,32 +28,32 @@ class ClusteringMethod:
 
     def evaluate_modularity(self) -> float:
         node_assignment = list(self.node_assignment.values())
-        return ClusteringMethod.modularity(self.ag, node_assignment)
+        return ClusteringMethod.modularity(self.graph, node_assignment)
 
     def evaluate_mean_silhouette_index(self) -> float:
-        n = self.ag.number_of_nodes()
-        node_indices = self.ag.get_node_mapping()
+        n = self.graph.number_of_nodes()
+        node_ordering = self.graph.get_node_ordering()
         clusters = self.get_clusters()
 
         distance_matrix = np.zeros((n, n))
 
         # Fill distance_matrix
-        distances = nx.shortest_path_length(
-            nx.Graph(incoming_graph_data=self.ag))
-        for result in enumerate(distances):
-            i = node_indices[result[0]]
-            for dst, distance in result[1][1].items():
-                j = node_indices[dst]
+        distances = nx.shortest_path_length(self.graph.to_undirected())
+        for result in distances:
+            src = result[0]
+            i = node_ordering[src]
+            for dst, distance in result[1].items():
+                j = node_ordering[dst]
                 distance_matrix[i][j] = distance
 
         # Compute silhouette index node by node
         nodes_silhouette_index = np.zeros(n)
         clusters_content = [[
-            node_indices[node] for node in self.ag.nodes
+            node_ordering[node] for node in self.graph.nodes
             if self.node_assignment[node] == cluster
         ] for cluster in clusters]
-        for node in self.ag.nodes:
-            i = node_indices[node]
+        for node in self.graph.nodes:
+            i = node_ordering[node]
             node_cluster = self.node_assignment[node]
 
             mean_cluster_distances = [
@@ -77,21 +75,20 @@ class ClusteringMethod:
         return mean_silhouette_index
 
     def evaluate_mean_conductance(self) -> float:
-        adjacency_matrix = self.ag.compute_adjacency_matrix(
-            keep_directed=False)
+        adjacency_matrix = self.graph.compute_adjacency_matrix(directed=False)
         clusters = self.get_clusters()
-        node_positions = self.ag.get_node_mapping()
+        node_ordering = self.graph.get_node_ordering()
 
         # Compute the conductance for each cluster
         cluster_conductances = np.zeros(len(clusters))
         for cluster in clusters:
             nodes = [
-                node for node in self.ag.nodes
+                node for node in self.graph.nodes
                 if self.node_assignment[node] == cluster
             ]
-            cluster_node_positions = [node_positions[node] for node in nodes]
+            cluster_node_positions = [node_ordering[node] for node in nodes]
             complement_node_positions = [
-                node_positions[node] for node in self.ag.nodes
+                node_ordering[node] for node in self.graph.nodes
                 if node not in nodes
             ]
             numerator = adjacency_matrix[
@@ -108,19 +105,18 @@ class ClusteringMethod:
         return mean_cluster_conductance
 
     def evaluate_mean_coverage(self) -> float:
-        adjacency_matrix = self.ag.compute_adjacency_matrix(
-            keep_directed=False)
+        adjacency_matrix = self.graph.compute_adjacency_matrix(directed=False)
         clusters = self.get_clusters()
-        node_positions = self.ag.get_node_mapping()
+        node_ordering = self.graph.get_node_ordering()
 
         # Compute the coverage for each cluster
         cluster_coverages = np.zeros(len(clusters))
         for cluster in clusters:
             nodes = [
-                node for node in self.ag.nodes
+                node for node in self.graph.nodes
                 if self.node_assignment[node] == cluster
             ]
-            cluster_node_positions = [node_positions[node] for node in nodes]
+            cluster_node_positions = [node_ordering[node] for node in nodes]
             numerator = adjacency_matrix[
                 cluster_node_positions][:, cluster_node_positions].sum()
             denominator = adjacency_matrix.sum()
@@ -132,10 +128,10 @@ class ClusteringMethod:
         return mean_cluster_coverage
 
     @staticmethod
-    def modularity(ag: StateAttackGraph, node_assignment: List[int]) -> float:
+    def modularity(graph: BaseGraph, node_assignment: List[int]) -> float:
         modularity = 0
 
-        adjacency_matrix = ag.compute_adjacency_matrix(keep_directed=False)
+        adjacency_matrix = graph.compute_adjacency_matrix(directed=False)
         clusters = np.unique(node_assignment)
 
         sum_all_weights = adjacency_matrix.sum()

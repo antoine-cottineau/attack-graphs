@@ -21,11 +21,14 @@ class Generator:
         graph = StateAttackGraph()
 
         # Add the dictionaries of exploits and propositions to the graph
-        propositions = self._generate_propositions()
-        graph.propositions = propositions
+        self._generate_propositions()
+        self._generate_exploits()
 
-        exploits = self._generate_exploits()
-        graph.exploits = exploits
+        # Remove the propositions that aren't used by any exploit
+        self._remove_unused_propositions()
+
+        graph.propositions = self.propositions
+        graph.exploits = self.exploits
 
         # Fill the graph
         graph.fill_graph()
@@ -37,25 +40,28 @@ class Generator:
         graph = DependencyAttackGraph()
 
         # Add the dictionaries of exploits and propositions to the graph
-        propositions = self._generate_propositions()
-        graph.propositions = propositions
+        self._generate_propositions()
+        self._generate_exploits()
 
-        exploits = self._generate_exploits()
-        graph.exploits = exploits
+        # Remove the propositions that aren't used by any exploit
+        self._remove_unused_propositions()
+
+        graph.propositions = self.propositions
+        graph.exploits = self.exploits
 
         # Fill the graph
         graph.fill_graph()
 
         return graph
 
-    def _generate_propositions(self) -> Dict[int, dict]:
+    def _generate_propositions(self):
         propositions: Dict[int, dict] = {}
         for id_proposition in range(self.n_propositions):
             proposition = dict(
                 text="Randomly generated {}".format(id_proposition),
                 initial=id_proposition < self.n_initial_propositions)
             propositions[id_proposition] = proposition
-        return propositions
+        self.propositions = propositions
 
     def _generate_exploits(self) -> Dict[int, dict]:
         # Get the list of the propositions that need to be granted by at least
@@ -117,4 +123,20 @@ class Generator:
             exploits[id_exploit] = exploit
             id_exploit += 1
 
-        return exploits
+        self.exploits = exploits
+
+    def _remove_unused_propositions(self):
+        unused_propositions = np.array(list(self.propositions.keys()))
+        for data in self.exploits.values():
+            required_propositions = data["required_propositions"]
+            unused_propositions = np.setdiff1d(unused_propositions,
+                                               required_propositions,
+                                               assume_unique=True)
+
+            granted_proposition = data["granted_proposition"]
+            unused_propositions = np.setdiff1d(unused_propositions,
+                                               granted_proposition,
+                                               assume_unique=True)
+
+        for id_proposition in unused_propositions:
+            del self.propositions[id_proposition]

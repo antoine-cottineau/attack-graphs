@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph
 from embedding.embedding import EmbeddingMethod
 from torch_cluster import random_walk
 from torch_geometric.nn import SAGEConv
@@ -10,13 +10,13 @@ from torch_geometric.data import Data, NeighborSampler as RawNeighborSampler
 
 class GraphSage(EmbeddingMethod):
     def __init__(self,
-                 ag: StateAttackGraph,
+                 graph: BaseGraph,
                  dim_embedding: int = 16,
                  dim_hidden_layer: int = 16,
                  n_epochs: int = 50,
                  device: str = None,
                  verbose: bool = False):
-        super().__init__(ag, dim_embedding)
+        super().__init__(graph, dim_embedding)
 
         self.dim_hidden_layer = dim_hidden_layer
         self.n_epochs = n_epochs
@@ -74,14 +74,14 @@ class GraphSage(EmbeddingMethod):
         return total_loss / self.data.num_nodes
 
     def create_model_and_optimizer(self):
-        self.model = Sage(self.ag.number_of_nodes(), self.dim_hidden_layer,
+        self.model = Sage(self.graph.number_of_nodes(), self.dim_hidden_layer,
                           self.dim_embedding)
         self.model = self.model.to(self.device)
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.01)
 
     def create_data(self):
-        x = torch.eye(self.ag.number_of_nodes())
-        edge_index = torch.tensor(list(self.ag.edges), dtype=torch.long)
+        x = torch.eye(self.graph.number_of_nodes())
+        edge_index = torch.tensor(list(self.graph.edges), dtype=torch.long)
         edge_index = edge_index.t().contiguous()
 
         self.data = Data(x=x, edge_index=edge_index)
