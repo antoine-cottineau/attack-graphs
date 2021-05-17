@@ -10,27 +10,27 @@ class ValueIteration:
     def run(self, precision: float = 1e-4, lamb: float = 0.9):
         values = np.zeros(self.ag.number_of_nodes())
         chosen_successors = np.zeros(self.ag.number_of_nodes(), dtype=int)
-        node_mapping = self.ag.get_node_mapping()
+        node_ordering = self.ag.get_node_ordering()
         delta = np.inf
 
         while delta > precision:
             new_values = np.zeros(self.ag.number_of_nodes())
             for node in self.ag.nodes:
-                node_value = values[node_mapping[node]]
+                node_value = values[node_ordering[node]]
                 reward = self.get_reward(node)
                 successors = self.get_successors(node)
 
                 # If the node is the final node, its value is always 1
                 if len(successors) == 0:
-                    new_values[node_mapping[node]] = 1
-                    chosen_successors[node_mapping[node]] = node
+                    new_values[node_ordering[node]] = 1
+                    chosen_successors[node_ordering[node]] = node
                     continue
 
                 # Find the best action
                 best_value = -np.inf
                 best_successor = None
                 for successor in successors:
-                    successor_value = values[node_mapping[successor[0]]]
+                    successor_value = values[node_ordering[successor[0]]]
                     probability = successor[1]
 
                     # The attacker either manages to perform the attack (with
@@ -45,8 +45,8 @@ class ValueIteration:
                         best_successor = successor[0]
 
                 # Update the current values and chosen actions
-                new_values[node_mapping[node]] = best_value
-                chosen_successors[node_mapping[node]] = best_successor
+                new_values[node_ordering[node]] = best_value
+                chosen_successors[node_ordering[node]] = best_successor
 
             # Compute delta
             delta = ValueIteration.compute_delta(values, new_values)

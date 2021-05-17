@@ -369,17 +369,6 @@ class StateAttackGraph(BaseGraph):
 
         return new_graph
 
-    # TODO: remove
-    def get_node_mapping(self) -> dict:
-        ids_nodes = list(self.nodes)
-        return dict([(id, i) for i, id in enumerate(ids_nodes)])
-
-    # TODO: remove
-    def get_proposition_mapping(self) -> dict:
-        ids_propositions = [*self.propositions]
-        return dict([(ids_propositions[i], i)
-                     for i in range(len(self.propositions))])
-
     def _load_other_elements_from_json(self, data: dict):
         self.final_node = data["final_node"]
 

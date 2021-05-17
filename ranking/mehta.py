@@ -11,11 +11,11 @@ class PageRankMethod():
 
     def compute_normalized_adjacency_matrix(self):
         Z = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
-        node_mapping = self.ag.get_node_mapping()
+        node_ordering = self.ag.get_node_ordering()
         for i in self.ag.nodes():
             for j in self.ag.predecessors(i):
-                Z[node_mapping[i],
-                  node_mapping[j]] = 1 / len(list(self.ag.successors(j)))
+                Z[node_ordering[i],
+                  node_ordering[j]] = 1 / len(list(self.ag.successors(j)))
 
         # In the paper, Mehta et al. indicated that a link with probability
         # 1-d should be added from each state toward the initial state.
@@ -50,11 +50,11 @@ class KuehlmannMethod:
 
     def compute_transition_probability_matrix(self):
         P = np.zeros((self.ag.number_of_nodes(), self.ag.number_of_nodes()))
-        node_mapping = self.ag.get_node_mapping()
+        node_ordering = self.ag.get_node_ordering()
         for i in self.ag.nodes():
             for j in self.ag.predecessors(i):
-                P[node_mapping[i],
-                  node_mapping[j]] = 1 / len(list(self.ag.successors(j)))
+                P[node_ordering[i],
+                  node_ordering[j]] = 1 / len(list(self.ag.successors(j)))
         return P
 
     def apply(self, max_m: int = 100) -> Dict[int, float]:
