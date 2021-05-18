@@ -250,6 +250,16 @@ class DependencyAttackGraph(BaseGraph):
             if node_id_proposition == id_proposition
         ][0]
 
+    def copy(self, as_view=False):
+        graph = super().copy(as_view=as_view)
+
+        new_graph = DependencyAttackGraph()
+        new_graph.load_nodes_and_edges(graph)
+        new_graph.propositions = self.propositions.copy()
+        new_graph.exploits = self.exploits.copy()
+
+        return new_graph
+
 
 class StateAttackGraph(BaseGraph):
     def fill_graph(self):
