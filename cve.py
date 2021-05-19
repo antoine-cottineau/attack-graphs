@@ -78,6 +78,11 @@ class ExploitFetcher:
         cvss = float(
             json_object["response"][cve_id]["details"]["cvssV3_score"])
 
+        # Some exploits are wrongly entered in the database. Thus, we check
+        # that the cvss score is superior to 0
+        if cvss == 0:
+            return None
+
         # Return the exploit dictionary
         exploit = dict(cve_id=cve_id, text=text, cvss=cvss)
         return exploit

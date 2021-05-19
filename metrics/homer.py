@@ -5,15 +5,11 @@ from typing import Dict, List, Set, Tuple
 
 class RiskQuantifier:
     def __init__(self, graph: DependencyAttackGraph):
-        self.graph = self.set_up_graph(graph)
+        self.graph = self._set_up_graph(graph)
+        self.exploit_probabilities = self._get_exploit_nodes_probabilities()
 
-        # TODO: replace the probabilities of successfully performing an attack
-        # with real probabilities obtained from the CVSS scores
-        self.exploit_probabilities = dict([(node, 0.7)
-                                           for node in self.graph.nodes])
-
-    def set_up_graph(self,
-                     graph: DependencyAttackGraph) -> DependencyAttackGraph:
+    def _set_up_graph(self,
+                      graph: DependencyAttackGraph) -> DependencyAttackGraph:
         new_graph = graph.copy()
 
         # Remove the proposition nodes that are initially true
@@ -46,6 +42,16 @@ class RiskQuantifier:
 
         return new_graph
 
+    def _get_exploit_nodes_probabilities(self) -> Dict[int, float]:
+        result = {}
+        for node, id_exploit in self.graph.nodes(data="id_exploit"):
+            if id_exploit is not None:
+                # The probability is equal to the CVSS score divided by 10 (to
+                # get a value between 0 and 1)
+                probability = self.graph.exploits[id_exploit]["cvss"] / 10
+                result[node] = probability
+        return result
+
     def apply(self) -> Dict[int, float]:
         # Create the necessary arrays
         self.evaluated_nodes: Set[int] = set()
@@ -64,7 +70,7 @@ class RiskQuantifier:
         self.list_stored_phi: List[Tuple[Dict[int, bool], float]] = []
 
         # Get the list of branch nodes
-        self.branch_nodes = self.get_branch_nodes()
+        self.branch_nodes = self._get_branch_nodes()
 
         # Treat the case of the root node
         self.evaluated_nodes.add(self.id_root_node)
@@ -73,11 +79,11 @@ class RiskQuantifier:
         # Main loop
         while len(self.evaluated_nodes) < self.graph.number_of_nodes():
             # Get a node that is ready for evaluation and its predecessors
-            node, predecessors = self.get_node_ready_for_evaluation()
+            node, predecessors = self._get_node_ready_for_evaluation()
 
             if "id_proposition" in self.graph.nodes[node]:
                 # Update the various arrays for this proposition node
-                self.dict_phi[node] = 1 - self.evaluate_probability(
+                self.dict_phi[node] = 1 - self._evaluate_probability(
                     dict([p, False] for p in predecessors))
 
                 for predecessor in predecessors:
@@ -94,7 +100,7 @@ class RiskQuantifier:
             else:
                 # Update the various arrays for this exploit node
                 self.dict_phi[node] = self.exploit_probabilities[
-                    node] * self.evaluate_probability(
+                    node] * self._evaluate_probability(
                         dict([p, True] for p in predecessors))
 
                 self.dict_chi[node] = self.branch_nodes & predecessors
@@ -115,13 +121,13 @@ class RiskQuantifier:
 
         return risks
 
-    def get_branch_nodes(self) -> Set[int]:
+    def _get_branch_nodes(self) -> Set[int]:
         return set([
             node for node in self.graph.nodes
             if len(list(self.graph.successors(node))) > 1
         ])
 
-    def get_node_ready_for_evaluation(self) -> Tuple[int, Set[int]]:
+    def _get_node_ready_for_evaluation(self) -> Tuple[int, Set[int]]:
         for node in self.graph.nodes:
             # Check that the node hasn't already been evaluated
             if node in self.evaluated_nodes:
@@ -132,7 +138,7 @@ class RiskQuantifier:
             if self.evaluated_nodes >= predecessors:
                 return node, predecessors
 
-    def evaluate_probability(self, node_polarities: Dict[int, bool]) -> float:
+    def _evaluate_probability(self, node_polarities: Dict[int, bool]) -> float:
         nodes = set(node_polarities)
 
         # Check if this probability has already been computed
@@ -170,15 +176,15 @@ class RiskQuantifier:
             for set_polarities in possible_polarities:
                 D_polarities = dict([list(D)[i], set_polarities[i]]
                                     for i in range(len(D)))
-                value += self.evaluate_conditional_probability(
+                value += self._evaluate_conditional_probability(
                     node_polarities,
-                    D_polarities) * self.evaluate_probability(D_polarities)
+                    D_polarities) * self._evaluate_probability(D_polarities)
 
         # Save the probability for an eventual later use
         self.list_stored_phi.append((node_polarities, value))
         return value
 
-    def evaluate_conditional_probability(
+    def _evaluate_conditional_probability(
             self, node_polarities: Dict[int, bool],
             D_polarities: Dict[int, bool]) -> float:
         # Check if this probability has already been computed
@@ -190,20 +196,20 @@ class RiskQuantifier:
         if len(node_polarities) > 1:
             value = 1
             for node, polarity in node_polarities.items():
-                value *= self.evaluate_conditional_probability(
+                value *= self._evaluate_conditional_probability(
                     {node: polarity}, D_polarities)
         else:
             node = list(node_polarities)[0]
             polarity = node_polarities[node]
 
-            value = self.evaluate_single_node_conditional_probability(
+            value = self._evaluate_single_node_conditional_probability(
                 node, polarity, D_polarities)
 
         # Save the probability for an eventual later use
         self.list_stored_psi.append((node_polarities, D_polarities, value))
         return value
 
-    def evaluate_single_node_conditional_probability(
+    def _evaluate_single_node_conditional_probability(
             self, node: int, polarity: bool,
             D_polarities: Dict[int, bool]) -> float:
         if polarity:
@@ -224,13 +230,13 @@ class RiskQuantifier:
 
             predecessors = self.graph.predecessors(node)
             if "id_proposition" in self.graph.nodes[node]:
-                return 1 - self.evaluate_conditional_probability(
+                return 1 - self._evaluate_conditional_probability(
                     dict([(p, False) for p in predecessors]), D_polarities)
             else:
                 return self.exploit_probabilities[
-                    node] * self.evaluate_conditional_probability(
+                    node] * self._evaluate_conditional_probability(
                         dict([(p, True) for p in predecessors]), D_polarities)
         else:
             # There is exactly one negative element
-            return 1 - self.evaluate_conditional_probability({node: True},
-                                                             D_polarities)
+            return 1 - self._evaluate_conditional_probability({node: True},
+                                                              D_polarities)

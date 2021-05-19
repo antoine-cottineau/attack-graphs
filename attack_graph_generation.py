@@ -1,5 +1,6 @@
 import numpy as np
 from attack_graph import DependencyAttackGraph, StateAttackGraph
+from cve import ExploitFetcher
 from typing import Dict
 
 
@@ -88,6 +89,9 @@ class Generator:
         # Create a dictionary of exploits
         exploits: Dict[int, dict] = {}
 
+        # Get some real-world exploits
+        fake_data = ExploitFetcher().get_fake_exploit_list(self.n_exploits)
+
         # Create the exploits by sampling some propositions that must be true
         # so that an exploit can be performed
         id_exploit = 0
@@ -114,10 +118,14 @@ class Generator:
 
                 # Create the exploit and check that it doesn't already exist
                 exploit = dict(
-                    text="Randomly generated {}".format(id_exploit),
                     granted_proposition=granted_proposition,
                     required_propositions=list(required_propositions))
                 already_exists = exploit in exploits.values()
+
+            # Add data to the new exploit
+            exploit["cve_id"] = fake_data[id_exploit]["cve_id"]
+            exploit["text"] = fake_data[id_exploit]["text"]
+            exploit["cvss"] = fake_data[id_exploit]["cvss"]
 
             # Add the new exploit and update the id
             exploits[id_exploit] = exploit

@@ -23,7 +23,9 @@ class BaseGraph(nx.DiGraph):
         #   - id_exploit: int (key of the dictionary)
         #   - text: str
         #   - granted_proposition: int
-        #   - required_propositions: List[int]
+        #   - required_propositions: List[int],
+        #   - cve_id: str
+        #   - cvss: float
         self.exploits: Dict[int, dict] = {}
 
     def load_nodes_and_edges(self, graph: nx.DiGraph):
