@@ -117,9 +117,10 @@ class Generator:
                 required_propositions = np.sort(required_propositions)
 
                 # Create the exploit and check that it doesn't already exist
-                exploit = dict(
-                    granted_proposition=granted_proposition,
-                    required_propositions=list(required_propositions))
+                exploit = dict(granted_proposition=int(granted_proposition),
+                               required_propositions=[
+                                   int(i) for i in required_propositions
+                               ])
                 already_exists = exploit in exploits.values()
 
             # Add data to the new exploit

@@ -262,6 +262,10 @@ class DependencyAttackGraph(BaseGraph):
 
         return new_graph
 
+    def _write_other_elements_in_data(self, data: dict):
+        super()._write_other_elements_in_data(data)
+        data["type"] = "dependency"
+
 
 class StateAttackGraph(BaseGraph):
     def fill_graph(self):
@@ -385,4 +389,6 @@ class StateAttackGraph(BaseGraph):
         self.final_node = data["final_node"]
 
     def _write_other_elements_in_data(self, data: dict):
+        super()._write_other_elements_in_data(data)
         data["final_node"] = self.final_node
+        data["type"] = "state"
