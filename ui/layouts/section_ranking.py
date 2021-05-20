@@ -13,7 +13,9 @@ def generate_section() -> html.Section:
                      options=[
                          dict(label="None", value="none"),
                          dict(label="PageRank", value="pagerank"),
-                         dict(label="Kuehlmann", value="kuehlmann")
+                         dict(label="Kuehlmann", value="kuehlmann"),
+                         dict(label="Value iteration", value="vi"),
+                         dict(label="Risk quantification", value="homer"),
                      ],
                      value="none",
                      clearable=False,

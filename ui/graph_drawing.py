@@ -1,3 +1,5 @@
+from metrics.homer import RiskQuantifier
+from metrics.sheyner import ValueIteration
 import dash_core_components as dcc
 import networkx as nx
 import numpy as np
@@ -90,7 +92,8 @@ class BaseGraphDrawer:
     def add_node_scatter_object(self,
                                 dict_positions: Dict[int, Tuple[float, float]],
                                 dict_hovertexts: Dict[int, str],
-                                symbol: str = "circle"):
+                                symbol: str = "circle",
+                                ranking_legend_text: str = "Ranking score"):
         x = []
         y = []
         hovertext = []
@@ -117,14 +120,13 @@ class BaseGraphDrawer:
         # Update the color of the nodes if ranking has been applied
         if self.ranking_method is not None:
             font = dict(family="Montserrat", color=ui.constants.color_light)
-            scatter_object.marker = dict(size=12,
-                                         showscale=True,
-                                         colorscale="Reds",
-                                         color=ranking_colors,
-                                         colorbar=dict(
-                                             tickfont=font,
-                                             title=dict(text="Ranking score",
-                                                        font=font)))
+            scatter_object.marker = dict(
+                size=12,
+                showscale=True,
+                colorscale="Reds",
+                color=ranking_colors,
+                colorbar=dict(tickfont=font,
+                              title=dict(text=ranking_legend_text, font=font)))
 
         self.scatter_objects.append(scatter_object)
 
@@ -187,6 +189,8 @@ class StateAttackGraphDrawer(BaseGraphDrawer):
             return PageRankMethod(self.graph).apply()
         elif self.ranking_method == "kuehlmann":
             return KuehlmannMethod(self.graph).apply()
+        elif self.ranking_method == "vi":
+            return ValueIteration(self.graph).apply()[0]
         else:
             return None
 
@@ -280,6 +284,15 @@ class DependencyAttackGraphDrawer(BaseGraphDrawer):
 
         return node_positions
 
+    def apply_ranking(self) -> Dict[int, float]:
+        if self.ranking_method is None:
+            return None
+
+        if self.ranking_method == "homer":
+            return RiskQuantifier(self.graph).apply()
+        else:
+            return None
+
     def add_node_scatter_objects(self):
         propositions_positions: Dict[int, Tuple[float, float]] = {}
         propositions_hovertext: Dict[int, str] = {}
@@ -302,9 +315,12 @@ class DependencyAttackGraphDrawer(BaseGraphDrawer):
 
         self.add_node_scatter_object(propositions_positions,
                                      propositions_hovertext,
-                                     symbol="diamond")
+                                     symbol="diamond",
+                                     ranking_legend_text="Probability")
 
-        self.add_node_scatter_object(exploits_positions, exploits_hovertext)
+        self.add_node_scatter_object(exploits_positions,
+                                     exploits_hovertext,
+                                     ranking_legend_text="Probability")
 
     def add_edge_scatter_objects(self):
         edges = []

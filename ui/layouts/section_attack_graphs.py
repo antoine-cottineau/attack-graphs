@@ -45,7 +45,7 @@ def generate_subsection_generate() -> html.Div:
                          dict(label="Dependency attack graph",
                               value="dependency")
                      ],
-                     value="dependency",
+                     value="state",
                      clearable=False,
                      searchable=False,
                      className="dropdown"))

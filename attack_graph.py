@@ -182,8 +182,14 @@ class BaseGraph(nx.DiGraph):
         self._load_other_elements_from_json(data)
 
     def _load_other_elements_from_json(self, data: dict):
-        self.propositions = data["propositions"]
-        self.exploits = data["exploits"]
+        self.propositions = dict([
+            (int(id_proposition), proposition)
+            for id_proposition, proposition in data["propositions"].items()
+        ])
+        self.exploits = dict([
+            (int(id_exploit), exploit)
+            for id_exploit, exploit in data["exploits"].items()
+        ])
 
     def save(self, path: str):
         file = Path(path)
@@ -408,6 +414,7 @@ class StateAttackGraph(BaseGraph):
         return new_graph
 
     def _load_other_elements_from_json(self, data: dict):
+        super()._load_other_elements_from_json(data)
         self.final_node = data["final_node"]
 
     def _write_other_elements_in_data(self, data: dict):
