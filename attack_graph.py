@@ -252,6 +252,28 @@ class DependencyAttackGraph(BaseGraph):
             if node_id_proposition == id_proposition
         ][0]
 
+    def get_pruned_graph(self, ids_exploits: List[int]):
+        # Copy this attack graph
+        new_graph = self.copy()
+
+        # Remove the nodes corresponding to the exploits to remove
+        nodes_to_remove = []
+        for node, id_exploit in new_graph.nodes(data="id_exploit"):
+            if id_exploit is not None and id_exploit not in ids_exploits:
+                nodes_to_remove.append(node)
+        new_graph.remove_nodes_from(nodes_to_remove)
+
+        # The nodes that have no successors and no predecessors must be
+        # removed
+        nodes_to_remove = []
+        for node in new_graph.nodes:
+            if len(list(new_graph.predecessors(node))) == 0 and len(
+                    list(new_graph.successors(node))) == 0:
+                nodes_to_remove.append(node)
+        new_graph.remove_nodes_from(nodes_to_remove)
+
+        return new_graph
+
     def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
 
@@ -351,7 +373,7 @@ class StateAttackGraph(BaseGraph):
 
         return new_graph
 
-    def get_pruned_graph(self, ids_exploits_to_keep: list):
+    def get_pruned_graph(self, ids_exploits_to_keep: List[int]):
         # Copy this attack graph
         new_graph = self.copy()
 

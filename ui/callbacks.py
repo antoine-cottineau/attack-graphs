@@ -1,25 +1,26 @@
 import base64
 import dash
 import dash_core_components as dcc
+import json
 import utils
-
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph, DependencyAttackGraph, StateAttackGraph
 from attack_graph_generation import Generator
-from embedding.deepwalk import DeepWalk
-from embedding.graphsage import GraphSage
-from embedding.hope import Hope
-from ui.graph_drawing import GraphDrawer
+from ui.graph_drawing import DependencyAttackGraphDrawer, StateAttackGraphDrawer
 from typing import Tuple
 
 
 def update_saved_attack_graph(context: object, data: list, filename: str,
                               n_propositions: int, n_initial_propositions: int,
-                              n_exploits: int) -> str:
+                              n_exploits: int, graph_type: str) -> str:
     if context.triggered[0]["prop_id"].split(".")[0] == "graph-upload":
         return load_attack_graph_from_file(data, filename)
     else:
-        return generate_attack_graph(n_propositions, n_initial_propositions,
-                                     n_exploits)
+        generator = Generator(n_propositions, n_initial_propositions,
+                              n_exploits)
+        if graph_type == "state":
+            return generator.generate_state_attack_graph().write()
+        else:
+            return generator.generate_dependency_attack_graph().write()
 
 
 def load_attack_graph_from_file(data: str, filename: str) -> str:
@@ -29,17 +30,16 @@ def load_attack_graph_from_file(data: str, filename: str) -> str:
     decoded_string = base64.b64decode(data.split(",")[1])
     extension = utils.get_file_extension(filename)
 
-    ag = StateAttackGraph()
-    ag.parse(decoded_string, extension)
+    # Get the type of the attack graph
+    type = json.loads(decoded_string)["type"]
 
-    return ag.write()
+    if type == "state":
+        graph = StateAttackGraph()
+    else:
+        graph = DependencyAttackGraph()
 
-
-def generate_attack_graph(n_propositions: int, n_initial_propositions: int,
-                          n_exploits: int) -> str:
-    ag = Generator(n_propositions, n_initial_propositions,
-                   n_exploits).generate_state_attack_graph()
-    return ag.write()
+    graph.parse(decoded_string, extension)
+    return graph.write()
 
 
 def save_attack_graph_to_file(path: str, graph_json: str):
@@ -49,9 +49,16 @@ def save_attack_graph_to_file(path: str, graph_json: str):
     if utils.get_file_extension(path) != "json":
         return
 
-    ag = StateAttackGraph()
-    ag.parse(graph_json, "json")
-    ag.save(path)
+    # Get the type of the attack graph
+    type = json.loads(graph_json)["type"]
+
+    if type == "state":
+        graph = StateAttackGraph()
+    elif type == "dependency":
+        graph = DependencyAttackGraph()
+
+    graph.parse(graph_json, "json")
+    graph.save(path)
 
 
 def update_saved_parameters(ranking_method: str, clustering_method: str,
@@ -82,15 +89,17 @@ def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
     if graph_json is None:
         return dash.no_update
 
-    ag = StateAttackGraph()
-    ag.parse(graph_json, "json")
+    graph = BaseGraph()
+    graph.parse(graph_json, "json")
 
-    options = [
-        dict(label=exploit[1], value=exploit[0])
-        for exploit in ag.exploits.items()
-    ]
+    options = []
+    for id_exploit, data in graph.exploits.items():
+        label = data["text"]
+        if len(label) > 100:
+            label = label[:100] + "..."
+        options.append(dict(value=id_exploit, label=label))
 
-    value = [*ag.exploits]
+    value = list(graph.exploits)
 
     return options, value
 
@@ -107,27 +116,14 @@ def update_displayed_attack_graph(graph_json: str,
     if graph_json is None:
         return dash.no_update
 
-    ag = StateAttackGraph()
-    ag.parse(graph_json, "json")
+    # Get the type of the attack graph
+    type = json.loads(graph_json)["type"]
 
-    return GraphDrawer(ag, parameters).draw()
-
-
-def apply_node_embedding(method: str, path: str, graph_json: str):
-    if graph_json is None or method is None or path is None:
-        return dash.no_update
-
-    ag = StateAttackGraph()
-    ag.parse(graph_json, "json")
-
-    if method == "deepwalk":
-        embedding = DeepWalk(ag, 8)
-    elif method == "graphsage":
-        embedding = GraphSage(ag, 8, "ui")
-    else:
-        embedding = Hope(ag, 8, "cn")
-
-    embedding.run()
-    embedding.save_embedding_in_file(path)
-
-    return dash.no_update
+    if type == "state":
+        graph = StateAttackGraph()
+        graph.parse(graph_json, "json")
+        return StateAttackGraphDrawer(graph, parameters).apply()
+    elif type == "dependency":
+        graph = DependencyAttackGraph()
+        graph.parse(graph_json, "json")
+        return DependencyAttackGraphDrawer(graph, parameters).apply()

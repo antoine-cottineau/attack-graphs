@@ -36,6 +36,21 @@ def generate_subsection_generate() -> html.Div:
     slider_tooltip = dict(placement="right")
 
     children.append(
+        html.Div(children="Attack graph type", className="method-tooltip"))
+
+    children.append(
+        dcc.Dropdown(id="dropdown-attack-graph",
+                     options=[
+                         dict(label="State attack graph", value="state"),
+                         dict(label="Dependency attack graph",
+                              value="dependency")
+                     ],
+                     value="dependency",
+                     clearable=False,
+                     searchable=False,
+                     className="dropdown"))
+
+    children.append(
         html.Div(children="Total number of propositions",
                  className="method-tooltip"))
     children.append(

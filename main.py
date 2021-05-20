@@ -29,15 +29,16 @@ for header in ui.layout.header_ids:
               State("graph-upload", "filename"),
               State("slider-n-propositions", "value"),
               State("slider-n-initial-propositions", "value"),
-              State("slider-n-exploits", "value"))
+              State("slider-n-exploits", "value"),
+              State("dropdown-attack-graph", "value"))
 def update_saved_attack_graph(data: list, _: int, filename: str,
                               n_propositions: int, n_initial_propositions: int,
-                              n_exploits: int) -> str:
+                              n_exploits: int, graph_type: str) -> str:
     context = dash.callback_context
     return ui.callbacks.update_saved_attack_graph(context, data, filename,
                                                   n_propositions,
                                                   n_initial_propositions,
-                                                  n_exploits)
+                                                  n_exploits, graph_type)
 
 
 @app.callback(Output("useless-div", "children"),
@@ -74,15 +75,6 @@ def update_displayed_attack_graph(parameters: dict,
               Input("attack-graph", "data"))
 def update_checklist_exploits(graph_json: str) -> Tuple[list, list]:
     return ui.callbacks.update_checklist_exploits(graph_json)
-
-
-@app.callback(Output("useless-div", "style"),
-              Input("button-apply-node-embedding", "n_clicks"),
-              State("dropdown-node-embedding", "value"),
-              State("input-node-embedding", "value"),
-              State("attack-graph", "data"))
-def apply_node_embedding(_: int, method: str, path: str, graph_json: str):
-    return ui.callbacks.apply_node_embedding(method, path, graph_json)
 
 
 if __name__ == "__main__":
