@@ -84,7 +84,7 @@ class RiskQuantifier:
             if "id_proposition" in self.graph.nodes[node]:
                 # Update the various arrays for this proposition node
                 self.dict_phi[node] = 1 - self._evaluate_probability(
-                    dict([p, False] for p in predecessors))
+                    dict([(p, False) for p in predecessors]))
 
                 for predecessor in predecessors:
                     self.dict_chi[node] |= self.dict_chi[predecessor]
@@ -101,7 +101,7 @@ class RiskQuantifier:
                 # Update the various arrays for this exploit node
                 self.dict_phi[node] = self.exploit_probabilities[
                     node] * self._evaluate_probability(
-                        dict([p, True] for p in predecessors))
+                        dict([(p, True) for p in predecessors]))
 
                 self.dict_chi[node] = self.branch_nodes & predecessors
                 self.dict_delta[node] = self.branch_nodes & predecessors
@@ -150,7 +150,8 @@ class RiskQuantifier:
         D = set()
         for n in nodes:
             for m in nodes:
-                D |= self.dict_chi[n] & self.dict_chi[m]
+                if n != m:
+                    D |= self.dict_chi[n] & self.dict_chi[m]
 
         if len(D) == 0:
             # There is no d-separating set so nodes are independant
