@@ -1,5 +1,3 @@
-from metrics.homer import RiskQuantifier
-from metrics.sheyner import ValueIteration
 import dash_core_components as dcc
 import networkx as nx
 import numpy as np
@@ -7,6 +5,8 @@ import plotly.graph_objects as go
 import ui.constants
 from attack_graph import DependencyAttackGraph, StateAttackGraph
 from ranking.mehta import PageRankMethod, KuehlmannMethod
+from ranking.homer import RiskQuantifier
+from ranking.sheyner import ValueIteration
 from typing import Dict, List, Tuple
 
 

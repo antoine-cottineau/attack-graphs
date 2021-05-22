@@ -1,56 +1,15 @@
 import numpy as np
 from attack_graph import DependencyAttackGraph
+from ranking.ranking import RankingMethod
 from typing import Dict, List, Set, Tuple
 
 
-class RiskQuantifier:
+class RiskQuantifier(RankingMethod):
     def __init__(self, graph: DependencyAttackGraph):
+        super().__init__(list(graph.exploits))
+        self.initial_graph = graph
         self.graph = self._set_up_graph(graph)
         self.exploit_probabilities = self._get_exploit_nodes_probabilities()
-
-    def _set_up_graph(self,
-                      graph: DependencyAttackGraph) -> DependencyAttackGraph:
-        new_graph = graph.copy()
-
-        # Remove the proposition nodes that are initially true
-        ids_initial_propositions = [
-            id for id, data in new_graph.propositions.items()
-            if data["initial"]
-        ]
-        self.nodes_to_remove = [
-            node
-            for node, id_proposition in new_graph.nodes(data="id_proposition")
-            if id_proposition in ids_initial_propositions
-        ]
-        new_graph.remove_nodes_from(self.nodes_to_remove)
-
-        # Create a root node
-        self.id_root_node = int(
-            np.setdiff1d(np.arange(new_graph.number_of_nodes() + 1),
-                         list(new_graph.nodes))[0])
-        new_graph.add_node(self.id_root_node, id_proposition=-1)
-
-        # Add an edge from the root node to the exploits that are now without
-        # any predecessor
-        exploit_nodes_to_be_linked = [
-            node for node, id_exploit in new_graph.nodes(data="id_exploit")
-            if id_exploit is not None
-            and list(new_graph.predecessors(node)) == []
-        ]
-        new_graph.add_edges_from([(self.id_root_node, node)
-                                  for node in exploit_nodes_to_be_linked])
-
-        return new_graph
-
-    def _get_exploit_nodes_probabilities(self) -> Dict[int, float]:
-        result = {}
-        for node, id_exploit in self.graph.nodes(data="id_exploit"):
-            if id_exploit is not None:
-                # The probability is equal to the CVSS score divided by 10 (to
-                # get a value between 0 and 1)
-                probability = self.graph.exploits[id_exploit]["cvss"] / 10
-                result[node] = probability
-        return result
 
     def apply(self) -> Dict[int, float]:
         # Create the necessary arrays
@@ -120,6 +79,65 @@ class RiskQuantifier:
             risks[node] = 1
 
         return risks
+
+    def get_score(self) -> float:
+        risks = self.apply()
+        score = sum(list(risks.values()))
+        return score
+
+    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
+        ids_exploits_to_keep = self.ids_exploits.copy()
+        ids_exploits_to_keep.remove(id_exploit)
+
+        pruned_graph = self.initial_graph.get_pruned_graph(
+            ids_exploits_to_keep)
+
+        score = RiskQuantifier(pruned_graph).get_score()
+        return score
+
+    def _set_up_graph(self,
+                      graph: DependencyAttackGraph) -> DependencyAttackGraph:
+        new_graph = graph.copy()
+
+        # Remove the proposition nodes that are initially true
+        ids_initial_propositions = [
+            id for id, data in new_graph.propositions.items()
+            if data["initial"]
+        ]
+        self.nodes_to_remove = [
+            node
+            for node, id_proposition in new_graph.nodes(data="id_proposition")
+            if id_proposition in ids_initial_propositions
+        ]
+        new_graph.remove_nodes_from(self.nodes_to_remove)
+
+        # Create a root node
+        self.id_root_node = int(
+            np.setdiff1d(np.arange(new_graph.number_of_nodes() + 1),
+                         list(new_graph.nodes))[0])
+        new_graph.add_node(self.id_root_node, id_proposition=-1)
+
+        # Add an edge from the root node to the exploits that are now without
+        # any predecessor
+        exploit_nodes_to_be_linked = [
+            node for node, id_exploit in new_graph.nodes(data="id_exploit")
+            if id_exploit is not None
+            and list(new_graph.predecessors(node)) == []
+        ]
+        new_graph.add_edges_from([(self.id_root_node, node)
+                                  for node in exploit_nodes_to_be_linked])
+
+        return new_graph
+
+    def _get_exploit_nodes_probabilities(self) -> Dict[int, float]:
+        result = {}
+        for node, id_exploit in self.graph.nodes(data="id_exploit"):
+            if id_exploit is not None:
+                # The probability is equal to the CVSS score divided by 10 (to
+                # get a value between 0 and 1)
+                probability = self.graph.exploits[id_exploit]["cvss"] / 10
+                result[node] = probability
+        return result
 
     def _get_branch_nodes(self) -> Set[int]:
         return set([

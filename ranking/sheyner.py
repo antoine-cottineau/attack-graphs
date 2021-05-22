@@ -1,13 +1,15 @@
 import numpy as np
 from attack_graph import StateAttackGraph
+from ranking.ranking import RankingMethod
 from typing import Dict, Tuple
 
 
-class ValueIteration:
+class ValueIteration(RankingMethod):
     def __init__(self,
                  graph: StateAttackGraph,
                  precision: float = 1e-4,
                  lamb: float = 0.9):
+        super().__init__(list(graph.exploits))
         self.graph = graph
         self.precision = precision
         self.lamb = lamb
@@ -62,6 +64,26 @@ class ValueIteration:
 
         return values, chosen_successors
 
+    def get_score(self) -> float:
+        values = self.apply()[0]
+        score = sum(list(values.values()))
+        return score
+
+    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
+        ids_exploits_to_keep = self.ids_exploits.copy()
+        ids_exploits_to_keep.remove(id_exploit)
+
+        pruned_graph = self.graph.get_pruned_graph(ids_exploits_to_keep)
+
+        # Check that the final node is still in the graph. If it's not the
+        # case, it means that there is no way to reach the final node
+        if pruned_graph.final_node in list(pruned_graph.nodes):
+            score = ValueIteration(pruned_graph).get_score()
+        else:
+            score = float("inf")
+
+        return score
+
     def _get_successors(self, node: int) -> Dict[int, float]:
         successors = self.graph.successors(node)
 
@@ -73,7 +95,7 @@ class ValueIteration:
             # get a value between 0 and 1)
             probability = self.graph.exploits[id_exploit]["cvss"] / 10
 
-            result[id_exploit] = probability
+            result[successor] = probability
 
         return result
 

@@ -1,10 +1,9 @@
-from typing import Dict
 import numpy as np
-
 from attack_graph import StateAttackGraph
+from typing import Dict
 
 
-class PageRankMethod():
+class PageRankMethod:
     def __init__(self, ag: StateAttackGraph, d: float = 0.85):
         self.ag = ag
         self.d = d
