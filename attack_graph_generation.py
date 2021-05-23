@@ -31,6 +31,9 @@ class Generator:
         graph.propositions = self.propositions
         graph.exploits = self.exploits
 
+        # The goal proposition is the last one
+        graph.goal_proposition = self.n_propositions - 1
+
         # Fill the graph
         graph.fill_graph()
 
@@ -49,6 +52,9 @@ class Generator:
 
         graph.propositions = self.propositions
         graph.exploits = self.exploits
+
+        # The goal proposition is the last one
+        graph.goal_proposition = self.n_propositions - 1
 
         # Fill the graph
         graph.fill_graph()

@@ -6,22 +6,22 @@ from typing import Dict, List, Set, Tuple
 
 class RiskQuantifier(RankingMethod):
     def __init__(self, graph: DependencyAttackGraph):
-        super().__init__(list(graph.exploits))
-        self.initial_graph = graph
-        self.graph = self._set_up_graph(graph)
+        super().__init__(graph)
+        self.formatted_graph = self._set_up_graph(graph)
         self.exploit_probabilities = self._get_exploit_nodes_probabilities()
 
     def apply(self) -> Dict[int, float]:
         # Create the necessary arrays
         self.evaluated_nodes: Set[int] = set()
-        self.dict_phi: Dict[int, float] = dict([(node, 0)
-                                                for node in self.graph.nodes])
-        self.dict_chi: Dict[int,
-                            Set[int]] = dict([(node, set())
-                                              for node in self.graph.nodes])
-        self.dict_delta: Dict[int,
-                              Set[int]] = dict([(node, set())
-                                                for node in self.graph.nodes])
+        self.dict_phi: Dict[int, float] = dict([
+            (node, 0) for node in self.formatted_graph.nodes
+        ])
+        self.dict_chi: Dict[int, Set[int]] = dict([
+            (node, set()) for node in self.formatted_graph.nodes
+        ])
+        self.dict_delta: Dict[int, Set[int]] = dict([
+            (node, set()) for node in self.formatted_graph.nodes
+        ])
 
         # Create arrays useful to not compute the same value again
         self.list_stored_psi: List[Tuple[Dict[int, bool], Dict[int, bool],
@@ -36,11 +36,12 @@ class RiskQuantifier(RankingMethod):
         self.dict_phi[self.id_root_node] = 1
 
         # Main loop
-        while len(self.evaluated_nodes) < self.graph.number_of_nodes():
+        while len(
+                self.evaluated_nodes) < self.formatted_graph.number_of_nodes():
             # Get a node that is ready for evaluation and its predecessors
             node, predecessors = self._get_node_ready_for_evaluation()
 
-            if "id_proposition" in self.graph.nodes[node]:
+            if "id_proposition" in self.formatted_graph.nodes[node]:
                 # Update the various arrays for this proposition node
                 self.dict_phi[node] = 1 - self._evaluate_probability(
                     dict([(p, False) for p in predecessors]))
@@ -85,15 +86,8 @@ class RiskQuantifier(RankingMethod):
         score = sum(list(risks.values()))
         return score
 
-    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
-        ids_exploits_to_keep = self.ids_exploits.copy()
-        ids_exploits_to_keep.remove(id_exploit)
-
-        pruned_graph = self.initial_graph.get_pruned_graph(
-            ids_exploits_to_keep)
-
-        score = RiskQuantifier(pruned_graph).get_score()
-        return score
+    def get_score_for_graph(self, graph: DependencyAttackGraph) -> float:
+        return RiskQuantifier(graph).get_score()
 
     def _set_up_graph(self,
                       graph: DependencyAttackGraph) -> DependencyAttackGraph:
@@ -131,28 +125,29 @@ class RiskQuantifier(RankingMethod):
 
     def _get_exploit_nodes_probabilities(self) -> Dict[int, float]:
         result = {}
-        for node, id_exploit in self.graph.nodes(data="id_exploit"):
+        for node, id_exploit in self.formatted_graph.nodes(data="id_exploit"):
             if id_exploit is not None:
                 # The probability is equal to the CVSS score divided by 10 (to
                 # get a value between 0 and 1)
-                probability = self.graph.exploits[id_exploit]["cvss"] / 10
+                probability = self.formatted_graph.exploits[id_exploit][
+                    "cvss"] / 10
                 result[node] = probability
         return result
 
     def _get_branch_nodes(self) -> Set[int]:
         return set([
-            node for node in self.graph.nodes
-            if len(list(self.graph.successors(node))) > 1
+            node for node in self.formatted_graph.nodes
+            if len(list(self.formatted_graph.successors(node))) > 1
         ])
 
     def _get_node_ready_for_evaluation(self) -> Tuple[int, Set[int]]:
-        for node in self.graph.nodes:
+        for node in self.formatted_graph.nodes:
             # Check that the node hasn't already been evaluated
             if node in self.evaluated_nodes:
                 continue
 
             # Check that the predecessors of the node have all been evaluated
-            predecessors = set(self.graph.predecessors(node))
+            predecessors = set(self.formatted_graph.predecessors(node))
             if self.evaluated_nodes >= predecessors:
                 return node, predecessors
 
@@ -247,8 +242,8 @@ class RiskQuantifier(RankingMethod):
                 # Set D does not affect the value of the node
                 return self.dict_phi[node]
 
-            predecessors = self.graph.predecessors(node)
-            if "id_proposition" in self.graph.nodes[node]:
+            predecessors = self.formatted_graph.predecessors(node)
+            if "id_proposition" in self.formatted_graph.nodes[node]:
                 return 1 - self._evaluate_conditional_probability(
                     dict([(p, False) for p in predecessors]), D_polarities)
             else:

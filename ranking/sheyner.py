@@ -9,8 +9,7 @@ class ValueIteration(RankingMethod):
                  graph: StateAttackGraph,
                  precision: float = 1e-4,
                  lamb: float = 0.9):
-        super().__init__(list(graph.exploits))
-        self.graph = graph
+        super().__init__(graph)
         self.precision = precision
         self.lamb = lamb
 
@@ -69,20 +68,8 @@ class ValueIteration(RankingMethod):
         score = sum(list(values.values()))
         return score
 
-    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
-        ids_exploits_to_keep = self.ids_exploits.copy()
-        ids_exploits_to_keep.remove(id_exploit)
-
-        pruned_graph = self.graph.get_pruned_graph(ids_exploits_to_keep)
-
-        # Check that the final node is still in the graph. If it's not the
-        # case, it means that there is no way to reach the final node
-        if pruned_graph.final_node in list(pruned_graph.nodes):
-            score = ValueIteration(pruned_graph).get_score()
-        else:
-            score = float("inf")
-
-        return score
+    def get_score_for_graph(self, graph: StateAttackGraph) -> float:
+        return ValueIteration(graph).get_score()
 
     def _get_successors(self, node: int) -> Dict[int, float]:
         successors = self.graph.successors(node)
@@ -100,7 +87,7 @@ class ValueIteration(RankingMethod):
         return result
 
     def _get_reward(self, node: int) -> float:
-        if node == self.graph.final_node:
+        if node in self.graph.goal_nodes:
             return 1
         else:
             return 0

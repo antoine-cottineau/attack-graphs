@@ -28,6 +28,12 @@ class BaseGraph(nx.DiGraph):
         #   - cvss: float
         self.exploits: Dict[int, dict] = {}
 
+        # The id of the proposition that the attacker wants to reach
+        self.goal_proposition: int = None
+
+        # The ids of the nodes in which the final proposition is true
+        self.goal_nodes: List[int] = []
+
     def load_nodes_and_edges(self, graph: nx.DiGraph):
         self.add_nodes_from(graph.nodes(data=True))
         self.add_edges_from(graph.edges(data=True))
@@ -76,6 +82,10 @@ class BaseGraph(nx.DiGraph):
                 # The node is a proposition
                 visited_propositions.append(node)
                 successors = list(graph.successors(node))
+
+                # If there is no successor to this proposition node, it means
+                # that this proposition if the goal proposition
+                self.goal_proposition = node
 
                 # Add the successors to the list of nodes to visit
                 for successor in successors:
@@ -190,6 +200,8 @@ class BaseGraph(nx.DiGraph):
             (int(id_exploit), exploit)
             for id_exploit, exploit in data["exploits"].items()
         ])
+        self.goal_proposition = data["goal_proposition"]
+        self.goal_nodes = data["goal_nodes"]
 
     def save(self, path: str):
         file = Path(path)
@@ -211,6 +223,8 @@ class BaseGraph(nx.DiGraph):
     def _write_other_elements_in_data(self, data: dict):
         data["propositions"] = self.propositions
         data["exploits"] = self.exploits
+        data["goal_proposition"] = self.goal_proposition
+        data["goal_nodes"] = self.goal_nodes
 
     def get_node_ordering(self) -> dict:
         ids_nodes = list(self.nodes)
@@ -223,6 +237,9 @@ class BaseGraph(nx.DiGraph):
             network = self.to_undirected()
         return nx.adjacency_matrix(network)
 
+    def get_pruned_graph(self, ids_exploits: List[int]):
+        return
+
 
 class DependencyAttackGraph(BaseGraph):
     def fill_graph(self):
@@ -231,6 +248,12 @@ class DependencyAttackGraph(BaseGraph):
         # Add the nodes that correspond to the propositions
         for id in self.propositions:
             self.add_node(i_node, id_proposition=id)
+
+            # If the id corresponds to the goal proposition, this node is the
+            # goal node, which is unique
+            if id == self.goal_proposition:
+                self.goal_nodes.append(i_node)
+
             i_node += 1
 
         # Add the nodes that correspond to the exploits and the edges that link
@@ -251,12 +274,8 @@ class DependencyAttackGraph(BaseGraph):
 
             i_node += 1
 
-    def _get_node_with_id_proposition(self, id_proposition: int) -> int:
-        return [
-            node
-            for node, node_id_proposition in self.nodes(data="id_proposition")
-            if node_id_proposition == id_proposition
-        ][0]
+        # Remove the nodes from which one can not reach the goal node
+        self._remove_useless_nodes()
 
     def get_pruned_graph(self, ids_exploits: List[int]):
         # Copy this attack graph
@@ -269,16 +288,60 @@ class DependencyAttackGraph(BaseGraph):
                 nodes_to_remove.append(node)
         new_graph.remove_nodes_from(nodes_to_remove)
 
-        # The nodes that have no successors and no predecessors must be
-        # removed
-        nodes_to_remove = []
-        for node in new_graph.nodes:
-            if len(list(new_graph.predecessors(node))) == 0 and len(
-                    list(new_graph.successors(node))) == 0:
-                nodes_to_remove.append(node)
-        new_graph.remove_nodes_from(nodes_to_remove)
+        # Remove the nodes that are now useless i.e. from which we can't reach
+        # the goal node
+        new_graph._remove_useless_nodes()
 
         return new_graph
+
+    def _get_node_with_id_proposition(self, id_proposition: int) -> int:
+        return [
+            node
+            for node, node_id_proposition in self.nodes(data="id_proposition")
+            if node_id_proposition == id_proposition
+        ][0]
+
+    def _remove_useless_nodes(self):
+        goal_node = self.goal_nodes[0]
+        has_removed_nodes = True
+        while has_removed_nodes:
+            nodes_to_remove = []
+            for node, data in self.nodes(data=True):
+                # Check whether the node is a proposition or an exploit
+                if "id_proposition" in data:
+                    proposition = self.propositions[data["id_proposition"]]
+
+                    # If the node has no successor and is not the goal node,
+                    # we remove it
+                    if node != goal_node and len(list(
+                            self.successors(node))) == 0:
+                        nodes_to_remove.append(node)
+
+                    # If the node has no predecessor and does not correspond to
+                    # a leaf proposition, we remove it
+                    elif not proposition["initial"] and len(
+                            list(self.predecessors(node))) == 0:
+                        nodes_to_remove.append(node)
+
+                        # If this node is the goal node, we remove it from the
+                        # list of goal nodes
+                        if node in self.goal_nodes:
+                            self.goal_nodes.remove(node)
+                else:
+                    exploit = self.exploits[data["id_exploit"]]
+
+                    # If the node has no successor, we remove it
+                    if len(list(self.successors(node))) == 0:
+                        nodes_to_remove.append(node)
+
+                    # If the number of predecessors does not correspond to the
+                    # number of required propositions, we remove it
+                    elif len(list(self.predecessors(node))) != len(
+                            exploit["required_propositions"]):
+                        nodes_to_remove.append(node)
+
+            self.remove_nodes_from(nodes_to_remove)
+            has_removed_nodes = len(nodes_to_remove) > 0
 
     def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
@@ -287,6 +350,8 @@ class DependencyAttackGraph(BaseGraph):
         new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
         new_graph.exploits = self.exploits.copy()
+        new_graph.goal_proposition = self.goal_proposition
+        new_graph.goal_nodes = self.goal_nodes.copy()
 
         return new_graph
 
@@ -312,6 +377,10 @@ class StateAttackGraph(BaseGraph):
         current_ids_propositions: List[int] = self.nodes[node][
             "ids_propositions"]
 
+        if self.goal_proposition in current_ids_propositions:
+            self.goal_nodes.append(node)
+            return
+
         # Look for all the exploits that are possible and that grant a
         # proposition that is not already true
         ids_exploits_possible: List[int] = []
@@ -327,10 +396,6 @@ class StateAttackGraph(BaseGraph):
             if len(data["required_propositions"]) == len(common_propositions):
                 # The exploit is possible
                 ids_exploits_possible.append(id_exploit)
-
-        # If no exploit is possible, this node is the final node
-        if ids_exploits_possible == []:
-            self.final_node = node
 
         for id_exploit in ids_exploits_possible:
             data = self.exploits[id_exploit]
@@ -375,7 +440,8 @@ class StateAttackGraph(BaseGraph):
         new_graph.load_nodes_and_edges(graph)
         new_graph.propositions = self.propositions.copy()
         new_graph.exploits = self.exploits.copy()
-        new_graph.final_node = self.final_node
+        new_graph.goal_proposition = self.goal_proposition
+        new_graph.goal_nodes = self.goal_nodes.copy()
 
         return new_graph
 
@@ -393,31 +459,28 @@ class StateAttackGraph(BaseGraph):
         has_removed_nodes = True
         while has_removed_nodes:
             nodes_to_remove = []
-            for i in new_graph.nodes:
-                # The initial node can't be removed
-                if i == 0:
-                    continue
+            for node in new_graph.nodes:
+                # The nodes that have no predecessors and aren't the initial
+                # node must be removed
+                if node != 0 and len(list(new_graph.predecessors(node))) == 0:
+                    nodes_to_remove.append(node)
 
-                # The nodes that have no predecessors must be removed
-                if len(list(new_graph.predecessors(i))) == 0:
-                    nodes_to_remove.append(i)
+                    # If the node is a goal node, remove it from the list of
+                    # goal nodes
+                    if node in self.goal_nodes:
+                        self.goal_nodes.remove(node)
 
-                # The nodes that have no successors (except the final node)
-                # must be removed
-                if i != new_graph.final_node and len(
-                        list(new_graph.successors(i))) == 0:
-                    nodes_to_remove.append(i)
+                # The nodes that have no successors and aren't one of the goal
+                # nodes must be removed
+                if node not in new_graph.goal_nodes and len(
+                        list(new_graph.successors(node))) == 0:
+                    nodes_to_remove.append(node)
 
             new_graph.remove_nodes_from(nodes_to_remove)
             has_removed_nodes = len(nodes_to_remove) > 0
 
         return new_graph
 
-    def _load_other_elements_from_json(self, data: dict):
-        super()._load_other_elements_from_json(data)
-        self.final_node = data["final_node"]
-
     def _write_other_elements_in_data(self, data: dict):
         super()._write_other_elements_in_data(data)
-        data["final_node"] = self.final_node
         data["type"] = "state"

@@ -59,7 +59,7 @@ class BaseGraphDrawer:
         return None
 
     def compute_ranking_order(self) -> Dict[int, int]:
-        if self.ranking_method is None:
+        if self.ranking_values is None:
             return None
 
         ranking_order = {}
@@ -103,7 +103,7 @@ class BaseGraphDrawer:
             x.append(position[0])
             y.append(position[1])
             hovertext.append(dict_hovertexts[node])
-            if self.ranking_method is not None:
+            if self.ranking_values is not None:
                 ranking_colors.append(self.ranking_values[node])
 
         scatter_object = go.Scatter(
@@ -118,7 +118,7 @@ class BaseGraphDrawer:
                         symbol=symbol))
 
         # Update the color of the nodes if ranking has been applied
-        if self.ranking_method is not None:
+        if self.ranking_values is not None:
             font = dict(family="Montserrat", color=ui.constants.color_light)
             scatter_object.marker = dict(
                 size=12,
@@ -168,6 +168,9 @@ class StateAttackGraphDrawer(BaseGraphDrawer):
                 self.selected_exploits_ids)
 
     def compute_node_positions(self) -> Dict[int, Tuple[float, float]]:
+        if len(list(self.graph.nodes)) == 0:
+            return {}
+
         n_initial_propositions = len(self.graph.nodes[0]["ids_propositions"])
 
         for node, ids_propositions in self.graph.nodes(
@@ -200,11 +203,14 @@ class StateAttackGraphDrawer(BaseGraphDrawer):
         for node in self.graph.nodes:
             hovertext = "id: {}".format(node)
 
-            if self.ranking_method is not None:
+            if self.ranking_values is not None:
                 hovertext += "<br>ranking position: {}/{}".format(
                     self.ranking_order[node], self.graph.number_of_nodes())
                 hovertext += "<br>ranking value: {:0.2E}".format(
                     self.ranking_values[node])
+            hovertext += "<br>"
+            hovertext += ";".join(
+                [str(i) for i in self.graph.nodes[node]["ids_propositions"]])
 
             hovertexts[node] = hovertext
 
@@ -236,12 +242,8 @@ class DependencyAttackGraphDrawer(BaseGraphDrawer):
         node_layers: Dict[int, int] = {}
         nodes_to_evaluate: List[int] = []
 
-        # Find the final node
-        final_nodes = [
-            node for node in self.graph.nodes
-            if len(list(self.graph.successors(node))) == 0
-        ]
-        nodes_to_evaluate += final_nodes
+        # Find the goal node
+        nodes_to_evaluate += self.graph.goal_nodes
 
         while len(node_layers) < self.graph.number_of_nodes():
             node = nodes_to_evaluate[0]
@@ -249,7 +251,7 @@ class DependencyAttackGraphDrawer(BaseGraphDrawer):
             successors = set(self.graph.successors(node))
 
             layer = None
-            if node in final_nodes:
+            if node in self.graph.goal_nodes:
                 layer = 0
             elif set(node_layers) >= successors:
                 # All the successors have been evaluated
