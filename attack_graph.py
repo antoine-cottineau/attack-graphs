@@ -468,7 +468,7 @@ class StateAttackGraph(BaseGraph):
                     # If the node is a goal node, remove it from the list of
                     # goal nodes
                     if node in self.goal_nodes:
-                        self.goal_nodes.remove(node)
+                        new_graph.goal_nodes.remove(node)
 
                 # The nodes that have no successors and aren't one of the goal
                 # nodes must be removed

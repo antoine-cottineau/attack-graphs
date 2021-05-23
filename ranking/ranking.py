@@ -49,7 +49,7 @@ class RankingMethod:
         ids_exploits = list(self.graph.exploits)
         ids_exploits.remove(id_exploit)
 
-        pruned_graph = self.graph.get_pruned_graph(ids_exploits)
+        pruned_graph: BaseGraph = self.graph.get_pruned_graph(ids_exploits)
 
         # Check that the pruned graph still has node. If not, it means that it
         # is impossible to obtain the goal proposition
