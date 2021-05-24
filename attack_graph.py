@@ -226,7 +226,7 @@ class BaseGraph(nx.DiGraph):
         data["goal_proposition"] = self.goal_proposition
         data["goal_nodes"] = self.goal_nodes
 
-    def get_node_ordering(self) -> dict:
+    def get_node_ordering(self) -> Dict[int, int]:
         ids_nodes = list(self.nodes)
         return dict([(id, i) for i, id in enumerate(ids_nodes)])
 
