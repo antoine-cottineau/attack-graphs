@@ -54,11 +54,12 @@ class Dataset:
             print("Generation done")
             return
 
-        # Generate a pair of graphs
-        print(
-            "Generate a pair of graphs with complexity {}".format(complexity))
-        stateAttackGraph, dependencyAttackGraph = self._create_for_complexity(
-            complexity)
+        # Generate a state attack graph
+        print("Generate a state attack graph with complexity {}".format(
+            complexity))
+        generator = Generator(n_propositions=complexity, n_exploits=complexity)
+        generator.generate_propositions_and_exploits()
+        stateAttackGraph = generator.generate_state_attack_graph()
 
         # Get the appropriate set for these graphs
         n_nodes = stateAttackGraph.number_of_nodes()
@@ -69,12 +70,16 @@ class Dataset:
         # Save the graphs if there is still room in the set
         if set_populations[appropriate_set] < Dataset.set_sizes[
                 appropriate_set]:
+            print("There is still room remaining in set {}, generating"
+                  " dependency attack graph".format(appropriate_set))
+            dependencyAttackGraph = generator.generate_dependency_attack_graph(
+            )
+
             print("Saving the graphs")
             self._save_graphs(stateAttackGraph, dependencyAttackGraph, n_nodes,
                               appropriate_set)
 
             # Print the updated set populations
-            # Get current set populations
             set_populations = self._get_current_set_populations()
             print("Current set populations: {}".format(" ".join(
                 [str(i) for i in set_populations])))
@@ -91,12 +96,6 @@ class Dataset:
 
         # Create a new graph with the new complexity
         self._add_one_pair_graphs(new_complexity)
-
-    def _create_for_complexity(
-            self,
-            complexity: int) -> Tuple[StateAttackGraph, DependencyAttackGraph]:
-        return Generator(n_propositions=complexity,
-                         n_exploits=complexity).generate_both_types()
 
     def _get_current_set_populations(self) -> List[int]:
         # Get the current list of graphs that have been created
