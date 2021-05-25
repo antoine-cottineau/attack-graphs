@@ -5,7 +5,7 @@ from attack_graph import DependencyAttackGraph, StateAttackGraph
 from attack_graph_generation import Generator
 from pathlib import Path
 from time import time
-from typing import List, Tuple
+from typing import List
 
 
 class Dataset:
