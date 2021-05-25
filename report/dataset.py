@@ -76,7 +76,7 @@ class Dataset:
             # Print the updated set populations
             # Get current set populations
             set_populations = self._get_current_set_populations()
-            print("\nCurrent set populations: {}".format(" ".join(
+            print("Current set populations: {}".format(" ".join(
                 [str(i) for i in set_populations])))
         else:
             print(
