@@ -1,7 +1,7 @@
 import numpy as np
 from attack_graph import DependencyAttackGraph, StateAttackGraph
 from cve import ExploitFetcher
-from typing import Dict
+from typing import Dict, Tuple
 
 
 class Generator:
@@ -21,15 +21,15 @@ class Generator:
         # Create the attack graph
         graph = StateAttackGraph()
 
-        # Add the dictionaries of exploits and propositions to the graph
+        # Generate the propositions and the exploits
         self._generate_propositions()
         self._generate_exploits()
 
         # Remove the propositions that aren't used by any exploit
         self._remove_unused_propositions()
 
-        graph.propositions = self.propositions
-        graph.exploits = self.exploits
+        graph.propositions = self.propositions.copy()
+        graph.exploits = self.exploits.copy()
 
         # The goal proposition is the last one
         graph.goal_proposition = self.n_propositions - 1
@@ -43,15 +43,15 @@ class Generator:
         # Create the attack graph
         graph = DependencyAttackGraph()
 
-        # Add the dictionaries of exploits and propositions to the graph
+        # Generate the propositions and the exploits
         self._generate_propositions()
         self._generate_exploits()
 
         # Remove the propositions that aren't used by any exploit
         self._remove_unused_propositions()
 
-        graph.propositions = self.propositions
-        graph.exploits = self.exploits
+        graph.propositions = self.propositions.copy()
+        graph.exploits = self.exploits.copy()
 
         # The goal proposition is the last one
         graph.goal_proposition = self.n_propositions - 1
@@ -60,6 +60,35 @@ class Generator:
         graph.fill_graph()
 
         return graph
+
+    def generate_both_types(
+            self) -> Tuple[StateAttackGraph, DependencyAttackGraph]:
+        # Create one instance of each type of graph
+        state_graph = StateAttackGraph()
+        dependency_graph = DependencyAttackGraph()
+
+        # Generate the propositions and the exploits
+        self._generate_propositions()
+        self._generate_exploits()
+
+        # Remove the propositions that aren't used by any exploit
+        self._remove_unused_propositions()
+
+        state_graph.propositions = self.propositions.copy()
+        state_graph.exploits = self.exploits.copy()
+
+        dependency_graph.propositions = self.propositions.copy()
+        dependency_graph.exploits = self.exploits.copy()
+
+        # The goal proposition is the last one
+        state_graph.goal_proposition = self.n_propositions - 1
+        dependency_graph.goal_proposition = self.n_propositions - 1
+
+        # Fill the graphs
+        state_graph.fill_graph()
+        dependency_graph.fill_graph()
+
+        return state_graph, dependency_graph
 
     def _generate_propositions(self):
         propositions: Dict[int, dict] = {}
