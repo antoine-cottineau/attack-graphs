@@ -9,8 +9,7 @@ from typing import List, Tuple
 
 
 class Dataset:
-    # set_sizes = [40, 40, 20]
-    set_sizes = [2, 1, 0]
+    set_sizes = [40, 40, 20]
     set_max_n_nodes = [1000, 10000, None]
     n_graphs = sum(set_sizes)
     base_path = "methods_input/dataset"
