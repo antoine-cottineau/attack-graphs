@@ -15,15 +15,17 @@ class Dataset:
     base_path = "methods_input/dataset"
     summary_file_path = Path(base_path, "summary.json")
 
-    def complete_dataset(self):
+    @staticmethod
+    def complete_dataset():
         # Create the necessary folders
         utils.create_folders(Dataset.base_path)
 
         # Start generating the graphs
-        self._add_one_pair_graphs(20)
+        Dataset._add_one_pair_graphs(20)
 
-    def load_state_graph(self, i_graph: int) -> StateAttackGraph:
-        graph_summary = self._get_graph_pair_summary(i_graph)
+    @staticmethod
+    def load_state_graph(i_graph: int) -> StateAttackGraph:
+        graph_summary = Dataset._get_graph_pair_summary(i_graph)
 
         # Load the graph
         path = Path(graph_summary["state_path"])
@@ -31,8 +33,9 @@ class Dataset:
         graph.load(path)
         return graph
 
-    def load_dependency_graph(self, i_graph: int) -> DependencyAttackGraph:
-        graph_summary = self._get_graph_pair_summary(i_graph)
+    @staticmethod
+    def load_dependency_graph(i_graph: int) -> DependencyAttackGraph:
+        graph_summary = Dataset._get_graph_pair_summary(i_graph)
 
         # Load the graph
         path = Path(graph_summary["dependency_path"])
@@ -40,12 +43,13 @@ class Dataset:
         graph.load(path)
         return graph
 
-    def _add_one_pair_graphs(self, complexity: int):
+    @staticmethod
+    def _add_one_pair_graphs(complexity: int):
         min_complexity = 20
         max_complexity = 40
 
         # Get current set populations
-        set_populations = self._get_current_set_populations()
+        set_populations = Dataset._get_current_set_populations()
         print("\nCurrent set populations: {}".format(" ".join(
             [str(i) for i in set_populations])))
 
@@ -63,7 +67,7 @@ class Dataset:
 
         # Get the appropriate set for these graphs
         n_nodes = stateAttackGraph.number_of_nodes()
-        appropriate_set = self._find_appropriate_set(n_nodes)
+        appropriate_set = Dataset._find_appropriate_set(n_nodes)
         print("With {} state nodes, these graphs belong to set {}".format(
             n_nodes, appropriate_set))
 
@@ -76,11 +80,11 @@ class Dataset:
             )
 
             print("Saving the graphs")
-            self._save_graphs(stateAttackGraph, dependencyAttackGraph, n_nodes,
-                              appropriate_set)
+            Dataset._save_graphs(stateAttackGraph, dependencyAttackGraph,
+                                 n_nodes, appropriate_set)
 
             # Print the updated set populations
-            set_populations = self._get_current_set_populations()
+            set_populations = Dataset._get_current_set_populations()
             print("Current set populations: {}".format(" ".join(
                 [str(i) for i in set_populations])))
         else:
@@ -95,22 +99,24 @@ class Dataset:
             new_complexity = complexity + 1
 
         # Create a new graph with the new complexity
-        self._add_one_pair_graphs(new_complexity)
+        Dataset._add_one_pair_graphs(new_complexity)
 
-    def _get_current_set_populations(self) -> List[int]:
+    @staticmethod
+    def _get_current_set_populations() -> List[int]:
         # Get the current list of graphs that have been created
-        graph_summaries = self._get_summary_file_content()
+        graph_summaries = Dataset._get_summary_file_content()
 
         # Fill the set populations
         set_populations = [0] * len(Dataset.set_sizes)
         for graph_summary in graph_summaries:
             n_nodes = graph_summary["n_nodes"]
-            set = self._find_appropriate_set(n_nodes)
+            set = Dataset._find_appropriate_set(n_nodes)
             set_populations[set] += 1
 
         return set_populations
 
-    def _save_graphs(self, stateAttackGraph: StateAttackGraph,
+    @staticmethod
+    def _save_graphs(stateAttackGraph: StateAttackGraph,
                      dependencyAttackGraph: DependencyAttackGraph,
                      n_nodes: int, appropriate_set: int):
         # Create a base filename based on the current timestamp
@@ -126,7 +132,7 @@ class Dataset:
         dependencyAttackGraph.save(dependency_path)
 
         # Get the current list of graphs that have been created
-        graph_summaries = self._get_summary_file_content()
+        graph_summaries = Dataset._get_summary_file_content()
         new_summary_dict = dict(state_path=str(state_path),
                                 dependency_path=str(dependency_path),
                                 n_nodes=n_nodes,
@@ -137,7 +143,8 @@ class Dataset:
         with open(Dataset.summary_file_path, "w") as f:
             json.dump(graph_summaries, f, indent=2)
 
-    def _get_summary_file_content(self) -> List[dict]:
+    @staticmethod
+    def _get_summary_file_content() -> List[dict]:
         if not Dataset.summary_file_path.exists():
             return []
 
@@ -146,7 +153,8 @@ class Dataset:
 
         return result
 
-    def _find_appropriate_set(self, n_nodes: int) -> int:
+    @staticmethod
+    def _find_appropriate_set(n_nodes: int) -> int:
         appropriate_set = None
         i_set = 0
         while i_set < len(Dataset.set_sizes) and appropriate_set is None:
@@ -156,8 +164,9 @@ class Dataset:
             i_set += 1
         return appropriate_set
 
-    def _get_graph_pair_summary(self, i_graph: int) -> dict:
-        graph_summaries = self._get_summary_file_content()
+    @staticmethod
+    def _get_graph_pair_summary(i_graph: int) -> dict:
+        graph_summaries = Dataset._get_summary_file_content()
 
         # Fill a list of number of nodes
         list_n_nodes = np.zeros(len(graph_summaries))
