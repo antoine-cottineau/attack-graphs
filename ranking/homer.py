@@ -81,13 +81,13 @@ class RiskQuantifier(RankingMethod):
 
         return risks
 
-    def get_score(self) -> float:
+    def _get_score(self) -> float:
         risks = self.apply()
-        score = sum(list(risks.values()))
+        score = risks[self.graph.goal_nodes[0]]
         return score
 
-    def get_score_for_graph(self, graph: DependencyAttackGraph) -> float:
-        return RiskQuantifier(graph).get_score()
+    def _get_score_for_graph(self, graph: DependencyAttackGraph) -> float:
+        return RiskQuantifier(graph)._get_score()
 
     def _set_up_graph(self,
                       graph: DependencyAttackGraph) -> DependencyAttackGraph:

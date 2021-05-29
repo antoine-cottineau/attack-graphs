@@ -9,7 +9,7 @@ class PageRankMethod(RankingMethod):
         super().__init__(graph)
         self.d = d
 
-    def compute_normalized_adjacency_matrix(self):
+    def _compute_normalized_adjacency_matrix(self):
         Z = np.zeros(
             (self.graph.number_of_nodes(), self.graph.number_of_nodes()))
         node_ordering = self.graph.get_node_ordering()
@@ -26,7 +26,7 @@ class PageRankMethod(RankingMethod):
 
         return toward_initial_state + self.d * Z
 
-    def compute_pgraphe_rank_vector(self, Z: np.array, eps: float = 1e-4):
+    def _compute_rank_vector(self, Z: np.array, eps: float = 1e-4):
         R = np.ones(
             self.graph.number_of_nodes()) / self.graph.number_of_nodes()
         distance = np.inf
@@ -38,18 +38,18 @@ class PageRankMethod(RankingMethod):
         return R
 
     def apply(self) -> Dict[int, float]:
-        Z = self.compute_normalized_adjacency_matrix()
-        R = self.compute_pgraphe_rank_vector(Z)
+        Z = self._compute_normalized_adjacency_matrix()
+        R = self._compute_rank_vector(Z)
 
         ids_nodes = list(self.graph.nodes)
         return dict([(ids_nodes[i], float(R[i])) for i in range(len(R))])
 
-    def get_score(self) -> float:
+    def _get_score(self) -> float:
         score = sum(list(self.apply().values()))
         return score
 
-    def get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        return PageRankMethod(graph).get_score()
+    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
+        return PageRankMethod(graph)._get_score()
 
 
 class KuehlmannMethod(RankingMethod):
@@ -57,7 +57,7 @@ class KuehlmannMethod(RankingMethod):
         super().__init__(graph)
         self.eta = eta
 
-    def compute_transition_probability_matrix(self):
+    def _compute_transition_probability_matrix(self):
         P = np.zeros(
             (self.graph.number_of_nodes(), self.graph.number_of_nodes()))
         node_ordering = self.graph.get_node_ordering()
@@ -68,7 +68,7 @@ class KuehlmannMethod(RankingMethod):
         return P
 
     def apply(self, max_m: int = 100) -> Dict[int, float]:
-        P = self.compute_transition_probability_matrix()
+        P = self._compute_transition_probability_matrix()
         s = np.zeros(self.graph.number_of_nodes())
         s[0] = 1
 
@@ -88,9 +88,9 @@ class KuehlmannMethod(RankingMethod):
         ids_nodes = list(self.graph.nodes)
         return dict([(ids_nodes[i], float(r[i])) for i in range(len(r))])
 
-    def get_score(self) -> float:
+    def _get_score(self) -> float:
         score = sum(list(self.apply().values()))
         return score
 
-    def get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        return KuehlmannMethod(graph).get_score()
+    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
+        return KuehlmannMethod(graph)._get_score()

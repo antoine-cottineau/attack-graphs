@@ -63,13 +63,13 @@ class ValueIteration(RankingMethod):
 
         return values, chosen_successors
 
-    def get_score(self) -> float:
+    def _get_score(self) -> float:
         values = self.apply()[0]
         score = sum(list(values.values()))
         return score
 
-    def get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        return ValueIteration(graph).get_score()
+    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
+        return ValueIteration(graph)._get_score()
 
     def _get_successors(self, node: int) -> Dict[int, float]:
         successors = self.graph.successors(node)

@@ -17,12 +17,12 @@ class ExpectedPathLength(RankingMethod):
         result = self.B.sum()
         return result
 
-    def get_score(self) -> float:
+    def _get_score(self) -> float:
         score = self.apply()
         return score
 
-    def get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        score = ExpectedPathLength(graph).get_score()
+    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
+        score = ExpectedPathLength(graph)._get_score()
         return score
 
     def _get_edge_probability(self, src: int, dst: int) -> float:
