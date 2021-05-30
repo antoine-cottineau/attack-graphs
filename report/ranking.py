@@ -1,3 +1,4 @@
+from time import time
 import numpy as np
 import utils
 from attack_graph import DependencyAttackGraph, StateAttackGraph
@@ -9,11 +10,12 @@ from ranking.mehta import PageRankMethod, KuehlmannMethod
 from ranking.ranking import RankingMethod
 from ranking.sheyner import ValueIteration
 from report.dataset import Dataset
+from report.report import Histogram, PATH_FIGURES
 from typing import Dict, List, Tuple
 
 # CONSTANTS
 PATH_DATA_FILE = Path("report/data/ranking.npy")
-PATH_FIGURES = Path("report/figures")
+PATH_DATA_FILE_TIME = Path("report/data/ranking_time.npy")
 
 METHODS: List[str] = ["PR", "KUE", "VI", "HOM", "EPL"]
 
@@ -31,7 +33,7 @@ class PpceMatrixCreator:
         self._compute_max_n_graphs()
 
         # Load the existing results and the new graphs
-        existing_results = self._load_existing_results()
+        existing_results, existing_times = self._load_existing_results()
         new_graphs = self._load_next_graphs(existing_results)
         if new_graphs is None:
             return
@@ -40,32 +42,30 @@ class PpceMatrixCreator:
         print("{} nodes".format(state_graph.number_of_nodes()))
 
         # Apply the methods on the new graphs
-        exploits_rankings = self._apply_methods(state_graph, dependency_graph)
+        exploits_rankings, new_times = self._apply_methods(
+            state_graph, dependency_graph)
 
         # Compute the ppce matrix
         ppce_matrix = self._compute_ppce_matrix(exploits_rankings)
 
         # Save the new results
         results = np.expand_dims(ppce_matrix, axis=0)
+        times = np.expand_dims(new_times, axis=0)
         if existing_results is not None:
             results = np.concatenate((existing_results, results))
+            times = np.concatenate((existing_times, times))
         np.save(PATH_DATA_FILE, results)
+        np.save(PATH_DATA_FILE_TIME, times)
 
         # Draw the matrix if asked by the user
         if self.continuous_plotting:
             self.draw_ppce_matrix()
+            self.draw_time_histogram()
 
         self.create()
 
     def draw_ppce_matrix(self):
-        results = self._load_existing_results()
-
-        # Fill the matrix with zeros if not all the graphs have been dealt with
-        # if results.shape[0] < Dataset.n_graphs:
-        #     results = np.concatenate(
-        #         (results,
-        #          np.zeros((Dataset.n_graphs - results.shape[0], len(METHODS),
-        #                    len(METHODS)))))
+        results = self._load_existing_results()[0]
 
         # Create one figure per set of graphs
         for i in range(len(Dataset.set_sizes)):
@@ -92,17 +92,23 @@ class PpceMatrixCreator:
             fig.savefig(path)
             fig.clf()
 
+    def draw_time_histogram(self):
+        times = self._load_existing_results()[1]
+
+        Histogram(times, "Methods", METHODS, ["Time execution (s)"],
+                  ["ranking_time"]).create()
+
     def _compute_max_n_graphs(self):
         if self.n_graphs is None:
             self.max_n_graphs = Dataset.n_graphs
         else:
             self.max_n_graphs = min(self.n_graphs, Dataset.n_graphs)
 
-    def _load_existing_results(self) -> np.ndarray:
+    def _load_existing_results(self) -> Tuple[np.ndarray, np.ndarray]:
         if PATH_DATA_FILE.exists():
-            return np.load(PATH_DATA_FILE)
+            return np.load(PATH_DATA_FILE), np.load(PATH_DATA_FILE_TIME)
         else:
-            return None
+            return None, None
 
     def _load_next_graphs(
         self, existing_results: np.ndarray
@@ -121,8 +127,9 @@ class PpceMatrixCreator:
         return state_graph, dependency_graph
 
     def _apply_methods(
-            self, state_graph: StateAttackGraph,
-            dependency_graph: DependencyAttackGraph) -> List[Dict[int, float]]:
+        self, state_graph: StateAttackGraph,
+        dependency_graph: DependencyAttackGraph
+    ) -> Tuple[List[Dict[int, float]], List[float]]:
         instances: List[RankingMethod] = [
             PageRankMethod(state_graph),
             KuehlmannMethod(state_graph),
@@ -131,9 +138,15 @@ class PpceMatrixCreator:
             ExpectedPathLength(state_graph)
         ]
 
-        exploit_rankings = [instance.rank_exploits() for instance in instances]
+        exploit_rankings = []
+        times = []
+        for i, instance in enumerate(instances):
+            print("Applying {}".format(METHODS[i]))
+            start = time()
+            exploit_rankings.append(instance.rank_exploits())
+            times.append(time() - start)
 
-        return exploit_rankings
+        return exploit_rankings, times
 
     def _compute_ppce_matrix(
             self, exploit_rankings: List[Dict[int, float]]) -> np.ndarray:
