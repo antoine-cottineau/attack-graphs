@@ -76,13 +76,15 @@ class ValueIteration(RankingMethod):
 
         result = {}
         for successor in successors:
-            id_exploit = self.graph[node][successor]["id_exploit"]
-
-            # The probability is equal to the CVSS score divided by 10 (to
-            # get a value between 0 and 1)
-            probability = self.graph.exploits[id_exploit]["cvss"] / 10
-
-            result[successor] = probability
+            ids_exploits = self.graph[node][successor]["ids_exploits"]
+            edge_probability = 1
+            for id_exploit in ids_exploits:
+                # The probability is equal to the CVSS score divided by 10 (to
+                # get a value between 0 and 1)
+                probability = self.graph.exploits[id_exploit]["cvss"] / 10
+                edge_probability *= 1 - probability
+            edge_probability = 1 - edge_probability
+            result[successor] = edge_probability
 
         return result
 

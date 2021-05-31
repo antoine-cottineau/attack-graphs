@@ -144,7 +144,7 @@ class PpceMatrixCreator:
             print("Applying {}".format(METHODS[i]))
             start = time()
             exploit_rankings.append(instance.rank_exploits())
-            times.append(time() - start)
+            times.append((time() - start) / len(state_graph.exploits))
 
         return exploit_rankings, times
 

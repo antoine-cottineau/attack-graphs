@@ -26,9 +26,13 @@ class ExpectedPathLength(RankingMethod):
         return score
 
     def _get_edge_probability(self, src: int, dst: int) -> float:
-        id_exploit = self.graph[src][dst]["id_exploit"]
-        cvss = self.graph.exploits[id_exploit]["cvss"] / 10
-        return cvss
+        ids_exploits = self.graph[src][dst]["ids_exploits"]
+        edge_probability = 1
+        for id_exploit in ids_exploits:
+            probability = self.graph.exploits[id_exploit]["cvss"] / 10
+            edge_probability *= 1 - probability
+        edge_probability = 1 - edge_probability
+        return edge_probability
 
     def _create_Q_and_R(self) -> Tuple[np.ndarray, np.ndarray]:
         transient_nodes = set(self.graph.nodes) - set(self.graph.goal_nodes)

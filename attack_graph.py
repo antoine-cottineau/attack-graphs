@@ -371,9 +371,9 @@ class StateAttackGraph(BaseGraph):
         self.add_node(0, ids_propositions=ids_propositions)
 
         # Fill the rest of the graph recursively
-        self.fill_graph_recursively_from_node(0)
+        self._fill_graph_recursively_from_node(0)
 
-    def fill_graph_recursively_from_node(self, node: int):
+    def _fill_graph_recursively_from_node(self, node: int):
         current_ids_propositions: List[int] = self.nodes[node][
             "ids_propositions"]
 
@@ -413,13 +413,21 @@ class StateAttackGraph(BaseGraph):
             if similar_nodes != []:
                 # Search if there is already an edge between the source node
                 # and the reached one
-                similar_edges = [(src, dst) for src, dst in self.edges
+                similar_edges = [(src, dst, edge_ids_exploits)
+                                 for src, dst, edge_ids_exploits in self.edges(
+                                     data="ids_exploits")
                                  if src == node and dst == similar_nodes[0]]
                 if similar_edges == []:
-                    # Just add the edge
                     self.add_edge(node,
                                   similar_nodes[0],
-                                  id_exploit=id_exploit)
+                                  ids_exploits=[id_exploit])
+                else:
+                    ids_exploits = similar_edges[0][2].copy()
+                    insort(ids_exploits, id_exploit)
+                    self.edges[
+                        similar_edges[0][0],
+                        similar_edges[0][1]]["ids_exploits"] = ids_exploits
+
             else:
                 # Add a new node
                 new_node = self.number_of_nodes()
@@ -428,10 +436,10 @@ class StateAttackGraph(BaseGraph):
                     ids_propositions=[int(i) for i in new_ids_propositions])
 
                 # Add a new edge
-                self.add_edge(node, new_node, id_exploit=id_exploit)
+                self.add_edge(node, new_node, ids_exploits=[id_exploit])
 
                 # Call this function starting from the new node
-                self.fill_graph_recursively_from_node(new_node)
+                self._fill_graph_recursively_from_node(new_node)
 
     def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
@@ -451,9 +459,15 @@ class StateAttackGraph(BaseGraph):
 
         # Remove the edges corresponding to the exploits to remove
         edges_to_remove = []
-        for src, dst, id_exploit in new_graph.edges(data="id_exploit"):
-            if id_exploit not in ids_exploits_to_keep:
+        for src, dst, ids_exploits in new_graph.edges(data="ids_exploits"):
+            new_ids_exploits = set(ids_exploits) & set(ids_exploits_to_keep)
+            if len(new_ids_exploits) == 0:
+                # Remove the edge totally
                 edges_to_remove.append((src, dst))
+            else:
+                # Only remove the ids exploits from the list in the edge
+                new_graph.edges[src,
+                                dst]["ids_exploits"] = list(new_ids_exploits)
         new_graph.remove_edges_from(edges_to_remove)
 
         has_removed_nodes = True
