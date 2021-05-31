@@ -46,6 +46,7 @@ class RiskQuantifier(RankingMethod):
                 self.dict_phi[node] = 1 - self._evaluate_probability(
                     dict([(p, False) for p in predecessors]))
 
+                self.dict_delta[node] = set(self.graph.nodes)
                 for predecessor in predecessors:
                     self.dict_chi[node] |= self.dict_chi[predecessor]
                     self.dict_delta[node] &= self.dict_delta[predecessor]

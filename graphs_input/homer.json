@@ -1,0 +1,170 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_exploit": 1,
+      "id": 5
+    },
+    {
+      "id_exploit": 2,
+      "id": 6
+    },
+    {
+      "id_exploit": 3,
+      "id": 7
+    },
+    {
+      "id_exploit": 4,
+      "id": 8
+    },
+    {
+      "id_exploit": 5,
+      "id": 9
+    },
+    {
+      "id_exploit": 6,
+      "id": 10
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 5
+    },
+    {
+      "source": 5,
+      "target": 1
+    },
+    {
+      "source": 0,
+      "target": 10
+    },
+    {
+      "source": 1,
+      "target": 6
+    },
+    {
+      "source": 10,
+      "target": 2
+    },
+    {
+      "source": 6,
+      "target": 2
+    },
+    {
+      "source": 1,
+      "target": 7
+    },
+    {
+      "source": 7,
+      "target": 3
+    },
+    {
+      "source": 2,
+      "target": 8
+    },
+    {
+      "source": 3,
+      "target": 9
+    },
+    {
+      "source": 8,
+      "target": 4
+    },
+    {
+      "source": 9,
+      "target": 4
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "",
+      "initial": true
+    },
+    "1": {
+      "text": "",
+      "initial": false
+    },
+    "2": {
+      "text": "",
+      "initial": false
+    },
+    "3": {
+      "text": "",
+      "initial": false
+    },
+    "4": {
+      "text": "",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "1": {
+      "granted_proposition": 1,
+      "required_propositions": [0],
+      "cve_id": "",
+      "text": "",
+      "cvss": 7
+    },
+    "2": {
+      "granted_proposition": 2,
+      "required_propositions": [1],
+      "cve_id": "",
+      "text": "",
+      "cvss": 3
+    },
+    "3": {
+      "granted_proposition": 3,
+      "required_propositions": [1],
+      "cve_id": "",
+      "text": "",
+      "cvss": 4
+    },
+    "4": {
+      "granted_proposition": 4,
+      "required_propositions": [2],
+      "cve_id": "",
+      "text": "",
+      "cvss": 2
+    },
+    "5": {
+      "granted_proposition": 4,
+      "required_propositions": [3],
+      "cve_id": "",
+      "text": "",
+      "cvss": 1
+    },
+    "6": {
+      "granted_proposition": 2,
+      "required_propositions": [0],
+      "cve_id": "",
+      "text": "",
+      "cvss": 9
+    }
+  },
+  "goal_proposition": 4,
+  "goal_nodes": [4],
+  "type": "dependency"
+}
