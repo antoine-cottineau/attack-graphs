@@ -278,8 +278,7 @@ class TimeComparator(ClusteringFigureCreator):
         new_results = np.zeros(len(METHODS))
         for i_method, method in enumerate(METHODS):
             start = time()
-            MethodApplicator(graph, method, None, None, None,
-                             use_gpu=False).apply_method()
+            MethodApplicator(graph, method, None, None, None).apply_method()
             new_results[i_method] = time() - start
         return new_results
 
