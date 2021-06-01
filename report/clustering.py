@@ -278,8 +278,12 @@ class TimeComparator(ClusteringFigureCreator):
         new_results = np.zeros(len(METHODS))
         for i_method, method in enumerate(METHODS):
             start = time()
-            MethodApplicator(graph, method, None, None, None).apply_method()
-            new_results[i_method] = time() - start
+            results = MethodApplicator(graph, method, None, None,
+                                       None).apply_method()
+            if np.all(np.isnan(results)):
+                new_results[i_method] = np.nan
+            else:
+                new_results[i_method] = time() - start
         return new_results
 
     def plot(self):
