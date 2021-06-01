@@ -1,12 +1,10 @@
 import json
 import networkx as nx
-import numpy as np
 import utils
 import xml.etree.ElementTree as ET
-from bisect import insort
 from pathlib import Path
 from scipy.sparse.coo import coo_matrix
-from typing import Dict, List
+from typing import Dict, List, Set
 
 
 class BaseGraph(nx.DiGraph):
@@ -373,9 +371,16 @@ class StateAttackGraph(BaseGraph):
         # Fill the rest of the graph recursively
         self._fill_graph_recursively_from_node(0)
 
+        # Sort the integer arrays in the graph
+        for node, ids_propositions in self.nodes(data="ids_propositions"):
+            self.nodes[node]["ids_propositions"] = sorted(ids_propositions)
+
+        for src, dst, ids_exploits in self.edges(data="ids_exploits"):
+            self.edges[src, dst]["ids_exploits"] = sorted(ids_exploits)
+
     def _fill_graph_recursively_from_node(self, node: int):
-        current_ids_propositions: List[int] = self.nodes[node][
-            "ids_propositions"]
+        current_ids_propositions: Set[int] = set(
+            self.nodes[node]["ids_propositions"])
 
         if self.goal_proposition in current_ids_propositions:
             self.goal_nodes.append(node)
@@ -383,47 +388,47 @@ class StateAttackGraph(BaseGraph):
 
         # Look for all the exploits that are possible and that grant a
         # proposition that is not already true
-        ids_exploits_possible: List[int] = []
+        ids_exploits_possible: Set[int] = set()
         for id_exploit, data in self.exploits.items():
             # Check that the proposition granted by the exploit is not already
             # true
             if data["granted_proposition"] in current_ids_propositions:
                 continue
 
+            required_ids_propositions: Set[int] = set(
+                data["required_propositions"])
+
             # Check that the exploit can be performed
-            common_propositions = np.intersect1d(data["required_propositions"],
-                                                 current_ids_propositions)
-            if len(data["required_propositions"]) == len(common_propositions):
-                # The exploit is possible
-                ids_exploits_possible.append(id_exploit)
+            if required_ids_propositions <= current_ids_propositions:
+                ids_exploits_possible.add(id_exploit)
 
         for id_exploit in ids_exploits_possible:
             data = self.exploits[id_exploit]
 
             # Insert the granted proposition in the new propositions
             new_ids_propositions = current_ids_propositions.copy()
-            insort(new_ids_propositions, data["granted_proposition"])
+            new_ids_propositions.add(data["granted_proposition"])
 
             # Find if there are already nodes with such propositions
             similar_nodes = [
                 i
                 for i, ids_propositions in self.nodes(data="ids_propositions")
-                if ids_propositions == new_ids_propositions
+                if set(ids_propositions) == new_ids_propositions
             ]
-            if similar_nodes != []:
+            if len(similar_nodes) > 0:
                 # Search if there is already an edge between the source node
                 # and the reached one
                 similar_edges = [(src, dst, edge_ids_exploits)
                                  for src, dst, edge_ids_exploits in self.edges(
                                      data="ids_exploits")
                                  if src == node and dst == similar_nodes[0]]
-                if similar_edges == []:
+                if len(similar_edges) == 0:
                     self.add_edge(node,
                                   similar_nodes[0],
                                   ids_exploits=[id_exploit])
                 else:
                     ids_exploits = similar_edges[0][2].copy()
-                    insort(ids_exploits, id_exploit)
+                    ids_exploits.append(id_exploit)
                     self.edges[
                         similar_edges[0][0],
                         similar_edges[0][1]]["ids_exploits"] = ids_exploits
