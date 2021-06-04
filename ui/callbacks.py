@@ -17,6 +17,7 @@ def update_saved_attack_graph(context: object, data: list, filename: str,
     else:
         generator = Generator(n_propositions, n_initial_propositions,
                               n_exploits)
+        generator.generate_propositions_and_exploits()
         if graph_type == "state":
             return generator.generate_state_attack_graph().write()
         else:
