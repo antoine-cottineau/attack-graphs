@@ -26,13 +26,17 @@ class ExpectedPathLength(RankingMethod):
         return score
 
     def _get_edge_probability(self, src: int, dst: int) -> float:
-        ids_exploits = self.graph[src][dst]["ids_exploits"]
-        edge_probability = 1
+        ids_exploits = self.graph.edges[src, dst]["ids_exploits"]
+
+        # The probability of the action being successful is equal to the
+        # max of the probilities of the exploits
+        probabilities = []
         for id_exploit in ids_exploits:
+            # The probability is equal to the CVSS score divided by 10 (to
+            # get a value between 0 and 1)
             probability = self.graph.exploits[id_exploit]["cvss"] / 10
-            edge_probability *= 1 - probability
-        edge_probability = 1 - edge_probability
-        return edge_probability
+            probabilities.append(probability)
+        return max(probabilities)
 
     def _create_Q_and_R(self) -> Tuple[np.ndarray, np.ndarray]:
         transient_nodes = set(self.graph.nodes) - set(self.graph.goal_nodes)

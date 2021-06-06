@@ -45,8 +45,8 @@ class Dataset:
 
     @staticmethod
     def _add_one_pair_graphs(complexity: int):
-        min_complexity = 20
-        max_complexity = 40
+        min_complexity = 30
+        max_complexity = 60
 
         # Get current set populations
         set_populations = Dataset._get_current_set_populations()

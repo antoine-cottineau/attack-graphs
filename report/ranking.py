@@ -33,39 +33,42 @@ class PpceMatrixCreator:
         self._compute_max_n_graphs()
 
         # Load the existing results and the new graphs
-        existing_results, existing_times = self._load_existing_results()
-        new_graphs = self._load_next_graphs(existing_results)
+        cur_results, cur_times = PpceMatrixCreator._load_existing_results()
+        new_graphs = self._load_next_graphs(cur_results)
         if new_graphs is None:
             return
 
-        state_graph, dependency_graph = new_graphs
-        print("{} nodes".format(state_graph.number_of_nodes()))
+        i_graph, state_graph, dependency_graph = new_graphs
+        print("Graph {}/{}: {} nodes, {} exploits".format(
+            i_graph + 1, Dataset.n_graphs, state_graph.number_of_nodes(),
+            len(state_graph.exploits)))
 
         # Apply the methods on the new graphs
-        exploits_rankings, new_times = self._apply_methods(
+        exploits_rankings, new_times = PpceMatrixCreator._apply_methods(
             state_graph, dependency_graph)
 
         # Compute the ppce matrix
-        ppce_matrix = self._compute_ppce_matrix(exploits_rankings)
+        ppce_matrix = PpceMatrixCreator._compute_ppce_matrix(exploits_rankings)
 
         # Save the new results
         results = np.expand_dims(ppce_matrix, axis=0)
         times = np.expand_dims(new_times, axis=0)
-        if existing_results is not None:
-            results = np.concatenate((existing_results, results))
-            times = np.concatenate((existing_times, times))
+        if cur_results is not None:
+            results = np.concatenate((cur_results, results))
+            times = np.concatenate((cur_times, times))
         np.save(PATH_DATA_FILE, results)
         np.save(PATH_DATA_FILE_TIME, times)
 
         # Draw the matrix if asked by the user
         if self.continuous_plotting:
-            self.draw_ppce_matrix()
-            self.draw_time_histogram()
+            PpceMatrixCreator.draw_ppce_matrix()
+            PpceMatrixCreator.draw_time_histogram()
 
         self.create()
 
-    def draw_ppce_matrix(self):
-        results = self._load_existing_results()[0]
+    @staticmethod
+    def draw_ppce_matrix():
+        results = PpceMatrixCreator._load_existing_results()[0]
 
         # Create one figure per set of graphs
         for i in range(len(Dataset.set_sizes)):
@@ -92,8 +95,9 @@ class PpceMatrixCreator:
             fig.savefig(path)
             fig.clf()
 
-    def draw_time_histogram(self):
-        times = self._load_existing_results()[1]
+    @staticmethod
+    def draw_time_histogram():
+        times = PpceMatrixCreator._load_existing_results()[1]
 
         Histogram(times, "Methods", METHODS, ["Time execution (s)"],
                   ["ranking_time"]).create()
@@ -104,7 +108,8 @@ class PpceMatrixCreator:
         else:
             self.max_n_graphs = min(self.n_graphs, Dataset.n_graphs)
 
-    def _load_existing_results(self) -> Tuple[np.ndarray, np.ndarray]:
+    @staticmethod
+    def _load_existing_results() -> Tuple[np.ndarray, np.ndarray]:
         if PATH_DATA_FILE.exists():
             return np.load(PATH_DATA_FILE), np.load(PATH_DATA_FILE_TIME)
         else:
@@ -112,7 +117,7 @@ class PpceMatrixCreator:
 
     def _load_next_graphs(
         self, existing_results: np.ndarray
-    ) -> Tuple[StateAttackGraph, DependencyAttackGraph]:
+    ) -> Tuple[int, StateAttackGraph, DependencyAttackGraph]:
         if existing_results is None:
             i_graph = 0
         else:
@@ -124,12 +129,12 @@ class PpceMatrixCreator:
         state_graph = Dataset.load_state_graph(i_graph)
         dependency_graph = Dataset.load_dependency_graph(i_graph)
 
-        return state_graph, dependency_graph
+        return i_graph, state_graph, dependency_graph
 
+    @staticmethod
     def _apply_methods(
-        self, state_graph: StateAttackGraph,
-        dependency_graph: DependencyAttackGraph
-    ) -> Tuple[List[Dict[int, float]], List[float]]:
+        state_graph: StateAttackGraph, dependency_graph: DependencyAttackGraph
+    ) -> Tuple[List[Dict[int, int]], List[float]]:
         instances: List[RankingMethod] = [
             PageRankMethod(state_graph),
             KuehlmannMethod(state_graph),
@@ -148,30 +153,34 @@ class PpceMatrixCreator:
 
         return exploit_rankings, times
 
+    @staticmethod
     def _compute_ppce_matrix(
-            self, exploit_rankings: List[Dict[int, float]]) -> np.ndarray:
+            exploit_rankings: List[Dict[int, int]]) -> np.ndarray:
         ppce_matrix = np.zeros((len(exploit_rankings), len(exploit_rankings)))
         for i, ranking_a in enumerate(exploit_rankings):
             for j, ranking_b in enumerate(exploit_rankings):
                 if i >= j:
                     continue
 
-                ppce = self._compute_ppce_between_two_orderings(
+                ppce = PpceMatrixCreator._compute_ppce_between_two_orderings(
                     ranking_a, ranking_b)
                 ppce_matrix[i, j] = ppce
                 ppce_matrix[j, i] = ppce
         return ppce_matrix
 
+    @staticmethod
     def _compute_ppce_between_two_orderings(
-            self, ranking_a: Dict[int, float],
-            ranking_b: Dict[int, float]) -> float:
+            ranking_a: Dict[int, int], ranking_b: Dict[int, int]) -> float:
         ppce = 0
         exploits = list(ranking_a)
 
-        for exploit_0 in exploits:
-            for exploit_1 in exploits:
-                if exploit_0 == exploit_1:
+        for i in range(len(exploits)):
+            for j in range(len(exploits)):
+                if i >= j:
                     continue
+
+                exploit_0 = exploits[i]
+                exploit_1 = exploits[j]
 
                 value_a_0 = ranking_a[exploit_0]
                 value_a_1 = ranking_a[exploit_1]
@@ -182,12 +191,9 @@ class PpceMatrixCreator:
                 # in ranking_a and ranking_b
                 difference_a = value_a_0 - value_a_1
                 difference_b = value_b_0 - value_b_1
-                if difference_a == 0 and difference_b != 0:
-                    ppce += 1
-                elif difference_a != 0 and difference_b == 0:
-                    ppce += 1
-                elif difference_a * difference_b < 0:
+                if difference_a * difference_b < 0:
                     ppce += 1
 
         n_exploits = len(exploits)
-        return ppce / (n_exploits * (n_exploits - 1))
+        ppce /= (n_exploits * (n_exploits - 1)) / 2
+        return ppce

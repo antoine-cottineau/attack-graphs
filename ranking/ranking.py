@@ -1,3 +1,4 @@
+from scipy.stats import rankdata
 from attack_graph import BaseGraph
 from typing import Dict
 
@@ -6,22 +7,24 @@ class RankingMethod:
     def __init__(self, graph: BaseGraph):
         self.graph = graph
 
-    def rank_exploits(self) -> Dict[int, float]:
+    def rank_exploits(self) -> Dict[int, int]:
         ids_exploits = list(self.graph.exploits)
         scores: Dict[int, float] = {}
 
         # Evaluate the score when removing no exploit
-        print("Applying ranking method without removing any exploit")
         scores[None] = self._get_score()
 
         # Evaluate the scores when removing one exploit
         for id_exploit in ids_exploits:
-            print("Applying ranking method with exploit {} removed".format(
-                id_exploit))
             scores[id_exploit] = self._get_score_with_exploit_removed(
                 id_exploit)
 
-        return scores
+        # Create the ordering of the exploits based on the corresponding scores
+        ranks = rankdata(list(scores.values()), method="ordinal") - 1
+        ordering = dict([(list(scores)[i], int(ranks[i]))
+                         for i in range(len(ids_exploits) + 1)])
+
+        return ordering
 
     def _get_score(self) -> float:
         return
