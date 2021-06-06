@@ -1,7 +1,7 @@
 import numpy as np
 from attack_graph import DependencyAttackGraph
 from ranking.ranking import RankingMethod
-from typing import Dict, List, Set, Tuple
+from typing import Dict, Set, Tuple
 
 
 class RiskQuantifier(RankingMethod):
@@ -23,10 +23,9 @@ class RiskQuantifier(RankingMethod):
             (node, set()) for node in self.formatted_graph.nodes
         ])
 
-        # Create arrays useful to not compute the same value again
-        self.list_stored_psi: List[Tuple[Dict[int, bool], Dict[int, bool],
-                                         float]] = []
-        self.list_stored_phi: List[Tuple[Dict[int, bool], float]] = []
+        # Create dictionaries useful to not compute the same value again
+        self.dict_stored_psi: Dict[str, float] = {}
+        self.dict_stored_phi: Dict[str, float] = {}
 
         # Get the list of branch nodes
         self.branch_nodes = self._get_branch_nodes()
@@ -53,11 +52,9 @@ class RiskQuantifier(RankingMethod):
 
                 # If this node is a branch node then psi(n, n) = 1
                 if node in self.branch_nodes:
-                    self.list_stored_psi.append(({
-                        node: True
-                    }, {
-                        node: True
-                    }, 1))
+                    key = RiskQuantifier._create_psi_key({node: True},
+                                                         {node: True})
+                    self.dict_stored_psi[key] = 1
             else:
                 # Update the various arrays for this exploit node
                 self.dict_phi[node] = self.exploit_probabilities[
@@ -155,10 +152,13 @@ class RiskQuantifier(RankingMethod):
     def _evaluate_probability(self, node_polarities: Dict[int, bool]) -> float:
         nodes = set(node_polarities)
 
+        # Create the key for these node polarities
+        key = RiskQuantifier._create_phi_key(node_polarities)
+
         # Check if this probability has already been computed
-        for stored_node_polarities, value in self.list_stored_phi:
-            if stored_node_polarities == node_polarities:
-                return value
+        existing_value = self.dict_stored_phi.get(key)
+        if existing_value is not None:
+            return existing_value
 
         # Find a d-separating set D
         D = set()
@@ -196,17 +196,19 @@ class RiskQuantifier(RankingMethod):
                     D_polarities) * self._evaluate_probability(D_polarities)
 
         # Save the probability for an eventual later use
-        self.list_stored_phi.append((node_polarities, value))
+        self.dict_stored_phi[key] = value
         return value
 
     def _evaluate_conditional_probability(
             self, node_polarities: Dict[int, bool],
             D_polarities: Dict[int, bool]) -> float:
+        # Create the key for this conditional probability
+        key = RiskQuantifier._create_psi_key(node_polarities, D_polarities)
+
         # Check if this probability has already been computed
-        for stored_psi in self.list_stored_psi:
-            if stored_psi[0] == node_polarities and stored_psi[
-                    1] == D_polarities:
-                return stored_psi[2]
+        existing_value = self.dict_stored_psi.get(key)
+        if existing_value is not None:
+            return existing_value
 
         if len(node_polarities) > 1:
             value = 1
@@ -221,7 +223,7 @@ class RiskQuantifier(RankingMethod):
                 node, polarity, D_polarities)
 
         # Save the probability for an eventual later use
-        self.list_stored_psi.append((node_polarities, D_polarities, value))
+        self.dict_stored_psi[key] = value
         return value
 
     def _evaluate_single_node_conditional_probability(
@@ -255,3 +257,24 @@ class RiskQuantifier(RankingMethod):
             # There is exactly one negative element
             return 1 - self._evaluate_conditional_probability({node: True},
                                                               D_polarities)
+
+    @staticmethod
+    def _create_phi_key(node_polarities: Dict[int, bool]) -> str:
+        return RiskQuantifier._create_key_from_dict(node_polarities)
+
+    @staticmethod
+    def _create_psi_key(node_polarities: Dict[int, bool],
+                        D_polarities: Dict[int, bool]) -> str:
+        node_key = RiskQuantifier._create_key_from_dict(node_polarities)
+        D_key = RiskQuantifier._create_key_from_dict(D_polarities)
+        key = "{}-{}".format(node_key, D_key)
+        return key
+
+    @staticmethod
+    def _create_key_from_dict(input_dict: Dict[int, bool]) -> str:
+        keys = [
+            "{}*{}".format(node, 1 if polarity else 0)
+            for node, polarity in input_dict.items()
+        ]
+        key = "_".join(keys)
+        return key
