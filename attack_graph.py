@@ -365,11 +365,16 @@ class StateAttackGraph(BaseGraph):
             i for i, data in self.propositions.items() if data["initial"]
         ]
 
+        # Filter the exploits and only keep the ones that are useful in
+        # reaching the goal proposition
+        useful_exploits = self._get_useful_exploits(
+            set([self.goal_proposition]))
+
         # Create and add the initial node
         self.add_node(0, ids_propositions=ids_propositions)
 
         # Fill the rest of the graph recursively
-        self._fill_graph_recursively_from_node(0)
+        self._fill_graph_recursively_from_node(0, useful_exploits)
 
         # Sort the integer arrays in the graph
         for node, ids_propositions in self.nodes(data="ids_propositions"):
@@ -378,7 +383,35 @@ class StateAttackGraph(BaseGraph):
         for src, dst, ids_exploits in self.edges(data="ids_exploits"):
             self.edges[src, dst]["ids_exploits"] = sorted(ids_exploits)
 
-    def _fill_graph_recursively_from_node(self, node: int):
+    def _get_useful_exploits(self, useful_propositions: Set[int]) -> Set[int]:
+        useful_exploits: Set[int] = set()
+
+        # Add the exploits that have their granted proposition in the list of
+        # current useful propositions
+        for id_exploit, data in self.exploits.items():
+            granted_proposition = data["granted_proposition"]
+            if granted_proposition in useful_propositions:
+                useful_exploits.add(id_exploit)
+
+        # For each one of the useful_exploits, add the required propositions to
+        # the list of useful propositions
+        new_useful_propositions = useful_propositions.copy()
+        for id_exploit in useful_exploits:
+            required_propositions: Set[int] = set(
+                self.exploits[id_exploit]["required_propositions"])
+            new_useful_propositions |= required_propositions
+
+        # If no new useful propositions have been added, we have reached the
+        # end of the recursion
+        if useful_propositions == new_useful_propositions:
+            return useful_exploits
+
+        # Otherwise, call the function recursively for the new useful
+        # propositions
+        return self._get_useful_exploits(new_useful_propositions)
+
+    def _fill_graph_recursively_from_node(self, node: int,
+                                          useful_exploits: Set[int]):
         current_ids_propositions: Set[int] = set(
             self.nodes[node]["ids_propositions"])
 
@@ -389,7 +422,9 @@ class StateAttackGraph(BaseGraph):
         # Look for all the exploits that are possible and that grant a
         # proposition that is not already true
         ids_exploits_possible: Set[int] = set()
-        for id_exploit, data in self.exploits.items():
+        for id_exploit in useful_exploits:
+            data = self.exploits[id_exploit]
+
             # Check that the proposition granted by the exploit is not already
             # true
             if data["granted_proposition"] in current_ids_propositions:
@@ -416,23 +451,14 @@ class StateAttackGraph(BaseGraph):
                 if set(ids_propositions) == new_ids_propositions
             ]
             if len(similar_nodes) > 0:
-                # Search if there is already an edge between the source node
-                # and the reached one
-                similar_edges = [(src, dst, edge_ids_exploits)
-                                 for src, dst, edge_ids_exploits in self.edges(
-                                     data="ids_exploits")
-                                 if src == node and dst == similar_nodes[0]]
-                if len(similar_edges) == 0:
-                    self.add_edge(node,
-                                  similar_nodes[0],
-                                  ids_exploits=[id_exploit])
+                similar_node = similar_nodes[0]
+                if similar_node in self.successors(node):
+                    self.edges[node,
+                               similar_node]["ids_exploits"] += [id_exploit]
                 else:
-                    ids_exploits = similar_edges[0][2].copy()
-                    ids_exploits.append(id_exploit)
-                    self.edges[
-                        similar_edges[0][0],
-                        similar_edges[0][1]]["ids_exploits"] = ids_exploits
-
+                    self.add_edge(node,
+                                  similar_node,
+                                  ids_exploits=[id_exploit])
             else:
                 # Add a new node
                 new_node = self.number_of_nodes()
@@ -444,7 +470,8 @@ class StateAttackGraph(BaseGraph):
                 self.add_edge(node, new_node, ids_exploits=[id_exploit])
 
                 # Call this function starting from the new node
-                self._fill_graph_recursively_from_node(new_node)
+                self._fill_graph_recursively_from_node(new_node,
+                                                       useful_exploits)
 
     def copy(self, as_view=False):
         graph = super().copy(as_view=as_view)
