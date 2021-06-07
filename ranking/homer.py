@@ -168,7 +168,7 @@ class RiskQuantifier(RankingMethod):
                     D |= self.dict_chi[n] & self.dict_chi[m]
 
         if len(D) == 0:
-            # There is no d-separating set so nodes are independant
+            # There is no d-separating set so nodes are independent
             value = 1
             for node in nodes:
                 phi = self.dict_phi[node]
@@ -189,8 +189,8 @@ class RiskQuantifier(RankingMethod):
             # Compute the value by studying each possible configuration of
             # values for D
             for set_polarities in possible_polarities:
-                D_polarities = dict([list(D)[i], set_polarities[i]]
-                                    for i in range(len(D)))
+                D_polarities = dict([(list(D)[i], set_polarities[i])
+                                     for i in range(len(D))])
                 value += self._evaluate_conditional_probability(
                     node_polarities,
                     D_polarities) * self._evaluate_probability(D_polarities)
@@ -272,9 +272,9 @@ class RiskQuantifier(RankingMethod):
 
     @staticmethod
     def _create_key_from_dict(input_dict: Dict[int, bool]) -> str:
-        keys = [
+        keys = sorted([
             "{}*{}".format(node, 1 if polarity else 0)
             for node, polarity in input_dict.items()
-        ]
+        ])
         key = "_".join(keys)
         return key
