@@ -1,6 +1,7 @@
 import numpy as np
 from attack_graph import StateAttackGraph
 from ranking.ranking import RankingMethod
+from scipy.sparse import csr_matrix
 from typing import Dict
 
 
@@ -9,7 +10,7 @@ class PageRankMethod(RankingMethod):
         super().__init__(graph)
         self.d = d
 
-    def _compute_normalized_adjacency_matrix(self):
+    def _compute_normalized_adjacency_matrix(self) -> np.ndarray:
         Z = np.zeros(
             (self.graph.number_of_nodes(), self.graph.number_of_nodes()))
         node_ordering = self.graph.get_node_ordering()
@@ -26,7 +27,9 @@ class PageRankMethod(RankingMethod):
 
         return toward_initial_state + self.d * Z
 
-    def _compute_rank_vector(self, Z: np.array, eps: float = 1e-4):
+    def _compute_rank_vector(self,
+                             Z: np.array,
+                             eps: float = 1e-4) -> np.ndarray:
         R = np.ones(
             self.graph.number_of_nodes()) / self.graph.number_of_nodes()
         distance = np.inf
@@ -34,7 +37,6 @@ class PageRankMethod(RankingMethod):
             new_R = Z.dot(R)
             distance = np.linalg.norm(R - new_R, ord=2)
             R = new_R
-        R[0] = 0
         return R
 
     def apply(self) -> Dict[int, float]:
@@ -57,7 +59,7 @@ class KuehlmannMethod(RankingMethod):
         super().__init__(graph)
         self.eta = eta
 
-    def _compute_transition_probability_matrix(self):
+    def _compute_transition_probability_matrix(self) -> csr_matrix:
         P = np.zeros(
             (self.graph.number_of_nodes(), self.graph.number_of_nodes()))
         node_ordering = self.graph.get_node_ordering()
@@ -65,6 +67,7 @@ class KuehlmannMethod(RankingMethod):
             for j in self.graph.predecessors(i):
                 P[node_ordering[i],
                   node_ordering[j]] = 1 / len(list(self.graph.successors(j)))
+        P = csr_matrix(P)
         return P
 
     def apply(self, max_m: int = 100) -> Dict[int, float]:
@@ -72,21 +75,26 @@ class KuehlmannMethod(RankingMethod):
         s = np.zeros(self.graph.number_of_nodes())
         s[0] = 1
 
-        powers_P = np.zeros((max_m + 1, self.graph.number_of_nodes(),
-                             self.graph.number_of_nodes()))
-        powers_eta = np.power(self.eta, np.arange(1, max_m + 1))
-
+        powers_eta = np.power(self.eta, np.arange(max_m + 1))
         r = np.zeros(self.graph.number_of_nodes())
 
-        powers_P[0] = P
-        for m in range(1, max_m + 1):
-            powers_P[m] = P.dot(powers_P[m - 1])
-            r += powers_eta[m - 1] * np.sum(powers_P[:m + 1], axis=0).dot(s)
+        power_P = csr_matrix(np.identity(self.graph.number_of_nodes()))
+        current_sum = s
+        m = 1
+        stop = False
+        while m <= max_m and not stop:
+            power_P = csr_matrix(power_P.dot(P))
+            to_add = csr_matrix(power_P.dot(s))
+            current_sum += to_add.toarray().flatten()
+            r += powers_eta[m] * current_sum
+
+            m += 1
+            stop = to_add.sum() < 1e-15
 
         r *= (1 - self.eta) / self.eta
-
-        ids_nodes = list(self.graph.nodes)
-        return dict([(ids_nodes[i], float(r[i])) for i in range(len(r))])
+        values = dict([(list(self.graph.nodes)[i], float(r[i]))
+                       for i in range(len(r))])
+        return values
 
     def _get_score(self) -> float:
         score = sum(list(self.apply().values()))
