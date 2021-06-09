@@ -1,26 +1,29 @@
-from time import time
+import math
 import numpy as np
 import utils
 from attack_graph import DependencyAttackGraph, StateAttackGraph
 from matplotlib.pyplot import subplots
 from pathlib import Path
-from ranking.abraham import ExpectedPathLength
+from ranking.abraham import ProbabilisticPath
 from ranking.homer import RiskQuantifier
 from ranking.mehta import PageRankMethod, KuehlmannMethod
+from ranking.random import RandomRankingMethod
 from ranking.ranking import RankingMethod
 from ranking.sheyner import ValueIteration
 from report.dataset import Dataset
 from report.report import Histogram, PATH_FIGURES
-from typing import Dict, List, Tuple
+from time import time
+from typing import Dict, List, Set, Tuple
 
 # CONSTANTS
 PATH_DATA_FILE = Path("report/data/ranking.npy")
+PATH_DATA_FILE_TOP_EXPLOITS = Path("report/data/ranking_top_exploits.npy")
 PATH_DATA_FILE_TIME = Path("report/data/ranking_time.npy")
 
-METHODS: List[str] = ["PR", "KUE", "VI", "HOM", "EPL"]
+METHODS: List[str] = ["PR", "KUE", "VI", "HOM", "PP", "RAN"]
 
 
-class PpceMatrixCreator:
+class RankingMethodsComparator:
     def __init__(self, n_graphs: int = None, continuous_plotting: bool = True):
         self.n_graphs = n_graphs
         self.continuous_plotting = continuous_plotting
@@ -33,7 +36,8 @@ class PpceMatrixCreator:
         self._compute_max_n_graphs()
 
         # Load the existing results and the new graphs
-        cur_results, cur_times = PpceMatrixCreator._load_existing_results()
+        existing_results = RankingMethodsComparator._load_existing_results()
+        cur_results, cur_top, cur_times = existing_results
         new_graphs = self._load_next_graphs(cur_results)
         if new_graphs is None:
             return
@@ -44,31 +48,40 @@ class PpceMatrixCreator:
             len(state_graph.exploits)))
 
         # Apply the methods on the new graphs
-        exploits_rankings, new_times = PpceMatrixCreator._apply_methods(
+        exploits_rankings, times = RankingMethodsComparator._apply_methods(
             state_graph, dependency_graph)
 
         # Compute the ppce matrix
-        ppce_matrix = PpceMatrixCreator._compute_ppce_matrix(exploits_rankings)
+        ppce_matrix = RankingMethodsComparator._compute_ppce_matrix(
+            exploits_rankings)
+
+        # Get the top exploits
+        top_exploits = RankingMethodsComparator._count_common_top_exploits(
+            exploits_rankings)
 
         # Save the new results
-        results = np.expand_dims(ppce_matrix, axis=0)
-        times = np.expand_dims(new_times, axis=0)
+        ppce_matrix = np.expand_dims(ppce_matrix, axis=0)
+        top_exploits = np.expand_dims(top_exploits, axis=0)
+        times = np.expand_dims(times, axis=0)
         if cur_results is not None:
-            results = np.concatenate((cur_results, results))
+            ppce_matrix = np.concatenate((cur_results, ppce_matrix))
+            top_exploits = np.concatenate((cur_top, top_exploits))
             times = np.concatenate((cur_times, times))
-        np.save(PATH_DATA_FILE, results)
+        np.save(PATH_DATA_FILE, ppce_matrix)
+        np.save(PATH_DATA_FILE_TOP_EXPLOITS, top_exploits)
         np.save(PATH_DATA_FILE_TIME, times)
 
         # Draw the matrix if asked by the user
         if self.continuous_plotting:
-            PpceMatrixCreator.draw_ppce_matrix()
-            PpceMatrixCreator.draw_time_histogram()
+            RankingMethodsComparator.draw_ppce_matrix()
+            RankingMethodsComparator.draw_top_exploits_matrix()
+            RankingMethodsComparator.draw_time_histogram()
 
         self.create()
 
     @staticmethod
     def draw_ppce_matrix():
-        results = PpceMatrixCreator._load_existing_results()[0]
+        results = RankingMethodsComparator._load_existing_results()[0]
 
         # Create one figure per set of graphs
         for i in range(len(Dataset.set_sizes)):
@@ -96,8 +109,35 @@ class PpceMatrixCreator:
             fig.clf()
 
     @staticmethod
+    def draw_top_exploits_matrix():
+        top_exploits = RankingMethodsComparator._load_existing_results()[1]
+
+        results = np.mean(top_exploits, axis=0)
+        fig, ax = subplots()
+        plot = ax.matshow(results)
+        fig.colorbar(plot)
+
+        ax.set_xticks(np.arange(len(METHODS)))
+        ax.set_yticks(np.arange(len(METHODS)))
+        ax.set_xticklabels(METHODS)
+        ax.set_yticklabels(METHODS)
+
+        for (i, j), z in np.ndenumerate(results):
+            ax.text(j,
+                    i,
+                    "{:0.2f}".format(z),
+                    ha='center',
+                    va='center',
+                    color="white")
+
+        path = Path(PATH_FIGURES, "ranking_top_exploits.png")
+        fig.tight_layout()
+        fig.savefig(path)
+        fig.clf()
+
+    @staticmethod
     def draw_time_histogram():
-        times = PpceMatrixCreator._load_existing_results()[1]
+        times = RankingMethodsComparator._load_existing_results()[2]
 
         Histogram(times, "Methods", METHODS, ["Time execution (s)"],
                   ["ranking_time"]).create()
@@ -111,9 +151,10 @@ class PpceMatrixCreator:
     @staticmethod
     def _load_existing_results() -> Tuple[np.ndarray, np.ndarray]:
         if PATH_DATA_FILE.exists():
-            return np.load(PATH_DATA_FILE), np.load(PATH_DATA_FILE_TIME)
+            return np.load(PATH_DATA_FILE), np.load(
+                PATH_DATA_FILE_TOP_EXPLOITS), np.load(PATH_DATA_FILE_TIME)
         else:
-            return None, None
+            return None, None, None
 
     def _load_next_graphs(
         self, existing_results: np.ndarray
@@ -140,7 +181,8 @@ class PpceMatrixCreator:
             KuehlmannMethod(state_graph),
             ValueIteration(state_graph),
             RiskQuantifier(dependency_graph),
-            ExpectedPathLength(state_graph)
+            ProbabilisticPath(state_graph),
+            RandomRankingMethod(state_graph)
         ]
 
         exploit_rankings = []
@@ -162,7 +204,7 @@ class PpceMatrixCreator:
                 if i >= j:
                     continue
 
-                ppce = PpceMatrixCreator._compute_ppce_between_two_orderings(
+                ppce = RankingMethodsComparator._compute_ppce_between_two_orderings(
                     ranking_a, ranking_b)
                 ppce_matrix[i, j] = ppce
                 ppce_matrix[j, i] = ppce
@@ -197,3 +239,32 @@ class PpceMatrixCreator:
         n_exploits = len(exploits)
         ppce /= (n_exploits * (n_exploits - 1)) / 2
         return ppce
+
+    @staticmethod
+    def _count_common_top_exploits(exploit_rankings: List[Dict[int, int]],
+                                   top: float = 1 / 3) -> np.ndarray:
+        list_top_exploits: List[Set[int]] = []
+        n_top_exploits = math.ceil(len(exploit_rankings[0]) * top)
+
+        # Fill the list of top exploits
+        for rankings in exploit_rankings:
+            top_exploits: Set[int] = set()
+            for id_exploit, ranking in rankings.items():
+                if ranking < n_top_exploits:
+                    top_exploits.add(id_exploit)
+            list_top_exploits.append(top_exploits)
+
+        # Create a matrix comparing the sets of top exploits
+        common_top_exploits = np.identity((len(METHODS)))
+        for i in range(len(METHODS)):
+            for j in range(len(METHODS)):
+                if i >= j:
+                    continue
+
+                common_exploits = list_top_exploits[i] & list_top_exploits[j]
+                common_top_exploits[i,
+                                    j] = len(common_exploits) / n_top_exploits
+                common_top_exploits[j,
+                                    i] = len(common_exploits) / n_top_exploits
+
+        return common_top_exploits
