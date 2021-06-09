@@ -65,7 +65,7 @@ class ValueIteration(RankingMethod):
 
     def _get_score(self) -> float:
         values = self.apply()[0]
-        score = sum(list(values.values()))
+        score = values[0]
         return score
 
     def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
