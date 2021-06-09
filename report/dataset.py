@@ -2,7 +2,7 @@ import json
 import numpy as np
 import utils
 from attack_graph import DependencyAttackGraph, StateAttackGraph
-from attack_graph_generation import Generator
+from generation import Generator
 from pathlib import Path
 from time import time
 from typing import List
@@ -14,6 +14,8 @@ class Dataset:
     n_graphs = sum(set_sizes)
     base_path = "methods_input/dataset"
     summary_file_path = Path(base_path, "summary.json")
+    min_n_exploits = 15
+    max_n_exploits = 30
 
     @staticmethod
     def complete_dataset():
@@ -21,7 +23,7 @@ class Dataset:
         utils.create_folders(Dataset.base_path)
 
         # Start generating the graphs
-        Dataset._add_one_pair_graphs(20)
+        Dataset._add_one_pair_graphs(Dataset.min_n_exploits)
 
     @staticmethod
     def load_state_graph(i_graph: int) -> StateAttackGraph:
@@ -44,10 +46,7 @@ class Dataset:
         return graph
 
     @staticmethod
-    def _add_one_pair_graphs(complexity: int):
-        min_complexity = 30
-        max_complexity = 60
-
+    def _add_one_pair_graphs(n_exploits: int):
         # Get current set populations
         set_populations = Dataset._get_current_set_populations()
         print("\nCurrent set populations: {}".format(" ".join(
@@ -58,15 +57,14 @@ class Dataset:
             print("Generation done")
             return
 
-        # Generate a state attack graph
-        print("Generate a state attack graph with complexity {}".format(
-            complexity))
-        generator = Generator(n_propositions=complexity, n_exploits=complexity)
-        generator.generate_propositions_and_exploits()
-        stateAttackGraph = generator.generate_state_attack_graph()
+        # Generate the graphs
+        print("Generate graphs with {} exploits".format(n_exploits))
+        generator = Generator(n_exploits=n_exploits)
+        graphs = generator.generate_both_graphs()
+        state_attack_graph, dependency_attack_graph = graphs
 
         # Get the appropriate set for these graphs
-        n_nodes = stateAttackGraph.number_of_nodes()
+        n_nodes = state_attack_graph.number_of_nodes()
         appropriate_set = Dataset._find_appropriate_set(n_nodes)
         print("With {} state nodes, these graphs belong to set {}".format(
             n_nodes, appropriate_set))
@@ -74,13 +72,11 @@ class Dataset:
         # Save the graphs if there is still room in the set
         if set_populations[appropriate_set] < Dataset.set_sizes[
                 appropriate_set]:
-            print("There is still room remaining in set {}, generating"
-                  " dependency attack graph".format(appropriate_set))
-            dependencyAttackGraph = generator.generate_dependency_attack_graph(
-            )
+            print("There is still room remaining in set {}".format(
+                appropriate_set))
 
             print("Saving the graphs")
-            Dataset._save_graphs(stateAttackGraph, dependencyAttackGraph,
+            Dataset._save_graphs(state_attack_graph, dependency_attack_graph,
                                  n_nodes, appropriate_set)
 
             # Print the updated set populations
@@ -93,13 +89,13 @@ class Dataset:
                     appropriate_set))
 
         # Update the complexity for the creation of the next pair of graphs
-        if complexity == max_complexity:
-            new_complexity = min_complexity
+        if n_exploits == Dataset.max_n_exploits:
+            new_n_exploits = Dataset.min_n_exploits
         else:
-            new_complexity = complexity + 1
+            new_n_exploits = n_exploits + 1
 
         # Create a new graph with the new complexity
-        Dataset._add_one_pair_graphs(new_complexity)
+        Dataset._add_one_pair_graphs(new_n_exploits)
 
     @staticmethod
     def _get_current_set_populations() -> List[int]:
@@ -116,20 +112,20 @@ class Dataset:
         return set_populations
 
     @staticmethod
-    def _save_graphs(stateAttackGraph: StateAttackGraph,
-                     dependencyAttackGraph: DependencyAttackGraph,
+    def _save_graphs(state_attack_graph: StateAttackGraph,
+                     dependency_attack_graph: DependencyAttackGraph,
                      n_nodes: int, appropriate_set: int):
         # Create a base filename based on the current timestamp
         base_filename = str(time()).replace(".", "")[:13]
 
         # Save the state graph
         state_path = Path(Dataset.base_path, base_filename + "_state.json")
-        stateAttackGraph.save(state_path)
+        state_attack_graph.save(state_path)
 
         # Save the dependency graph
         dependency_path = Path(Dataset.base_path,
                                base_filename + "_dependency.json")
-        dependencyAttackGraph.save(dependency_path)
+        dependency_attack_graph.save(dependency_path)
 
         # Get the current list of graphs that have been created
         graph_summaries = Dataset._get_summary_file_content()

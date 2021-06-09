@@ -14,7 +14,8 @@ class ExploitFetcher:
 
     def get_fake_exploit_list(self,
                               n_exploits: int,
-                              update_file: bool = False) -> List[dict]:
+                              update_file: bool = False,
+                              shuffle: bool = False) -> List[dict]:
         if self.fake_exploits_file.exists() and not update_file:
             # Load the existing file of fake exploits
             with open(self.fake_exploits_file, "r") as f:
@@ -23,7 +24,6 @@ class ExploitFetcher:
             # Sample n_exploits exploits from this list
             ids_exploits = np.random.choice(len(all_exploits), size=n_exploits)
             exploits = [all_exploits[i] for i in ids_exploits]
-            return exploits
         else:
             # Generate a fake list of exploits
             exploits = self._generate_exploit_list(n_exploits)
@@ -33,7 +33,8 @@ class ExploitFetcher:
             with open(self.fake_exploits_file, "w") as f:
                 json.dump(exploits, f, indent=2)
 
-            return exploits
+        random.shuffle(exploits)
+        return exploits
 
     def _generate_exploit_list(self, n_exploits: int) -> List[dict]:
         # Generate a fake list of CVE ids
