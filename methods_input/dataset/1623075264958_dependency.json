@@ -1,0 +1,645 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 17,
+      "id": 17
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 20,
+      "id": 20
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_exploit": 0,
+      "id": 24
+    },
+    {
+      "id_exploit": 1,
+      "id": 25
+    },
+    {
+      "id_exploit": 2,
+      "id": 26
+    },
+    {
+      "id_exploit": 3,
+      "id": 27
+    },
+    {
+      "id_exploit": 4,
+      "id": 28
+    },
+    {
+      "id_exploit": 5,
+      "id": 29
+    },
+    {
+      "id_exploit": 6,
+      "id": 30
+    },
+    {
+      "id_exploit": 7,
+      "id": 31
+    },
+    {
+      "id_exploit": 8,
+      "id": 32
+    },
+    {
+      "id_exploit": 9,
+      "id": 33
+    },
+    {
+      "id_exploit": 10,
+      "id": 34
+    },
+    {
+      "id_exploit": 11,
+      "id": 35
+    },
+    {
+      "id_exploit": 12,
+      "id": 36
+    },
+    {
+      "id_exploit": 13,
+      "id": 37
+    },
+    {
+      "id_exploit": 14,
+      "id": 38
+    },
+    {
+      "id_exploit": 15,
+      "id": 39
+    },
+    {
+      "id_exploit": 16,
+      "id": 40
+    },
+    {
+      "id_exploit": 17,
+      "id": 41
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 24
+    },
+    {
+      "source": 0,
+      "target": 25
+    },
+    {
+      "source": 1,
+      "target": 24
+    },
+    {
+      "source": 2,
+      "target": 25
+    },
+    {
+      "source": 2,
+      "target": 26
+    },
+    {
+      "source": 2,
+      "target": 27
+    },
+    {
+      "source": 3,
+      "target": 26
+    },
+    {
+      "source": 4,
+      "target": 27
+    },
+    {
+      "source": 5,
+      "target": 37
+    },
+    {
+      "source": 6,
+      "target": 28
+    },
+    {
+      "source": 6,
+      "target": 41
+    },
+    {
+      "source": 7,
+      "target": 31
+    },
+    {
+      "source": 7,
+      "target": 38
+    },
+    {
+      "source": 8,
+      "target": 29
+    },
+    {
+      "source": 8,
+      "target": 32
+    },
+    {
+      "source": 9,
+      "target": 30
+    },
+    {
+      "source": 10,
+      "target": 34
+    },
+    {
+      "source": 10,
+      "target": 37
+    },
+    {
+      "source": 11,
+      "target": 33
+    },
+    {
+      "source": 12,
+      "target": 33
+    },
+    {
+      "source": 13,
+      "target": 33
+    },
+    {
+      "source": 14,
+      "target": 36
+    },
+    {
+      "source": 14,
+      "target": 38
+    },
+    {
+      "source": 14,
+      "target": 41
+    },
+    {
+      "source": 15,
+      "target": 38
+    },
+    {
+      "source": 16,
+      "target": 35
+    },
+    {
+      "source": 17,
+      "target": 36
+    },
+    {
+      "source": 18,
+      "target": 37
+    },
+    {
+      "source": 19,
+      "target": 39
+    },
+    {
+      "source": 19,
+      "target": 40
+    },
+    {
+      "source": 22,
+      "target": 41
+    },
+    {
+      "source": 24,
+      "target": 2
+    },
+    {
+      "source": 25,
+      "target": 3
+    },
+    {
+      "source": 26,
+      "target": 4
+    },
+    {
+      "source": 27,
+      "target": 5
+    },
+    {
+      "source": 28,
+      "target": 7
+    },
+    {
+      "source": 29,
+      "target": 9
+    },
+    {
+      "source": 30,
+      "target": 10
+    },
+    {
+      "source": 31,
+      "target": 11
+    },
+    {
+      "source": 32,
+      "target": 12
+    },
+    {
+      "source": 33,
+      "target": 14
+    },
+    {
+      "source": 34,
+      "target": 15
+    },
+    {
+      "source": 35,
+      "target": 17
+    },
+    {
+      "source": 36,
+      "target": 18
+    },
+    {
+      "source": 37,
+      "target": 19
+    },
+    {
+      "source": 38,
+      "target": 20
+    },
+    {
+      "source": 39,
+      "target": 20
+    },
+    {
+      "source": 40,
+      "target": 22
+    },
+    {
+      "source": 41,
+      "target": 20
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": false
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": true
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": false
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": true
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": false
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": true
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "Out of bound write while QoS DSCP mapping due to improper input validation for data received from association response frame in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996AU, Nicobar, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCM2150, QCN7605, QCS405, QCS605, QM215, SA6155P, Saipan, SC8180X, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX55, SM8150, SM8250, SXR2130",
+      "granted_proposition": 2,
+      "required_propositions": [
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-3698",
+      "cvss": 9.8
+    },
+    "1": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 3,
+      "required_propositions": [
+        0,
+        2
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "2": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 4,
+      "required_propositions": [
+        3,
+        2
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    },
+    "3": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        4,
+        2
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "4": {
+      "text": "A CWE-863: Incorrect Authorization vulnerability exists in U.motion Servers and Touch Panels (affected versions listed in the security notification) which could cause unauthorized access when a low privileged user makes unauthorized changes.",
+      "granted_proposition": 7,
+      "required_propositions": [
+        6
+      ],
+      "cve_id": "cve-2020-7499",
+      "cvss": 6.5
+    },
+    "5": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 9,
+      "required_propositions": [
+        8
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    },
+    "6": {
+      "text": "In OSSEC-HIDS 2.7 through 3.5.0, the server component responsible for log analysis (ossec-analysisd) is vulnerable to path traversal (with write access) via crafted syscheck messages written directly to the analysisd UNIX domain socket by a local user.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        9
+      ],
+      "cve_id": "cve-2020-8446",
+      "cvss": 5.5
+    },
+    "7": {
+      "text": "NetHack before version 3.6.0 allowed malicious use of escaping of characters in the configuration file (usually .nethackrc) which could be exploited. This bug is patched in NetHack 3.6.0.",
+      "granted_proposition": 11,
+      "required_propositions": [
+        7
+      ],
+      "cve_id": "cve-2020-5253",
+      "cvss": 9.8
+    },
+    "8": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 12,
+      "required_propositions": [
+        8
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "9": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 14,
+      "required_propositions": [
+        12,
+        13,
+        11
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    },
+    "10": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        10
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "11": {
+      "text": "In setProcessMemoryTrimLevel of ActivityManagerService.java, there is a missing permission check. This could lead to local information disclosure of foreground processes with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-10 Android-11 Android-8.0 Android-8.1 Android-9Android ID: A-160390416",
+      "granted_proposition": 17,
+      "required_propositions": [
+        16
+      ],
+      "cve_id": "cve-2020-0412",
+      "cvss": 3.3
+    },
+    "12": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 18,
+      "required_propositions": [
+        14,
+        17
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "13": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 19,
+      "required_propositions": [
+        10,
+        5,
+        18
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "14": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        14,
+        15,
+        7
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "15": {
+      "text": "A CWE-863: Incorrect Authorization vulnerability exists in U.motion Servers and Touch Panels (affected versions listed in the security notification) which could cause unauthorized access when a low privileged user makes unauthorized changes.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-7499",
+      "cvss": 6.5
+    },
+    "16": {
+      "text": "Out of bound write while QoS DSCP mapping due to improper input validation for data received from association response frame in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996AU, Nicobar, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCM2150, QCN7605, QCS405, QCS605, QM215, SA6155P, Saipan, SC8180X, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX55, SM8150, SM8250, SXR2130",
+      "granted_proposition": 22,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-3698",
+      "cvss": 9.8
+    },
+    "17": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        22,
+        6,
+        14
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    }
+  },
+  "goal_proposition": 20,
+  "goal_nodes": [
+    20
+  ],
+  "type": "dependency"
+}

@@ -1,0 +1,960 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 17,
+      "id": 17
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 20,
+      "id": 20
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_proposition": 23,
+      "id": 23
+    },
+    {
+      "id_proposition": 25,
+      "id": 25
+    },
+    {
+      "id_proposition": 26,
+      "id": 26
+    },
+    {
+      "id_proposition": 27,
+      "id": 27
+    },
+    {
+      "id_proposition": 30,
+      "id": 30
+    },
+    {
+      "id_proposition": 31,
+      "id": 31
+    },
+    {
+      "id_proposition": 33,
+      "id": 33
+    },
+    {
+      "id_exploit": 0,
+      "id": 39
+    },
+    {
+      "id_exploit": 1,
+      "id": 40
+    },
+    {
+      "id_exploit": 2,
+      "id": 41
+    },
+    {
+      "id_exploit": 3,
+      "id": 42
+    },
+    {
+      "id_exploit": 4,
+      "id": 43
+    },
+    {
+      "id_exploit": 5,
+      "id": 44
+    },
+    {
+      "id_exploit": 6,
+      "id": 45
+    },
+    {
+      "id_exploit": 7,
+      "id": 46
+    },
+    {
+      "id_exploit": 8,
+      "id": 47
+    },
+    {
+      "id_exploit": 9,
+      "id": 48
+    },
+    {
+      "id_exploit": 10,
+      "id": 49
+    },
+    {
+      "id_exploit": 11,
+      "id": 50
+    },
+    {
+      "id_exploit": 12,
+      "id": 51
+    },
+    {
+      "id_exploit": 13,
+      "id": 52
+    },
+    {
+      "id_exploit": 14,
+      "id": 53
+    },
+    {
+      "id_exploit": 15,
+      "id": 54
+    },
+    {
+      "id_exploit": 16,
+      "id": 55
+    },
+    {
+      "id_exploit": 17,
+      "id": 56
+    },
+    {
+      "id_exploit": 18,
+      "id": 57
+    },
+    {
+      "id_exploit": 19,
+      "id": 58
+    },
+    {
+      "id_exploit": 20,
+      "id": 59
+    },
+    {
+      "id_exploit": 21,
+      "id": 60
+    },
+    {
+      "id_exploit": 22,
+      "id": 61
+    },
+    {
+      "id_exploit": 23,
+      "id": 62
+    },
+    {
+      "id_exploit": 24,
+      "id": 63
+    },
+    {
+      "id_exploit": 25,
+      "id": 64
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 39
+    },
+    {
+      "source": 1,
+      "target": 39
+    },
+    {
+      "source": 1,
+      "target": 55
+    },
+    {
+      "source": 1,
+      "target": 59
+    },
+    {
+      "source": 2,
+      "target": 62
+    },
+    {
+      "source": 3,
+      "target": 40
+    },
+    {
+      "source": 3,
+      "target": 49
+    },
+    {
+      "source": 4,
+      "target": 41
+    },
+    {
+      "source": 4,
+      "target": 43
+    },
+    {
+      "source": 5,
+      "target": 49
+    },
+    {
+      "source": 5,
+      "target": 50
+    },
+    {
+      "source": 6,
+      "target": 42
+    },
+    {
+      "source": 6,
+      "target": 43
+    },
+    {
+      "source": 6,
+      "target": 45
+    },
+    {
+      "source": 7,
+      "target": 42
+    },
+    {
+      "source": 8,
+      "target": 42
+    },
+    {
+      "source": 8,
+      "target": 43
+    },
+    {
+      "source": 8,
+      "target": 45
+    },
+    {
+      "source": 9,
+      "target": 55
+    },
+    {
+      "source": 10,
+      "target": 56
+    },
+    {
+      "source": 10,
+      "target": 63
+    },
+    {
+      "source": 11,
+      "target": 44
+    },
+    {
+      "source": 11,
+      "target": 51
+    },
+    {
+      "source": 12,
+      "target": 44
+    },
+    {
+      "source": 13,
+      "target": 59
+    },
+    {
+      "source": 13,
+      "target": 60
+    },
+    {
+      "source": 14,
+      "target": 49
+    },
+    {
+      "source": 15,
+      "target": 46
+    },
+    {
+      "source": 15,
+      "target": 62
+    },
+    {
+      "source": 16,
+      "target": 46
+    },
+    {
+      "source": 16,
+      "target": 59
+    },
+    {
+      "source": 17,
+      "target": 52
+    },
+    {
+      "source": 17,
+      "target": 57
+    },
+    {
+      "source": 18,
+      "target": 47
+    },
+    {
+      "source": 19,
+      "target": 47
+    },
+    {
+      "source": 19,
+      "target": 50
+    },
+    {
+      "source": 19,
+      "target": 53
+    },
+    {
+      "source": 21,
+      "target": 48
+    },
+    {
+      "source": 22,
+      "target": 50
+    },
+    {
+      "source": 22,
+      "target": 58
+    },
+    {
+      "source": 23,
+      "target": 55
+    },
+    {
+      "source": 25,
+      "target": 58
+    },
+    {
+      "source": 25,
+      "target": 63
+    },
+    {
+      "source": 26,
+      "target": 58
+    },
+    {
+      "source": 26,
+      "target": 62
+    },
+    {
+      "source": 27,
+      "target": 54
+    },
+    {
+      "source": 27,
+      "target": 56
+    },
+    {
+      "source": 30,
+      "target": 61
+    },
+    {
+      "source": 31,
+      "target": 64
+    },
+    {
+      "source": 33,
+      "target": 63
+    },
+    {
+      "source": 39,
+      "target": 2
+    },
+    {
+      "source": 40,
+      "target": 4
+    },
+    {
+      "source": 41,
+      "target": 5
+    },
+    {
+      "source": 42,
+      "target": 9
+    },
+    {
+      "source": 43,
+      "target": 10
+    },
+    {
+      "source": 44,
+      "target": 13
+    },
+    {
+      "source": 45,
+      "target": 14
+    },
+    {
+      "source": 46,
+      "target": 17
+    },
+    {
+      "source": 47,
+      "target": 20
+    },
+    {
+      "source": 48,
+      "target": 22
+    },
+    {
+      "source": 49,
+      "target": 23
+    },
+    {
+      "source": 50,
+      "target": 20
+    },
+    {
+      "source": 51,
+      "target": 25
+    },
+    {
+      "source": 52,
+      "target": 26
+    },
+    {
+      "source": 53,
+      "target": 27
+    },
+    {
+      "source": 54,
+      "target": 20
+    },
+    {
+      "source": 55,
+      "target": 20
+    },
+    {
+      "source": 56,
+      "target": 30
+    },
+    {
+      "source": 57,
+      "target": 31
+    },
+    {
+      "source": 58,
+      "target": 20
+    },
+    {
+      "source": 59,
+      "target": 33
+    },
+    {
+      "source": 60,
+      "target": 20
+    },
+    {
+      "source": 61,
+      "target": 20
+    },
+    {
+      "source": 62,
+      "target": 20
+    },
+    {
+      "source": 63,
+      "target": 20
+    },
+    {
+      "source": 64,
+      "target": 20
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": true
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": false
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": true
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": true
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": true
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": false
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": true
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": true
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": true
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": true
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": true
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": false
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": false
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": false
+    },
+    "30": {
+      "text": "Randomly generated 30",
+      "initial": false
+    },
+    "31": {
+      "text": "Randomly generated 31",
+      "initial": false
+    },
+    "32": {
+      "text": "Randomly generated 32",
+      "initial": false
+    },
+    "33": {
+      "text": "Randomly generated 33",
+      "initial": false
+    },
+    "34": {
+      "text": "Randomly generated 34",
+      "initial": false
+    },
+    "35": {
+      "text": "Randomly generated 35",
+      "initial": false
+    },
+    "36": {
+      "text": "Randomly generated 36",
+      "initial": false
+    },
+    "37": {
+      "text": "Randomly generated 37",
+      "initial": false
+    },
+    "38": {
+      "text": "Randomly generated 38",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "Out of bound write while QoS DSCP mapping due to improper input validation for data received from association response frame in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996AU, Nicobar, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCM2150, QCN7605, QCS405, QCS605, QM215, SA6155P, Saipan, SC8180X, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX55, SM8150, SM8250, SXR2130",
+      "granted_proposition": 2,
+      "required_propositions": [
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-3698",
+      "cvss": 9.8
+    },
+    "1": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 4,
+      "required_propositions": [
+        3
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "2": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        4
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "3": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 9,
+      "required_propositions": [
+        6,
+        7,
+        8
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "4": {
+      "text": "An XSS Vulnerability exists in Webmin 1.941 and earlier affecting the Cluster Shell Commands Endpoint. A user may enter any XSS Payload into the Command field and execute it. Then, after revisiting the Cluster Shell Commands Menu, the XSS Payload will be rendered and executed.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        6,
+        8,
+        4
+      ],
+      "cve_id": "cve-2020-8820",
+      "cvss": 5.4
+    },
+    "5": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 13,
+      "required_propositions": [
+        11,
+        12
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "6": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 14,
+      "required_propositions": [
+        6,
+        8
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "7": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 17,
+      "required_propositions": [
+        15,
+        16
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "8": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        18,
+        19
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "9": {
+      "text": "An XSS Vulnerability exists in Webmin 1.941 and earlier affecting the Cluster Shell Commands Endpoint. A user may enter any XSS Payload into the Command field and execute it. Then, after revisiting the Cluster Shell Commands Menu, the XSS Payload will be rendered and executed.",
+      "granted_proposition": 22,
+      "required_propositions": [
+        21
+      ],
+      "cve_id": "cve-2020-8820",
+      "cvss": 5.4
+    },
+    "10": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 23,
+      "required_propositions": [
+        5,
+        14,
+        3
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "11": {
+      "text": "Insufficient data validation in streams in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        22,
+        19,
+        5
+      ],
+      "cve_id": "cve-2020-6416",
+      "cvss": 8.8
+    },
+    "12": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 25,
+      "required_propositions": [
+        11
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    },
+    "13": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 26,
+      "required_propositions": [
+        17
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "14": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 27,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "15": {
+      "text": "Insufficient data validation in streams in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        27
+      ],
+      "cve_id": "cve-2020-6416",
+      "cvss": 8.8
+    },
+    "16": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        9,
+        1,
+        23
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "17": {
+      "text": "Vulnerability in the Oracle CRM Technical Foundation product of Oracle E-Business Suite (component: Preferences). Supported versions that are affected are 12.1.3 and 12.2.3-12.2.9. Easily exploitable vulnerability allows unauthenticated attacker with network access via HTTP to compromise Oracle CRM Technical Foundation. Successful attacks of this vulnerability can result in unauthorized read access to a subset of Oracle CRM Technical Foundation accessible data. CVSS 3.0 Base Score 5.3 (Confidentiality impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).",
+      "granted_proposition": 30,
+      "required_propositions": [
+        10,
+        27
+      ],
+      "cve_id": "cve-2020-2889",
+      "cvss": 5.3
+    },
+    "18": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 31,
+      "required_propositions": [
+        17
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "19": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        25,
+        26,
+        22
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "20": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 33,
+      "required_propositions": [
+        1,
+        13,
+        16
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "21": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        13
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "22": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 20,
+      "required_propositions": [
+        30
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "23": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 20,
+      "required_propositions": [
+        2,
+        26,
+        15
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "24": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        33,
+        10,
+        25
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "25": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        31
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    }
+  },
+  "goal_proposition": 20,
+  "goal_nodes": [
+    20
+  ],
+  "type": "dependency"
+}

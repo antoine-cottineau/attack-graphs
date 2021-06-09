@@ -1,0 +1,565 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 20,
+      "id": 20
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_exploit": 0,
+      "id": 23
+    },
+    {
+      "id_exploit": 1,
+      "id": 24
+    },
+    {
+      "id_exploit": 2,
+      "id": 25
+    },
+    {
+      "id_exploit": 3,
+      "id": 26
+    },
+    {
+      "id_exploit": 4,
+      "id": 27
+    },
+    {
+      "id_exploit": 5,
+      "id": 28
+    },
+    {
+      "id_exploit": 6,
+      "id": 29
+    },
+    {
+      "id_exploit": 7,
+      "id": 30
+    },
+    {
+      "id_exploit": 8,
+      "id": 31
+    },
+    {
+      "id_exploit": 9,
+      "id": 32
+    },
+    {
+      "id_exploit": 10,
+      "id": 33
+    },
+    {
+      "id_exploit": 11,
+      "id": 34
+    },
+    {
+      "id_exploit": 12,
+      "id": 35
+    },
+    {
+      "id_exploit": 13,
+      "id": 36
+    },
+    {
+      "id_exploit": 14,
+      "id": 37
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 23
+    },
+    {
+      "source": 1,
+      "target": 23
+    },
+    {
+      "source": 1,
+      "target": 25
+    },
+    {
+      "source": 2,
+      "target": 25
+    },
+    {
+      "source": 2,
+      "target": 32
+    },
+    {
+      "source": 3,
+      "target": 24
+    },
+    {
+      "source": 4,
+      "target": 24
+    },
+    {
+      "source": 5,
+      "target": 26
+    },
+    {
+      "source": 5,
+      "target": 27
+    },
+    {
+      "source": 5,
+      "target": 33
+    },
+    {
+      "source": 6,
+      "target": 25
+    },
+    {
+      "source": 7,
+      "target": 26
+    },
+    {
+      "source": 7,
+      "target": 32
+    },
+    {
+      "source": 8,
+      "target": 32
+    },
+    {
+      "source": 9,
+      "target": 30
+    },
+    {
+      "source": 10,
+      "target": 28
+    },
+    {
+      "source": 11,
+      "target": 31
+    },
+    {
+      "source": 12,
+      "target": 29
+    },
+    {
+      "source": 13,
+      "target": 30
+    },
+    {
+      "source": 13,
+      "target": 31
+    },
+    {
+      "source": 13,
+      "target": 36
+    },
+    {
+      "source": 14,
+      "target": 30
+    },
+    {
+      "source": 14,
+      "target": 34
+    },
+    {
+      "source": 15,
+      "target": 35
+    },
+    {
+      "source": 18,
+      "target": 35
+    },
+    {
+      "source": 20,
+      "target": 36
+    },
+    {
+      "source": 21,
+      "target": 37
+    },
+    {
+      "source": 23,
+      "target": 2
+    },
+    {
+      "source": 24,
+      "target": 5
+    },
+    {
+      "source": 25,
+      "target": 7
+    },
+    {
+      "source": 26,
+      "target": 8
+    },
+    {
+      "source": 27,
+      "target": 9
+    },
+    {
+      "source": 28,
+      "target": 11
+    },
+    {
+      "source": 29,
+      "target": 13
+    },
+    {
+      "source": 30,
+      "target": 15
+    },
+    {
+      "source": 31,
+      "target": 16
+    },
+    {
+      "source": 32,
+      "target": 16
+    },
+    {
+      "source": 33,
+      "target": 18
+    },
+    {
+      "source": 34,
+      "target": 16
+    },
+    {
+      "source": 35,
+      "target": 20
+    },
+    {
+      "source": 36,
+      "target": 21
+    },
+    {
+      "source": 37,
+      "target": 16
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": true
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": true
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": false
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": true
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": true
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": false
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "An XSS Vulnerability exists in Webmin 1.941 and earlier affecting the Cluster Shell Commands Endpoint. A user may enter any XSS Payload into the Command field and execute it. Then, after revisiting the Cluster Shell Commands Menu, the XSS Payload will be rendered and executed.",
+      "granted_proposition": 2,
+      "required_propositions": [
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-8820",
+      "cvss": 5.4
+    },
+    "1": {
+      "text": "In OSSEC-HIDS 2.7 through 3.5.0, the server component responsible for log analysis (ossec-analysisd) is vulnerable to path traversal (with write access) via crafted syscheck messages written directly to the analysisd UNIX domain socket by a local user.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        3,
+        4
+      ],
+      "cve_id": "cve-2020-8446",
+      "cvss": 5.5
+    },
+    "2": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 7,
+      "required_propositions": [
+        6,
+        2,
+        1
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "3": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        5,
+        7
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "4": {
+      "text": "Out of bound write while QoS DSCP mapping due to improper input validation for data received from association response frame in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996AU, Nicobar, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCM2150, QCN7605, QCS405, QCS605, QM215, SA6155P, Saipan, SC8180X, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX55, SM8150, SM8250, SXR2130",
+      "granted_proposition": 9,
+      "required_propositions": [
+        5
+      ],
+      "cve_id": "cve-2020-3698",
+      "cvss": 9.8
+    },
+    "5": {
+      "text": "In setProcessMemoryTrimLevel of ActivityManagerService.java, there is a missing permission check. This could lead to local information disclosure of foreground processes with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-10 Android-11 Android-8.0 Android-8.1 Android-9Android ID: A-160390416",
+      "granted_proposition": 11,
+      "required_propositions": [
+        10
+      ],
+      "cve_id": "cve-2020-0412",
+      "cvss": 3.3
+    },
+    "6": {
+      "text": "A CWE-863: Incorrect Authorization vulnerability exists in U.motion Servers and Touch Panels (affected versions listed in the security notification) which could cause unauthorized access when a low privileged user makes unauthorized changes.",
+      "granted_proposition": 13,
+      "required_propositions": [
+        12
+      ],
+      "cve_id": "cve-2020-7499",
+      "cvss": 6.5
+    },
+    "7": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        9,
+        14,
+        13
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "8": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        11,
+        13
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "9": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        8,
+        7,
+        2
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "10": {
+      "text": "In setProcessMemoryTrimLevel of ActivityManagerService.java, there is a missing permission check. This could lead to local information disclosure of foreground processes with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-10 Android-11 Android-8.0 Android-8.1 Android-9Android ID: A-160390416",
+      "granted_proposition": 18,
+      "required_propositions": [
+        5
+      ],
+      "cve_id": "cve-2020-0412",
+      "cvss": 3.3
+    },
+    "11": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        14
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "12": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        18,
+        15
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "13": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 21,
+      "required_propositions": [
+        13,
+        20
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "14": {
+      "text": "A CWE-863: Incorrect Authorization vulnerability exists in U.motion Servers and Touch Panels (affected versions listed in the security notification) which could cause unauthorized access when a low privileged user makes unauthorized changes.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        21
+      ],
+      "cve_id": "cve-2020-7499",
+      "cvss": 6.5
+    }
+  },
+  "goal_proposition": 16,
+  "goal_nodes": [
+    16
+  ],
+  "type": "dependency"
+}

@@ -1,0 +1,602 @@
+[
+  {
+    "state_path": "methods_input/dataset/1623075264741_state.json",
+    "dependency_path": "methods_input/dataset/1623075264741_dependency.json",
+    "n_nodes": 86,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075264789_state.json",
+    "dependency_path": "methods_input/dataset/1623075264789_dependency.json",
+    "n_nodes": 220,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075264855_state.json",
+    "dependency_path": "methods_input/dataset/1623075264855_dependency.json",
+    "n_nodes": 276,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075264958_state.json",
+    "dependency_path": "methods_input/dataset/1623075264958_dependency.json",
+    "n_nodes": 323,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075270844_state.json",
+    "dependency_path": "methods_input/dataset/1623075270844_dependency.json",
+    "n_nodes": 2415,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623075271013_state.json",
+    "dependency_path": "methods_input/dataset/1623075271013_dependency.json",
+    "n_nodes": 224,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075271561_state.json",
+    "dependency_path": "methods_input/dataset/1623075271561_dependency.json",
+    "n_nodes": 744,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075271761_state.json",
+    "dependency_path": "methods_input/dataset/1623075271761_dependency.json",
+    "n_nodes": 398,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623075290225_state.json",
+    "dependency_path": "methods_input/dataset/1623075290225_dependency.json",
+    "n_nodes": 3888,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623075293197_state.json",
+    "dependency_path": "methods_input/dataset/1623075293197_dependency.json",
+    "n_nodes": 1344,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623075294307_state.json",
+    "dependency_path": "methods_input/dataset/1623075294307_dependency.json",
+    "n_nodes": 1160,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623075313336_state.json",
+    "dependency_path": "methods_input/dataset/1623075313336_dependency.json",
+    "n_nodes": 4500,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623075802063_state.json",
+    "dependency_path": "methods_input/dataset/1623075802063_dependency.json",
+    "n_nodes": 15984,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623076121045_state.json",
+    "dependency_path": "methods_input/dataset/1623076121045_dependency.json",
+    "n_nodes": 13794,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623076412281_state.json",
+    "dependency_path": "methods_input/dataset/1623076412281_dependency.json",
+    "n_nodes": 11520,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623076574762_state.json",
+    "dependency_path": "methods_input/dataset/1623076574762_dependency.json",
+    "n_nodes": 10064,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623076575406_state.json",
+    "dependency_path": "methods_input/dataset/1623076575406_dependency.json",
+    "n_nodes": 104,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623076575416_state.json",
+    "dependency_path": "methods_input/dataset/1623076575416_dependency.json",
+    "n_nodes": 59,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623076575438_state.json",
+    "dependency_path": "methods_input/dataset/1623076575438_dependency.json",
+    "n_nodes": 140,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623076576599_state.json",
+    "dependency_path": "methods_input/dataset/1623076576599_dependency.json",
+    "n_nodes": 1272,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076577330_state.json",
+    "dependency_path": "methods_input/dataset/1623076577330_dependency.json",
+    "n_nodes": 1008,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076577424_state.json",
+    "dependency_path": "methods_input/dataset/1623076577424_dependency.json",
+    "n_nodes": 252,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623076578536_state.json",
+    "dependency_path": "methods_input/dataset/1623076578536_dependency.json",
+    "n_nodes": 1044,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076585199_state.json",
+    "dependency_path": "methods_input/dataset/1623076585199_dependency.json",
+    "n_nodes": 2496,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076589626_state.json",
+    "dependency_path": "methods_input/dataset/1623076589626_dependency.json",
+    "n_nodes": 2168,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076596820_state.json",
+    "dependency_path": "methods_input/dataset/1623076596820_dependency.json",
+    "n_nodes": 2464,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076633600_state.json",
+    "dependency_path": "methods_input/dataset/1623076633600_dependency.json",
+    "n_nodes": 6090,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076638749_state.json",
+    "dependency_path": "methods_input/dataset/1623076638749_dependency.json",
+    "n_nodes": 2328,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076684894_state.json",
+    "dependency_path": "methods_input/dataset/1623076684894_dependency.json",
+    "n_nodes": 6098,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623076686651_state.json",
+    "dependency_path": "methods_input/dataset/1623076686651_dependency.json",
+    "n_nodes": 976,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623076850483_state.json",
+    "dependency_path": "methods_input/dataset/1623076850483_dependency.json",
+    "n_nodes": 9468,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077087144_state.json",
+    "dependency_path": "methods_input/dataset/1623077087144_dependency.json",
+    "n_nodes": 11700,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623077087831_state.json",
+    "dependency_path": "methods_input/dataset/1623077087831_dependency.json",
+    "n_nodes": 242,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077087852_state.json",
+    "dependency_path": "methods_input/dataset/1623077087852_dependency.json",
+    "n_nodes": 100,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077088280_state.json",
+    "dependency_path": "methods_input/dataset/1623077088280_dependency.json",
+    "n_nodes": 762,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077088351_state.json",
+    "dependency_path": "methods_input/dataset/1623077088351_dependency.json",
+    "n_nodes": 240,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077088885_state.json",
+    "dependency_path": "methods_input/dataset/1623077088885_dependency.json",
+    "n_nodes": 800,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077089510_state.json",
+    "dependency_path": "methods_input/dataset/1623077089510_dependency.json",
+    "n_nodes": 822,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077091766_state.json",
+    "dependency_path": "methods_input/dataset/1623077091766_dependency.json",
+    "n_nodes": 1600,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077092555_state.json",
+    "dependency_path": "methods_input/dataset/1623077092555_dependency.json",
+    "n_nodes": 1012,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077093234_state.json",
+    "dependency_path": "methods_input/dataset/1623077093234_dependency.json",
+    "n_nodes": 842,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077133742_state.json",
+    "dependency_path": "methods_input/dataset/1623077133742_dependency.json",
+    "n_nodes": 5886,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077144546_state.json",
+    "dependency_path": "methods_input/dataset/1623077144546_dependency.json",
+    "n_nodes": 3164,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077155054_state.json",
+    "dependency_path": "methods_input/dataset/1623077155054_dependency.json",
+    "n_nodes": 3110,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077274087_state.json",
+    "dependency_path": "methods_input/dataset/1623077274087_dependency.json",
+    "n_nodes": 9408,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077583419_state.json",
+    "dependency_path": "methods_input/dataset/1623077583419_dependency.json",
+    "n_nodes": 15354,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623077695368_state.json",
+    "dependency_path": "methods_input/dataset/1623077695368_dependency.json",
+    "n_nodes": 7850,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077769128_state.json",
+    "dependency_path": "methods_input/dataset/1623077769128_dependency.json",
+    "n_nodes": 7128,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077769537_state.json",
+    "dependency_path": "methods_input/dataset/1623077769537_dependency.json",
+    "n_nodes": 264,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077769570_state.json",
+    "dependency_path": "methods_input/dataset/1623077769570_dependency.json",
+    "n_nodes": 138,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077769623_state.json",
+    "dependency_path": "methods_input/dataset/1623077769623_dependency.json",
+    "n_nodes": 192,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077769655_state.json",
+    "dependency_path": "methods_input/dataset/1623077769655_dependency.json",
+    "n_nodes": 156,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077778604_state.json",
+    "dependency_path": "methods_input/dataset/1623077778604_dependency.json",
+    "n_nodes": 2760,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077779061_state.json",
+    "dependency_path": "methods_input/dataset/1623077779061_dependency.json",
+    "n_nodes": 636,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077779548_state.json",
+    "dependency_path": "methods_input/dataset/1623077779548_dependency.json",
+    "n_nodes": 720,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077780516_state.json",
+    "dependency_path": "methods_input/dataset/1623077780516_dependency.json",
+    "n_nodes": 948,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077784924_state.json",
+    "dependency_path": "methods_input/dataset/1623077784924_dependency.json",
+    "n_nodes": 1752,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077799802_state.json",
+    "dependency_path": "methods_input/dataset/1623077799802_dependency.json",
+    "n_nodes": 3152,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077805973_state.json",
+    "dependency_path": "methods_input/dataset/1623077805973_dependency.json",
+    "n_nodes": 2204,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077815516_state.json",
+    "dependency_path": "methods_input/dataset/1623077815516_dependency.json",
+    "n_nodes": 2768,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077868704_state.json",
+    "dependency_path": "methods_input/dataset/1623077868704_dependency.json",
+    "n_nodes": 6720,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077877486_state.json",
+    "dependency_path": "methods_input/dataset/1623077877486_dependency.json",
+    "n_nodes": 2584,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077896918_state.json",
+    "dependency_path": "methods_input/dataset/1623077896918_dependency.json",
+    "n_nodes": 4364,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077991678_state.json",
+    "dependency_path": "methods_input/dataset/1623077991678_dependency.json",
+    "n_nodes": 8476,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077992148_state.json",
+    "dependency_path": "methods_input/dataset/1623077992148_dependency.json",
+    "n_nodes": 221,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077992197_state.json",
+    "dependency_path": "methods_input/dataset/1623077992197_dependency.json",
+    "n_nodes": 232,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077992224_state.json",
+    "dependency_path": "methods_input/dataset/1623077992224_dependency.json",
+    "n_nodes": 135,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077993661_state.json",
+    "dependency_path": "methods_input/dataset/1623077993661_dependency.json",
+    "n_nodes": 1356,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623077994197_state.json",
+    "dependency_path": "methods_input/dataset/1623077994197_dependency.json",
+    "n_nodes": 808,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077994832_state.json",
+    "dependency_path": "methods_input/dataset/1623077994832_dependency.json",
+    "n_nodes": 940,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077995179_state.json",
+    "dependency_path": "methods_input/dataset/1623077995179_dependency.json",
+    "n_nodes": 624,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623077997765_state.json",
+    "dependency_path": "methods_input/dataset/1623077997765_dependency.json",
+    "n_nodes": 1672,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078002413_state.json",
+    "dependency_path": "methods_input/dataset/1623078002413_dependency.json",
+    "n_nodes": 2261,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078034265_state.json",
+    "dependency_path": "methods_input/dataset/1623078034265_dependency.json",
+    "n_nodes": 5712,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078048556_state.json",
+    "dependency_path": "methods_input/dataset/1623078048556_dependency.json",
+    "n_nodes": 3842,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078264883_state.json",
+    "dependency_path": "methods_input/dataset/1623078264883_dependency.json",
+    "n_nodes": 13824,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623078365343_state.json",
+    "dependency_path": "methods_input/dataset/1623078365343_dependency.json",
+    "n_nodes": 9276,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078369853_state.json",
+    "dependency_path": "methods_input/dataset/1623078369853_dependency.json",
+    "n_nodes": 2114,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078826347_state.json",
+    "dependency_path": "methods_input/dataset/1623078826347_dependency.json",
+    "n_nodes": 18720,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623078849488_state.json",
+    "dependency_path": "methods_input/dataset/1623078849488_dependency.json",
+    "n_nodes": 4336,
+    "set": 1
+  },
+  {
+    "state_path": "methods_input/dataset/1623078849698_state.json",
+    "dependency_path": "methods_input/dataset/1623078849698_dependency.json",
+    "n_nodes": 216,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078849720_state.json",
+    "dependency_path": "methods_input/dataset/1623078849720_dependency.json",
+    "n_nodes": 130,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078849893_state.json",
+    "dependency_path": "methods_input/dataset/1623078849893_dependency.json",
+    "n_nodes": 524,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078850712_state.json",
+    "dependency_path": "methods_input/dataset/1623078850712_dependency.json",
+    "n_nodes": 999,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078850815_state.json",
+    "dependency_path": "methods_input/dataset/1623078850815_dependency.json",
+    "n_nodes": 256,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078850946_state.json",
+    "dependency_path": "methods_input/dataset/1623078850946_dependency.json",
+    "n_nodes": 430,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078855810_state.json",
+    "dependency_path": "methods_input/dataset/1623078855810_dependency.json",
+    "n_nodes": 904,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623078858595_state.json",
+    "dependency_path": "methods_input/dataset/1623078858595_dependency.json",
+    "n_nodes": 424,
+    "set": 0
+  },
+  {
+    "state_path": "methods_input/dataset/1623079213226_state.json",
+    "dependency_path": "methods_input/dataset/1623079213226_dependency.json",
+    "n_nodes": 11406,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623079507154_state.json",
+    "dependency_path": "methods_input/dataset/1623079507154_dependency.json",
+    "n_nodes": 13504,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623079819292_state.json",
+    "dependency_path": "methods_input/dataset/1623079819292_dependency.json",
+    "n_nodes": 13920,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623080128458_state.json",
+    "dependency_path": "methods_input/dataset/1623080128458_dependency.json",
+    "n_nodes": 11472,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623080283441_state.json",
+    "dependency_path": "methods_input/dataset/1623080283441_dependency.json",
+    "n_nodes": 10156,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623080583238_state.json",
+    "dependency_path": "methods_input/dataset/1623080583238_dependency.json",
+    "n_nodes": 15000,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623082157808_state.json",
+    "dependency_path": "methods_input/dataset/1623082157808_dependency.json",
+    "n_nodes": 27757,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623082888472_state.json",
+    "dependency_path": "methods_input/dataset/1623082888472_dependency.json",
+    "n_nodes": 21664,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623084864386_state.json",
+    "dependency_path": "methods_input/dataset/1623084864386_dependency.json",
+    "n_nodes": 31826,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623085354538_state.json",
+    "dependency_path": "methods_input/dataset/1623085354538_dependency.json",
+    "n_nodes": 10784,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623097722728_state.json",
+    "dependency_path": "methods_input/dataset/1623097722728_dependency.json",
+    "n_nodes": 28488,
+    "set": 2
+  },
+  {
+    "state_path": "methods_input/dataset/1623097906535_state.json",
+    "dependency_path": "methods_input/dataset/1623097906535_dependency.json",
+    "n_nodes": 10350,
+    "set": 2
+  }
+]

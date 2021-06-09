@@ -1,0 +1,2661 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        11,
+        14
+      ],
+      "id": 0
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        11,
+        14
+      ],
+      "id": 1
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        11,
+        14
+      ],
+      "id": 2
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        11,
+        14,
+        15
+      ],
+      "id": 3
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        11,
+        14
+      ],
+      "id": 4
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        11,
+        14,
+        15
+      ],
+      "id": 5
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        14
+      ],
+      "id": 6
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        14
+      ],
+      "id": 7
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        14,
+        15
+      ],
+      "id": 8
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        14,
+        17
+      ],
+      "id": 9
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 10
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        14,
+        17
+      ],
+      "id": 11
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 12
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        17
+      ],
+      "id": 13
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 14
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 15
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        17
+      ],
+      "id": 16
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17
+      ],
+      "id": 17
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        17,
+        19
+      ],
+      "id": 18
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        19
+      ],
+      "id": 19
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 20
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 21
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 22
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 23
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 24
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        14
+      ],
+      "id": 25
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        14,
+        15
+      ],
+      "id": 26
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14
+      ],
+      "id": 27
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        14,
+        15
+      ],
+      "id": 28
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14
+      ],
+      "id": 29
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "id": 30
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "id": 31
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 32
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        14
+      ],
+      "id": 33
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 34
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        12,
+        14
+      ],
+      "id": 35
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 36
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        14
+      ],
+      "id": 37
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        14
+      ],
+      "id": 38
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14
+      ],
+      "id": 39
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 40
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 41
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 42
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        14,
+        15
+      ],
+      "id": 43
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        14,
+        17
+      ],
+      "id": 44
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        10,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 45
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14
+      ],
+      "id": 46
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 47
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 48
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 49
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        14,
+        15
+      ],
+      "id": 50
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        14,
+        17
+      ],
+      "id": 51
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        9,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 52
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        12,
+        14
+      ],
+      "id": 53
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 54
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        12,
+        14,
+        17
+      ],
+      "id": 55
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        12,
+        14,
+        15,
+        17
+      ],
+      "id": 56
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        14,
+        15
+      ],
+      "id": 57
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        14,
+        17
+      ],
+      "id": 58
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        11,
+        14,
+        15,
+        17
+      ],
+      "id": 59
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        14
+      ],
+      "id": 60
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        14,
+        15
+      ],
+      "id": 61
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        12,
+        14
+      ],
+      "id": 62
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 63
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        11,
+        12,
+        14
+      ],
+      "id": 64
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 65
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        11,
+        14
+      ],
+      "id": 66
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        11,
+        14,
+        15
+      ],
+      "id": 67
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14
+      ],
+      "id": 68
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 69
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        11,
+        12,
+        14
+      ],
+      "id": 70
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 71
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        11,
+        14
+      ],
+      "id": 72
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        11,
+        14,
+        15
+      ],
+      "id": 73
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14
+      ],
+      "id": 74
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 75
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        11,
+        14,
+        15
+      ],
+      "id": 76
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        11,
+        12,
+        14
+      ],
+      "id": 77
+    },
+    {
+      "ids_propositions": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 78
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        11,
+        14,
+        15
+      ],
+      "id": 79
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        8,
+        11,
+        14
+      ],
+      "id": 80
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        8,
+        11,
+        14,
+        15
+      ],
+      "id": 81
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14
+      ],
+      "id": 82
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        8,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 83
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        11,
+        12,
+        14
+      ],
+      "id": 84
+    },
+    {
+      "ids_propositions": [
+        0,
+        2,
+        4,
+        7,
+        11,
+        12,
+        14,
+        15
+      ],
+      "id": 85
+    }
+  ],
+  "links": [
+    {
+      "ids_exploits": [
+        0
+      ],
+      "source": 0,
+      "target": 1
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 0,
+      "target": 79
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 0,
+      "target": 80
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 0,
+      "target": 84
+    },
+    {
+      "ids_exploits": [
+        1
+      ],
+      "source": 1,
+      "target": 2
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 1,
+      "target": 72
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 1,
+      "target": 76
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 1,
+      "target": 77
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 2,
+      "target": 3
+    },
+    {
+      "ids_exploits": [
+        2
+      ],
+      "source": 2,
+      "target": 4
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 2,
+      "target": 66
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 2,
+      "target": 70
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 4,
+      "target": 5
+    },
+    {
+      "ids_exploits": [
+        3
+      ],
+      "source": 4,
+      "target": 6
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 4,
+      "target": 60
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 4,
+      "target": 64
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 6,
+      "target": 7
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 6,
+      "target": 37
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 6,
+      "target": 53
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 6,
+      "target": 57
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 6,
+      "target": 58
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 7,
+      "target": 8
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 7,
+      "target": 9
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 7,
+      "target": 25
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 7,
+      "target": 35
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 9,
+      "target": 10
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 9,
+      "target": 11
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 9,
+      "target": 23
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 11,
+      "target": 12
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 11,
+      "target": 13
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 11,
+      "target": 21
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 13,
+      "target": 14
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 13,
+      "target": 15
+    },
+    {
+      "ids_exploits": [
+        8
+      ],
+      "source": 15,
+      "target": 16
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 15,
+      "target": 20
+    },
+    {
+      "ids_exploits": [
+        9,
+        10,
+        12
+      ],
+      "source": 16,
+      "target": 17
+    },
+    {
+      "ids_exploits": [
+        13
+      ],
+      "source": 16,
+      "target": 18
+    },
+    {
+      "ids_exploits": [
+        9,
+        10,
+        12,
+        14
+      ],
+      "source": 18,
+      "target": 19
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 21,
+      "target": 22
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 21,
+      "target": 15
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 23,
+      "target": 24
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 23,
+      "target": 21
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 25,
+      "target": 26
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 25,
+      "target": 11
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 25,
+      "target": 27
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 25,
+      "target": 33
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 27,
+      "target": 28
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 27,
+      "target": 13
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 27,
+      "target": 29
+    },
+    {
+      "ids_exploits": [
+        8
+      ],
+      "source": 29,
+      "target": 30
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 29,
+      "target": 32
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 29,
+      "target": 15
+    },
+    {
+      "ids_exploits": [
+        9,
+        10,
+        12
+      ],
+      "source": 30,
+      "target": 31
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 30,
+      "target": 16
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 33,
+      "target": 34
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 33,
+      "target": 21
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 33,
+      "target": 29
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 35,
+      "target": 36
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 35,
+      "target": 23
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 35,
+      "target": 33
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 37,
+      "target": 25
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 37,
+      "target": 38
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 37,
+      "target": 46
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 37,
+      "target": 50
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 37,
+      "target": 51
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 38,
+      "target": 27
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 38,
+      "target": 39
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 38,
+      "target": 43
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 38,
+      "target": 44
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 39,
+      "target": 40
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 39,
+      "target": 41
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 39,
+      "target": 29
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 41,
+      "target": 42
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 41,
+      "target": 15
+    },
+    {
+      "ids_exploits": [
+        9,
+        10
+      ],
+      "source": 44,
+      "target": 45
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 44,
+      "target": 13
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 44,
+      "target": 41
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 46,
+      "target": 47
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 46,
+      "target": 48
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 46,
+      "target": 33
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 46,
+      "target": 39
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 48,
+      "target": 49
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 48,
+      "target": 21
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 48,
+      "target": 41
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 51,
+      "target": 52
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 51,
+      "target": 11
+    },
+    {
+      "ids_exploits": [
+        6
+      ],
+      "source": 51,
+      "target": 44
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 51,
+      "target": 48
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 53,
+      "target": 54
+    },
+    {
+      "ids_exploits": [
+        11
+      ],
+      "source": 53,
+      "target": 55
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 53,
+      "target": 35
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 53,
+      "target": 46
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 55,
+      "target": 56
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 55,
+      "target": 23
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 55,
+      "target": 48
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 58,
+      "target": 59
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 58,
+      "target": 9
+    },
+    {
+      "ids_exploits": [
+        5
+      ],
+      "source": 58,
+      "target": 51
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 58,
+      "target": 55
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 60,
+      "target": 61
+    },
+    {
+      "ids_exploits": [
+        3
+      ],
+      "source": 60,
+      "target": 7
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 60,
+      "target": 62
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 62,
+      "target": 63
+    },
+    {
+      "ids_exploits": [
+        3
+      ],
+      "source": 62,
+      "target": 35
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 64,
+      "target": 65
+    },
+    {
+      "ids_exploits": [
+        3
+      ],
+      "source": 64,
+      "target": 53
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 64,
+      "target": 62
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 66,
+      "target": 67
+    },
+    {
+      "ids_exploits": [
+        2
+      ],
+      "source": 66,
+      "target": 60
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 66,
+      "target": 68
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 68,
+      "target": 69
+    },
+    {
+      "ids_exploits": [
+        2
+      ],
+      "source": 68,
+      "target": 62
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 70,
+      "target": 71
+    },
+    {
+      "ids_exploits": [
+        2
+      ],
+      "source": 70,
+      "target": 64
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 70,
+      "target": 68
+    },
+    {
+      "ids_exploits": [
+        1
+      ],
+      "source": 72,
+      "target": 66
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 72,
+      "target": 73
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 72,
+      "target": 74
+    },
+    {
+      "ids_exploits": [
+        1
+      ],
+      "source": 74,
+      "target": 68
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 74,
+      "target": 75
+    },
+    {
+      "ids_exploits": [
+        1
+      ],
+      "source": 77,
+      "target": 70
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 77,
+      "target": 74
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 77,
+      "target": 78
+    },
+    {
+      "ids_exploits": [
+        0
+      ],
+      "source": 80,
+      "target": 72
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 80,
+      "target": 81
+    },
+    {
+      "ids_exploits": [
+        7
+      ],
+      "source": 80,
+      "target": 82
+    },
+    {
+      "ids_exploits": [
+        0
+      ],
+      "source": 82,
+      "target": 74
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 82,
+      "target": 83
+    },
+    {
+      "ids_exploits": [
+        0
+      ],
+      "source": 84,
+      "target": 77
+    },
+    {
+      "ids_exploits": [
+        9
+      ],
+      "source": 84,
+      "target": 85
+    },
+    {
+      "ids_exploits": [
+        4
+      ],
+      "source": 84,
+      "target": 82
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": false
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": true
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": true
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": false
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": true
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": false
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": true
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": false
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": true
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": false
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 1,
+      "required_propositions": [
+        0
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "1": {
+      "text": "Insufficient data validation in streams in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 3,
+      "required_propositions": [
+        2,
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-6416",
+      "cvss": 8.8
+    },
+    "2": {
+      "text": "In setProcessMemoryTrimLevel of ActivityManagerService.java, there is a missing permission check. This could lead to local information disclosure of foreground processes with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-10 Android-11 Android-8.0 Android-8.1 Android-9Android ID: A-160390416",
+      "granted_proposition": 5,
+      "required_propositions": [
+        2,
+        4,
+        3
+      ],
+      "cve_id": "cve-2020-0412",
+      "cvss": 3.3
+    },
+    "3": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 6,
+      "required_propositions": [
+        4,
+        5
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "4": {
+      "text": "Out of bound write while QoS DSCP mapping due to improper input validation for data received from association response frame in Snapdragon Auto, Snapdragon Compute, Snapdragon Consumer Electronics Connectivity, Snapdragon Consumer IOT, Snapdragon Industrial IOT, Snapdragon Mobile, Snapdragon Voice & Music, Snapdragon Wearables in APQ8009, APQ8017, APQ8053, APQ8096AU, APQ8098, MDM9150, MDM9206, MDM9207C, MDM9607, MDM9650, MSM8905, MSM8909W, MSM8917, MSM8920, MSM8937, MSM8940, MSM8953, MSM8996AU, Nicobar, QCA6174A, QCA6574AU, QCA9377, QCA9379, QCM2150, QCN7605, QCS405, QCS605, QM215, SA6155P, Saipan, SC8180X, SDA845, SDM429, SDM429W, SDM439, SDM450, SDM630, SDM632, SDM636, SDM660, SDM845, SDX20, SDX55, SM8150, SM8250, SXR2130",
+      "granted_proposition": 8,
+      "required_propositions": [
+        7,
+        2
+      ],
+      "cve_id": "cve-2020-3698",
+      "cvss": 9.8
+    },
+    "5": {
+      "text": "Vulnerability in the Oracle CRM Technical Foundation product of Oracle E-Business Suite (component: Preferences). Supported versions that are affected are 12.1.3 and 12.2.3-12.2.9. Easily exploitable vulnerability allows unauthenticated attacker with network access via HTTP to compromise Oracle CRM Technical Foundation. Successful attacks of this vulnerability can result in unauthorized read access to a subset of Oracle CRM Technical Foundation accessible data. CVSS 3.0 Base Score 5.3 (Confidentiality impacts). CVSS Vector: (CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N).",
+      "granted_proposition": 9,
+      "required_propositions": [
+        6
+      ],
+      "cve_id": "cve-2020-2889",
+      "cvss": 5.3
+    },
+    "6": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        9
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "7": {
+      "text": "NetHack before version 3.6.0 allowed malicious use of escaping of characters in the configuration file (usually .nethackrc) which could be exploited. This bug is patched in NetHack 3.6.0.",
+      "granted_proposition": 12,
+      "required_propositions": [
+        11
+      ],
+      "cve_id": "cve-2020-5253",
+      "cvss": 9.8
+    },
+    "8": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 13,
+      "required_propositions": [
+        12,
+        8,
+        10
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "9": {
+      "text": "A CWE-284: Improper Access Control vulnerability exists in Easergy T300 (with firmware 2.7 and older) that could cause a wide range of problems, including information exposure, denial of service, and command execution when access to a resource from an attacker is not restricted or incorrectly restricted.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        14
+      ],
+      "cve_id": "cve-2020-7561",
+      "cvss": 9.8
+    },
+    "10": {
+      "text": "An XSS Vulnerability exists in Webmin 1.941 and earlier affecting the Cluster Shell Commands Endpoint. A user may enter any XSS Payload into the Command field and execute it. Then, after revisiting the Cluster Shell Commands Menu, the XSS Payload will be rendered and executed.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        10
+      ],
+      "cve_id": "cve-2020-8820",
+      "cvss": 5.4
+    },
+    "11": {
+      "text": "In OSSEC-HIDS 2.7 through 3.5.0, the server component responsible for log analysis (ossec-analysisd) is vulnerable to path traversal (with write access) via crafted syscheck messages written directly to the analysisd UNIX domain socket by a local user.",
+      "granted_proposition": 17,
+      "required_propositions": [
+        6
+      ],
+      "cve_id": "cve-2020-8446",
+      "cvss": 5.5
+    },
+    "12": {
+      "text": "A CWE-863: Incorrect Authorization vulnerability exists in U.motion Servers and Touch Panels (affected versions listed in the security notification) which could cause unauthorized access when a low privileged user makes unauthorized changes.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        13
+      ],
+      "cve_id": "cve-2020-7499",
+      "cvss": 6.5
+    },
+    "13": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 19,
+      "required_propositions": [
+        17,
+        13
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "14": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    }
+  },
+  "goal_proposition": 15,
+  "goal_nodes": [
+    3,
+    5,
+    8,
+    10,
+    12,
+    14,
+    17,
+    19,
+    20,
+    22,
+    24,
+    26,
+    28,
+    31,
+    32,
+    34,
+    36,
+    40,
+    42,
+    43,
+    45,
+    47,
+    49,
+    50,
+    52,
+    54,
+    56,
+    57,
+    59,
+    61,
+    63,
+    65,
+    67,
+    69,
+    71,
+    73,
+    75,
+    76,
+    78,
+    79,
+    81,
+    83,
+    85
+  ],
+  "type": "state"
+}

@@ -1,0 +1,599 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 20,
+      "id": 20
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_exploit": 0,
+      "id": 24
+    },
+    {
+      "id_exploit": 1,
+      "id": 25
+    },
+    {
+      "id_exploit": 2,
+      "id": 26
+    },
+    {
+      "id_exploit": 3,
+      "id": 27
+    },
+    {
+      "id_exploit": 4,
+      "id": 28
+    },
+    {
+      "id_exploit": 5,
+      "id": 29
+    },
+    {
+      "id_exploit": 6,
+      "id": 30
+    },
+    {
+      "id_exploit": 7,
+      "id": 31
+    },
+    {
+      "id_exploit": 8,
+      "id": 32
+    },
+    {
+      "id_exploit": 9,
+      "id": 33
+    },
+    {
+      "id_exploit": 10,
+      "id": 34
+    },
+    {
+      "id_exploit": 11,
+      "id": 35
+    },
+    {
+      "id_exploit": 12,
+      "id": 36
+    },
+    {
+      "id_exploit": 13,
+      "id": 37
+    },
+    {
+      "id_exploit": 14,
+      "id": 38
+    },
+    {
+      "id_exploit": 15,
+      "id": 39
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 24
+    },
+    {
+      "source": 1,
+      "target": 24
+    },
+    {
+      "source": 2,
+      "target": 24
+    },
+    {
+      "source": 3,
+      "target": 26
+    },
+    {
+      "source": 4,
+      "target": 25
+    },
+    {
+      "source": 4,
+      "target": 26
+    },
+    {
+      "source": 4,
+      "target": 28
+    },
+    {
+      "source": 5,
+      "target": 25
+    },
+    {
+      "source": 5,
+      "target": 27
+    },
+    {
+      "source": 5,
+      "target": 30
+    },
+    {
+      "source": 6,
+      "target": 26
+    },
+    {
+      "source": 7,
+      "target": 31
+    },
+    {
+      "source": 8,
+      "target": 29
+    },
+    {
+      "source": 9,
+      "target": 30
+    },
+    {
+      "source": 9,
+      "target": 32
+    },
+    {
+      "source": 9,
+      "target": 35
+    },
+    {
+      "source": 10,
+      "target": 30
+    },
+    {
+      "source": 11,
+      "target": 34
+    },
+    {
+      "source": 11,
+      "target": 35
+    },
+    {
+      "source": 14,
+      "target": 33
+    },
+    {
+      "source": 15,
+      "target": 33
+    },
+    {
+      "source": 16,
+      "target": 33
+    },
+    {
+      "source": 16,
+      "target": 39
+    },
+    {
+      "source": 18,
+      "target": 36
+    },
+    {
+      "source": 19,
+      "target": 36
+    },
+    {
+      "source": 20,
+      "target": 37
+    },
+    {
+      "source": 21,
+      "target": 38
+    },
+    {
+      "source": 21,
+      "target": 39
+    },
+    {
+      "source": 22,
+      "target": 39
+    },
+    {
+      "source": 24,
+      "target": 3
+    },
+    {
+      "source": 25,
+      "target": 6
+    },
+    {
+      "source": 26,
+      "target": 7
+    },
+    {
+      "source": 27,
+      "target": 8
+    },
+    {
+      "source": 28,
+      "target": 9
+    },
+    {
+      "source": 29,
+      "target": 10
+    },
+    {
+      "source": 30,
+      "target": 11
+    },
+    {
+      "source": 31,
+      "target": 12
+    },
+    {
+      "source": 32,
+      "target": 12
+    },
+    {
+      "source": 33,
+      "target": 12
+    },
+    {
+      "source": 34,
+      "target": 18
+    },
+    {
+      "source": 35,
+      "target": 19
+    },
+    {
+      "source": 36,
+      "target": 20
+    },
+    {
+      "source": 37,
+      "target": 21
+    },
+    {
+      "source": 38,
+      "target": 22
+    },
+    {
+      "source": 39,
+      "target": 12
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": true
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": true
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": true
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": false
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": false
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": false
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": true
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": true
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": true
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "In OSSEC-HIDS 2.7 through 3.5.0, the server component responsible for log analysis (ossec-analysisd) is vulnerable to path traversal (with write access) via crafted syscheck messages written directly to the analysisd UNIX domain socket by a local user.",
+      "granted_proposition": 3,
+      "required_propositions": [
+        0,
+        1,
+        2
+      ],
+      "cve_id": "cve-2020-8446",
+      "cvss": 5.5
+    },
+    "1": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 6,
+      "required_propositions": [
+        4,
+        5
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "2": {
+      "text": "An XSS Vulnerability exists in Webmin 1.941 and earlier affecting the Cluster Shell Commands Endpoint. A user may enter any XSS Payload into the Command field and execute it. Then, after revisiting the Cluster Shell Commands Menu, the XSS Payload will be rendered and executed.",
+      "granted_proposition": 7,
+      "required_propositions": [
+        3,
+        4,
+        6
+      ],
+      "cve_id": "cve-2020-8820",
+      "cvss": 5.4
+    },
+    "3": {
+      "text": "Jenkins Subversion Release Manager Plugin 1.2 and earlier does not escape the error message for the Repository URL field form validation, resulting in a reflected cross-site scripting vulnerability.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        5
+      ],
+      "cve_id": "cve-2020-2152",
+      "cvss": 6.1
+    },
+    "4": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 9,
+      "required_propositions": [
+        4
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "5": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 10,
+      "required_propositions": [
+        8
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "6": {
+      "text": "HUMAX HGA12R-02 BRGCAA 1.1.53 devices allow Session Hijacking.",
+      "granted_proposition": 11,
+      "required_propositions": [
+        5,
+        9,
+        10
+      ],
+      "cve_id": "cve-2020-9370",
+      "cvss": 9.1
+    },
+    "7": {
+      "text": "Insufficient data validation in streams in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 12,
+      "required_propositions": [
+        7
+      ],
+      "cve_id": "cve-2020-6416",
+      "cvss": 8.8
+    },
+    "8": {
+      "text": "GitLab EE 12.2 has Insecure Permissions (issue 2 of 2).",
+      "granted_proposition": 12,
+      "required_propositions": [
+        9
+      ],
+      "cve_id": "cve-2020-7972",
+      "cvss": 7.5
+    },
+    "9": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 12,
+      "required_propositions": [
+        14,
+        15,
+        16
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "10": {
+      "text": "NetHack before version 3.6.0 allowed malicious use of escaping of characters in the configuration file (usually .nethackrc) which could be exploited. This bug is patched in NetHack 3.6.0.",
+      "granted_proposition": 18,
+      "required_propositions": [
+        11
+      ],
+      "cve_id": "cve-2020-5253",
+      "cvss": 9.8
+    },
+    "11": {
+      "text": "Jenkins Subversion Plugin 2.13.0 and earlier does not escape the error message for the Project Repository Base URL field form validation, resulting in a stored cross-site scripting vulnerability.",
+      "granted_proposition": 19,
+      "required_propositions": [
+        11,
+        9
+      ],
+      "cve_id": "cve-2020-2111",
+      "cvss": 5.4
+    },
+    "12": {
+      "text": "Jenkins VncViewer Plugin 1.7 and earlier does not escape a parameter value in the checkVncServ form validation endpoint, resulting in a reflected cross-site scripting (XSS) vulnerability.",
+      "granted_proposition": 20,
+      "required_propositions": [
+        18,
+        19
+      ],
+      "cve_id": "cve-2020-2207",
+      "cvss": 6.1
+    },
+    "13": {
+      "text": "Symantec Endpoint Protection, prior to 14.3, can potentially reset the ACLs on a file as a limited user while Symantec Endpoint Protection's Tamper Protection feature is disabled.",
+      "granted_proposition": 21,
+      "required_propositions": [
+        20
+      ],
+      "cve_id": "cve-2020-5836",
+      "cvss": 7.8
+    },
+    "14": {
+      "text": "In OSSEC-HIDS 2.7 through 3.5.0, the server component responsible for log analysis (ossec-analysisd) is vulnerable to path traversal (with write access) via crafted syscheck messages written directly to the analysisd UNIX domain socket by a local user.",
+      "granted_proposition": 22,
+      "required_propositions": [
+        21
+      ],
+      "cve_id": "cve-2020-8446",
+      "cvss": 5.5
+    },
+    "15": {
+      "text": "Insufficient data validation in streams in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 12,
+      "required_propositions": [
+        22,
+        21,
+        16
+      ],
+      "cve_id": "cve-2020-6416",
+      "cvss": 8.8
+    }
+  },
+  "goal_proposition": 12,
+  "goal_nodes": [
+    12
+  ],
+  "type": "dependency"
+}
