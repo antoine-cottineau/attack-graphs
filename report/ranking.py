@@ -80,6 +80,30 @@ class RankingMethodsComparator:
         self.create()
 
     @staticmethod
+    def draw_matrix(matrix: np.ndarray, filename: str):
+        fig, ax = subplots()
+        plot = ax.matshow(matrix)
+        fig.colorbar(plot)
+
+        for (i, j), z in np.ndenumerate(matrix):
+            ax.text(j,
+                    i,
+                    "{:0.2f}".format(z),
+                    ha='center',
+                    va='center',
+                    color="white")
+
+        ax.set_xticks(np.arange(len(METHODS)))
+        ax.set_yticks(np.arange(len(METHODS)))
+        ax.set_xticklabels(METHODS)
+        ax.set_yticklabels(METHODS)
+
+        path = Path(PATH_FIGURES, "{}.png".format(filename))
+        fig.tight_layout()
+        fig.savefig(path)
+        fig.clf()
+
+    @staticmethod
     def draw_ppce_matrix():
         results = RankingMethodsComparator._load_existing_results()[0]
 
@@ -93,47 +117,25 @@ class RankingMethodsComparator:
                 continue
 
             set_results = np.mean(set_results, axis=0)
-
-            fig, ax = subplots()
-            plot = ax.matshow(set_results)
-            fig.colorbar(plot)
-
-            ax.set_xticks(np.arange(len(METHODS)))
-            ax.set_yticks(np.arange(len(METHODS)))
-            ax.set_xticklabels(METHODS)
-            ax.set_yticklabels(METHODS)
-
-            path = Path(PATH_FIGURES, "ranking_{}.png".format(i))
-            fig.tight_layout()
-            fig.savefig(path)
-            fig.clf()
+            filename = "ranking_{}".format(i)
+            RankingMethodsComparator.draw_matrix(set_results, filename)
 
     @staticmethod
     def draw_top_exploits_matrix():
-        top_exploits = RankingMethodsComparator._load_existing_results()[1]
+        results = RankingMethodsComparator._load_existing_results()[1]
 
-        results = np.mean(top_exploits, axis=0)
-        fig, ax = subplots()
-        plot = ax.matshow(results)
-        fig.colorbar(plot)
+        # Create one figure per set of graphs
+        for i in range(len(Dataset.set_sizes)):
+            start = sum(Dataset.set_sizes[:i])
+            end = sum(Dataset.set_sizes[:i + 1])
 
-        ax.set_xticks(np.arange(len(METHODS)))
-        ax.set_yticks(np.arange(len(METHODS)))
-        ax.set_xticklabels(METHODS)
-        ax.set_yticklabels(METHODS)
+            set_results = results[start:end]
+            if set_results.shape[0] == 0:
+                continue
 
-        for (i, j), z in np.ndenumerate(results):
-            ax.text(j,
-                    i,
-                    "{:0.2f}".format(z),
-                    ha='center',
-                    va='center',
-                    color="white")
-
-        path = Path(PATH_FIGURES, "ranking_top_exploits.png")
-        fig.tight_layout()
-        fig.savefig(path)
-        fig.clf()
+            set_results = np.mean(set_results, axis=0)
+            filename = "ranking_top_exploits_{}".format(i)
+            RankingMethodsComparator.draw_matrix(set_results, filename)
 
     @staticmethod
     def draw_time_histogram():
@@ -204,15 +206,15 @@ class RankingMethodsComparator:
                 if i >= j:
                     continue
 
-                ppce = RankingMethodsComparator._compute_ppce_between_two_orderings(
+                ppce = RankingMethodsComparator._compute_ppce(
                     ranking_a, ranking_b)
                 ppce_matrix[i, j] = ppce
                 ppce_matrix[j, i] = ppce
         return ppce_matrix
 
     @staticmethod
-    def _compute_ppce_between_two_orderings(
-            ranking_a: Dict[int, int], ranking_b: Dict[int, int]) -> float:
+    def _compute_ppce(ranking_a: Dict[int, int],
+                      ranking_b: Dict[int, int]) -> float:
         ppce = 0
         exploits = list(ranking_a)
 
