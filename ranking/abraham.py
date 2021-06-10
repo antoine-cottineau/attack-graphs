@@ -1,20 +1,20 @@
 import numpy as np
 from attack_graph import StateAttackGraph
 from ranking.ranking import RankingMethod
-from typing import Tuple
+from scipy.sparse import csr_matrix
 
 
-class ExpectedPathLength(RankingMethod):
+class ProbabilisticPath(RankingMethod):
     def __init__(self, graph: StateAttackGraph):
         super().__init__(graph)
 
     def apply(self) -> float:
-        self.Q, self.R = self._create_Q_and_R()
-        self.N = self._create_N()
-        self.B = self._create_B()
+        self._create_Q_and_R()
+        self._create_N()
+        self._create_B()
 
         # We only return the expected path length from the initial state
-        result = self.B.sum()
+        result = self.B[0].max()
         return result
 
     def _get_score(self) -> float:
@@ -22,7 +22,7 @@ class ExpectedPathLength(RankingMethod):
         return score
 
     def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        score = ExpectedPathLength(graph)._get_score()
+        score = ProbabilisticPath(graph)._get_score()
         return score
 
     def _get_edge_probability(self, src: int, dst: int) -> float:
@@ -38,7 +38,7 @@ class ExpectedPathLength(RankingMethod):
             probabilities.append(probability)
         return max(probabilities)
 
-    def _create_Q_and_R(self) -> Tuple[np.ndarray, np.ndarray]:
+    def _create_Q_and_R(self):
         transient_nodes = set(self.graph.nodes) - set(self.graph.goal_nodes)
         absorbing_states = set(self.graph.goal_nodes)
 
@@ -75,16 +75,19 @@ class ExpectedPathLength(RankingMethod):
                 else:
                     R[i, j - len(transient_nodes)] = transition
 
-        return Q, R
+        self.Q = csr_matrix(Q)
+        self.R = csr_matrix(R)
 
-    def _create_N(self) -> np.ndarray:
-        N = np.identity(len(self.Q))
-        Q_power_i = np.identity(len(self.Q))
-        while np.linalg.norm(Q_power_i, ord=2) > 1e-5:
-            Q_power_i = Q_power_i @ self.Q
+    def _create_N(self):
+        n_transient_nodes = self.Q.shape[0]
+        N = csr_matrix(np.identity(n_transient_nodes))
+        Q_power_i = csr_matrix(np.identity(n_transient_nodes))
+        while Q_power_i.sum() > 1e-15:
+            Q_power_i = Q_power_i.dot(self.Q)
             N += Q_power_i
-        return N
+        self.N = N
 
-    def _create_B(self) -> np.ndarray:
-        B = self.N @ self.R
-        return B
+    def _create_B(self):
+        B: csr_matrix = self.N.dot(self.R)
+        B = B.toarray()
+        self.B = B
