@@ -6,8 +6,9 @@ from typing import Dict, Set, Tuple
 
 class RiskQuantifier(RankingMethod):
     def __init__(self, graph: DependencyAttackGraph):
-        super().__init__(graph)
-        self.formatted_graph = self._set_up_graph(graph)
+        super().__init__(list(graph.exploits))
+        self.graph = graph
+        self.formatted_graph = self._set_up_graph()
         self.exploit_probabilities = self._get_exploit_nodes_probabilities()
 
     def apply(self) -> Dict[int, float]:
@@ -45,7 +46,7 @@ class RiskQuantifier(RankingMethod):
                 self.dict_phi[node] = 1 - self._evaluate_probability(
                     dict([(p, False) for p in predecessors]))
 
-                self.dict_delta[node] = set(self.graph.nodes)
+                self.dict_delta[node] = set(self.formatted_graph.nodes)
                 for predecessor in predecessors:
                     self.dict_chi[node] |= self.dict_chi[predecessor]
                     self.dict_delta[node] &= self.dict_delta[predecessor]
@@ -79,17 +80,22 @@ class RiskQuantifier(RankingMethod):
 
         return risks
 
-    def _get_score(self) -> float:
+    def get_score(self) -> float:
         risks = self.apply()
         score = risks[self.graph.goal_nodes[0]]
         return score
 
-    def _get_score_for_graph(self, graph: DependencyAttackGraph) -> float:
-        return RiskQuantifier(graph)._get_score()
+    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
+        pruned_graph = self._get_pruned_graph(self.graph, id_exploit)
 
-    def _set_up_graph(self,
-                      graph: DependencyAttackGraph) -> DependencyAttackGraph:
-        new_graph = graph.copy()
+        if pruned_graph is None:
+            return float("-inf")
+        else:
+            score = RiskQuantifier(pruned_graph).get_score()
+            return score
+
+    def _set_up_graph(self) -> DependencyAttackGraph:
+        new_graph = self.graph.copy()
 
         # Remove the proposition nodes that are initially true
         ids_initial_propositions = [

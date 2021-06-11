@@ -6,41 +6,35 @@ from scipy.sparse import csr_matrix
 
 class ProbabilisticPath(RankingMethod):
     def __init__(self, graph: StateAttackGraph):
-        super().__init__(graph)
+        super().__init__(list(graph.exploits))
+        self.graph = graph
 
     def apply(self) -> float:
         self._create_Q_and_R()
         self._create_N()
         self._create_B()
 
-        # We only return the expected path length from the initial state
-        result = self.B[0].max()
+        # We only return the  sum of the probabilities from the initial node to
+        # the goal nodes
+        result = sum(self.B[0])
         return result
 
-    def _get_score(self) -> float:
+    def get_score(self) -> float:
         score = self.apply()
         return score
 
-    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        score = ProbabilisticPath(graph)._get_score()
-        return score
+    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
+        pruned_graph = self._get_pruned_graph(self.graph, id_exploit)
 
-    def _get_edge_probability(self, src: int, dst: int) -> float:
-        ids_exploits = self.graph.edges[src, dst]["ids_exploits"]
-
-        # The probability of the action being successful is equal to the
-        # max of the probilities of the exploits
-        probabilities = []
-        for id_exploit in ids_exploits:
-            # The probability is equal to the CVSS score divided by 10 (to
-            # get a value between 0 and 1)
-            probability = self.graph.exploits[id_exploit]["cvss"] / 10
-            probabilities.append(probability)
-        return max(probabilities)
+        if pruned_graph is None:
+            return float("-inf")
+        else:
+            score = ProbabilisticPath(pruned_graph).get_score()
+            return score
 
     def _create_Q_and_R(self):
         transient_nodes = set(self.graph.nodes) - set(self.graph.goal_nodes)
-        absorbing_states = set(self.graph.goal_nodes)
+        absorbing_nodes = set(self.graph.goal_nodes)
 
         # Q is a sub matrix of P that contains transitions from transient
         # nodes to transient nodes
@@ -48,9 +42,9 @@ class ProbabilisticPath(RankingMethod):
 
         # R is a sub matrix of P that contains transitions from transient
         # nodes to absorbing nodes
-        R = np.zeros((len(transient_nodes), len(absorbing_states)))
+        R = np.zeros((len(transient_nodes), len(absorbing_nodes)))
 
-        all_nodes = list(transient_nodes) + list(absorbing_states)
+        all_nodes = list(transient_nodes) + list(absorbing_nodes)
         node_ordering = dict([(all_nodes[i], i)
                               for i in range(len(all_nodes))])
 
@@ -58,18 +52,15 @@ class ProbabilisticPath(RankingMethod):
         for node in transient_nodes:
             i = node_ordering[node]
 
-            # Find the successors of the node
-            successors = set(self.graph.successors(node))
-
             # Compute the probability of each outgoing edge
-            probabilities = dict([(s, self._get_edge_probability(node, s))
-                                  for s in successors])
-            sum_probabilities = sum(probabilities.values())
+            probabilities = dict([(s, self.graph.get_edge_probability(node, s))
+                                  for s in self.graph.successors(node)])
+            normalization_constant = sum(probabilities.values())
 
             # Add the normalized probability to Q or R
             for successor, probability in probabilities.items():
                 j = node_ordering[successor]
-                transition = probability / sum_probabilities
+                transition = probability / normalization_constant
                 if successor in transient_nodes:
                     Q[i, j] = transition
                 else:

@@ -9,7 +9,8 @@ class ValueIteration(RankingMethod):
                  graph: StateAttackGraph,
                  precision: float = 1e-4,
                  lamb: float = 0.9):
-        super().__init__(graph)
+        super().__init__(list(graph.exploits))
+        self.graph = graph
         self.precision = precision
         self.lamb = lamb
 
@@ -63,31 +64,23 @@ class ValueIteration(RankingMethod):
 
         return values, chosen_successors
 
-    def _get_score(self) -> float:
+    def get_score(self) -> float:
         values = self.apply()[0]
         score = values[0]
         return score
 
-    def _get_score_for_graph(self, graph: StateAttackGraph) -> float:
-        return ValueIteration(graph)._get_score()
+    def get_score_with_exploit_removed(self, id_exploit: int) -> float:
+        pruned_graph = self._get_pruned_graph(self.graph, id_exploit)
+
+        if pruned_graph is None:
+            return float("-inf")
+        else:
+            score = ValueIteration(pruned_graph).get_score()
+            return score
 
     def _get_successors(self, node: int) -> Dict[int, float]:
-        successors = self.graph.successors(node)
-
-        result = {}
-        for successor in successors:
-            ids_exploits = self.graph.edges[node, successor]["ids_exploits"]
-
-            # The probability of the action being successful is equal to the
-            # max of the probilities of the exploits
-            probabilities = []
-            for id_exploit in ids_exploits:
-                # The probability is equal to the CVSS score divided by 10 (to
-                # get a value between 0 and 1)
-                probability = self.graph.exploits[id_exploit]["cvss"] / 10
-                probabilities.append(probability)
-            result[successor] = max(probabilities)
-
+        result = dict([(s, self.graph.get_edge_probability(node, s))
+                       for s in self.graph.successors(node)])
         return result
 
     def _get_reward(self, node: int) -> float:

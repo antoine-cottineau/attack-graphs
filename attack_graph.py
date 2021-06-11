@@ -1,3 +1,4 @@
+import copy
 import json
 import networkx as nx
 import utils
@@ -238,6 +239,9 @@ class BaseGraph(nx.DiGraph):
     def get_pruned_graph(self, ids_exploits: List[int]):
         return
 
+    def copy(self):
+        return copy.deepcopy(self)
+
 
 class DependencyAttackGraph(BaseGraph):
     def fill_graph(self):
@@ -340,18 +344,6 @@ class DependencyAttackGraph(BaseGraph):
 
             self.remove_nodes_from(nodes_to_remove)
             has_removed_nodes = len(nodes_to_remove) > 0
-
-    def copy(self, as_view=False):
-        graph = super().copy(as_view=as_view)
-
-        new_graph = DependencyAttackGraph()
-        new_graph.load_nodes_and_edges(graph)
-        new_graph.propositions = self.propositions.copy()
-        new_graph.exploits = self.exploits.copy()
-        new_graph.goal_proposition = self.goal_proposition
-        new_graph.goal_nodes = self.goal_nodes.copy()
-
-        return new_graph
 
     def _write_other_elements_in_data(self, data: dict):
         super()._write_other_elements_in_data(data)
@@ -473,18 +465,6 @@ class StateAttackGraph(BaseGraph):
                 self._fill_graph_recursively_from_node(new_node,
                                                        useful_exploits)
 
-    def copy(self, as_view=False):
-        graph = super().copy(as_view=as_view)
-
-        new_graph = StateAttackGraph()
-        new_graph.load_nodes_and_edges(graph)
-        new_graph.propositions = self.propositions.copy()
-        new_graph.exploits = self.exploits.copy()
-        new_graph.goal_proposition = self.goal_proposition
-        new_graph.goal_nodes = self.goal_nodes.copy()
-
-        return new_graph
-
     def get_pruned_graph(self, ids_exploits_to_keep: List[int]):
         # Copy this attack graph
         new_graph = self.copy()
@@ -530,3 +510,17 @@ class StateAttackGraph(BaseGraph):
     def _write_other_elements_in_data(self, data: dict):
         super()._write_other_elements_in_data(data)
         data["type"] = "state"
+
+    def get_edge_probability(self, src, dst) -> float:
+        ids_exploits = self.edges[src, dst]["ids_exploits"]
+
+        # The probability of the action being successful is equal to the
+        # max of the probilities of the exploits
+        best_probability = float("-inf")
+        for id_exploit in ids_exploits:
+            # The probability is equal to the CVSS score divided by 10 (to
+            # get a value between 0 and 1)
+            probability = self.exploits[id_exploit]["cvss"] / 10
+            if probability > best_probability:
+                best_probability = probability
+        return best_probability
