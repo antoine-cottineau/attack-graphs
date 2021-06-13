@@ -1,30 +1,30 @@
 import numpy as np
-from attack_graph import StateAttackGraph
+from attack_graph import BaseGraph, DependencyAttackGraph, StateAttackGraph
+from copy import deepcopy
 from ranking.ranking import RankingMethod
-from typing import Dict, Tuple
+from typing import Dict
 
 
 class ValueIteration(RankingMethod):
     def __init__(self,
-                 graph: StateAttackGraph,
+                 graph: BaseGraph,
                  precision: float = 1e-4,
                  lamb: float = 0.9):
         super().__init__(list(graph.exploits))
         self.graph = graph
         self.precision = precision
         self.lamb = lamb
+        if isinstance(graph, DependencyAttackGraph):
+            self.exploit_probabilities = graph.get_nodes_probabilities()
 
-    def apply(self) -> Tuple[Dict[int, float], Dict[int, int]]:
+    def apply(self) -> Dict[int, float]:
         values: Dict[int,
                      float] = dict([(node, 0) for node in self.graph.nodes])
-        chosen_successors: Dict[int,
-                                float] = dict([(node, 0)
-                                               for node in self.graph.nodes])
         delta = np.inf
 
         while delta > self.precision:
-            new_values: Dict[int, float] = dict([(node, 0)
-                                                 for node in self.graph.nodes])
+            new_values = deepcopy(values)
+
             for node in self.graph.nodes:
                 node_value = values[node]
                 reward = self._get_reward(node)
@@ -33,12 +33,10 @@ class ValueIteration(RankingMethod):
                 # If the node is the final node, its value is always 1
                 if len(successors) == 0:
                     new_values[node] = 1
-                    chosen_successors[node] = node
                     continue
 
                 # Find the best action
                 best_value = -np.inf
-                best_successor = None
                 for successor, probability in successors.items():
                     successor_value = values[successor]
 
@@ -51,22 +49,30 @@ class ValueIteration(RankingMethod):
 
                     if new_value > best_value:
                         best_value = new_value
-                        best_successor = successor
 
                 # Update the current values and chosen actions
                 new_values[node] = best_value
-                chosen_successors[node] = best_successor
 
             # Compute delta
             delta = ValueIteration._compute_delta(values, new_values)
 
-            values = new_values.copy()
+            values = new_values
 
-        return values, chosen_successors
+        return values
 
     def get_score(self) -> float:
-        values = self.apply()[0]
-        score = values[0]
+        values = self.apply()
+        if isinstance(self.graph, StateAttackGraph):
+            score = values[0]
+        elif isinstance(self.graph, DependencyAttackGraph):
+            score = 0
+            for node, id_proposition in self.graph.nodes(
+                    data="id_proposition"):
+                if id_proposition is None:
+                    continue
+                if not self.graph.propositions[id_proposition]["initial"]:
+                    continue
+                score += values[node]
         return score
 
     def get_score_with_exploit_removed(self, id_exploit: int) -> float:
@@ -79,8 +85,20 @@ class ValueIteration(RankingMethod):
             return score
 
     def _get_successors(self, node: int) -> Dict[int, float]:
-        result = dict([(s, self.graph.get_edge_probability(node, s))
-                       for s in self.graph.successors(node)])
+        successors = list(self.graph.successors(node))
+
+        if isinstance(self.graph, StateAttackGraph):
+            result = dict([(s, self.graph.get_edge_probability(node, s))
+                           for s in successors])
+        elif isinstance(self.graph, DependencyAttackGraph):
+            result = {}
+            data = self.graph.nodes[node]
+            if "id_proposition" in data:
+                for successor in successors:
+                    result[successor] = 1
+            else:
+                result[successors[0]] = self.exploit_probabilities[node]
+
         return result
 
     def _get_reward(self, node: int) -> float:

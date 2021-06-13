@@ -20,7 +20,7 @@ PATH_DATA_FILE = Path("report/data/ranking.npy")
 PATH_DATA_FILE_TOP_EXPLOITS = Path("report/data/ranking_top_exploits.npy")
 PATH_DATA_FILE_TIME = Path("report/data/ranking_time.npy")
 
-METHODS: List[str] = ["PR", "KUE", "VI", "HOM", "PP", "RAN"]
+METHODS: List[str] = ["PR", "KUE", "VI(S)", "VI(D)", "HOM", "PP", "RAN"]
 
 
 class RankingMethodsComparator:
@@ -182,6 +182,7 @@ class RankingMethodsComparator:
             PageRankMethod(state_graph),
             KuehlmannMethod(state_graph),
             ValueIteration(state_graph),
+            ValueIteration(dependency_graph),
             RiskQuantifier(dependency_graph),
             ProbabilisticPath(state_graph),
             RandomRankingMethod(state_graph)

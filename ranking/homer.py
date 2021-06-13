@@ -9,7 +9,7 @@ class RiskQuantifier(RankingMethod):
         super().__init__(list(graph.exploits))
         self.graph = graph
         self.formatted_graph = self._set_up_graph()
-        self.exploit_probabilities = self._get_exploit_nodes_probabilities()
+        self.exploit_probabilities = self.graph.get_nodes_probabilities()
 
     def apply(self) -> Dict[int, float]:
         # Create the necessary arrays
@@ -126,17 +126,6 @@ class RiskQuantifier(RankingMethod):
                                   for node in exploit_nodes_to_be_linked])
 
         return new_graph
-
-    def _get_exploit_nodes_probabilities(self) -> Dict[int, float]:
-        result = {}
-        for node, id_exploit in self.formatted_graph.nodes(data="id_exploit"):
-            if id_exploit is not None:
-                # The probability is equal to the CVSS score divided by 10 (to
-                # get a value between 0 and 1)
-                probability = self.formatted_graph.exploits[id_exploit][
-                    "cvss"] / 10
-                result[node] = probability
-        return result
 
     def _get_branch_nodes(self) -> Set[int]:
         return set([

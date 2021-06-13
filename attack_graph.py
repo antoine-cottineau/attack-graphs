@@ -349,6 +349,16 @@ class DependencyAttackGraph(BaseGraph):
         super()._write_other_elements_in_data(data)
         data["type"] = "dependency"
 
+    def get_nodes_probabilities(self) -> Dict[int, float]:
+        result = {}
+        for node, id_exploit in self.nodes(data="id_exploit"):
+            if id_exploit is not None:
+                # The probability is equal to the CVSS score divided by 10 (to
+                # get a value between 0 and 1)
+                probability = self.exploits[id_exploit]["cvss"] / 10
+                result[node] = probability
+        return result
+
 
 class StateAttackGraph(BaseGraph):
     def fill_graph(self):
