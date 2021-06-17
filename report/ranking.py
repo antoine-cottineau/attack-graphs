@@ -1,5 +1,7 @@
 import math
+import multiprocessing
 import numpy as np
+import time
 import utils
 from attack_graph import DependencyAttackGraph, StateAttackGraph
 from matplotlib.pyplot import subplots
@@ -12,7 +14,6 @@ from ranking.ranking import RankingMethod
 from ranking.sheyner import ValueIteration
 from report.dataset import Dataset
 from report.report import Histogram, PATH_FIGURES
-from time import time
 from typing import Dict, List, Set, Tuple
 
 # CONSTANTS
@@ -192,9 +193,9 @@ class RankingMethodsComparator:
         times = []
         for i, instance in enumerate(instances):
             print("Applying {}".format(METHODS[i]))
-            start = time()
+            start = time.time()
             exploit_rankings.append(instance.rank_exploits())
-            times.append((time() - start) / len(state_graph.exploits))
+            times.append((time.time() - start) / len(state_graph.exploits))
 
         return exploit_rankings, times
 
@@ -271,3 +272,78 @@ class RankingMethodsComparator:
                                     i] = len(common_exploits) / n_top_exploits
 
         return common_top_exploits
+
+
+def run_homer(i: int, path_results: Path):
+    # Load the graph
+    path = "methods_input/dense_dataset/{}.json".format(i)
+    graph = DependencyAttackGraph()
+    graph.load(path)
+
+    # Apply Homer
+    start = time.time()
+    RiskQuantifier(graph).apply()
+    total_time = time.time() - start
+
+    # Save the time
+    results = np.load(path_results)
+    results[i] = total_time
+    print(total_time)
+    np.save(path_results, results)
+
+
+def plot_execution_time_for_homer(n_graphs: int = 7):
+    path_results = Path("report/data/homer.npy")
+    utils.create_parent_folders(path_results)
+
+    if not path_results.exists():
+        np.save(path_results, np.zeros(n_graphs))
+
+    for i in range(n_graphs):
+        print(i)
+
+        results = np.load(path_results)
+        if results[i] != 0:
+            continue
+
+        results[i] = np.inf
+        print("inf")
+        np.save(path_results, results)
+
+        # Execute Homer
+        process = multiprocessing.Process(target=run_homer,
+                                          name="Homer",
+                                          args=(i, path_results))
+        process.start()
+
+        # If the execution isn't finished after one hour, stop the execution
+        for i in range(60):
+            time.sleep(60)
+            if not process.is_alive():
+                break
+        if process.is_alive():
+            process.terminate()
+
+    # Count the number of branch nodes
+    branch_nodes = np.zeros(n_graphs)
+    for i in range(n_graphs):
+        path = "methods_input/dense_dataset/{}.json".format(i)
+        graph = DependencyAttackGraph()
+        graph.load(path)
+        for node, data in graph.nodes(data=True):
+            if "id_proposition" in data and len(list(
+                    graph.successors(node))) > 1:
+                branch_nodes[i] += 1
+
+    # Draw the graph
+    results = np.load(path_results)
+    results[results == np.inf] = 3600
+    fig, ax = subplots()
+    ax.plot(branch_nodes, results)
+    ax.set_xlabel("Number of branch nodes")
+    ax.set_ylabel("Execution time (s)")
+
+    path = Path(PATH_FIGURES, "homer.png")
+    fig.tight_layout()
+    fig.savefig(path)
+    fig.clf()
