@@ -126,7 +126,10 @@ class MethodApplicator:
         elif self.parameter == "Window size":
             return DeepWalk(self.graph, window_size=value)
         else:
-            return DeepWalk(self.graph)
+            return DeepWalk(self.graph,
+                            dim_embedding=8,
+                            walk_length=40,
+                            window_size=5)
 
     def _instantiate_graphsage(self, value) -> GraphSage:
         device = None if self.use_gpu else "cpu"
@@ -135,7 +138,10 @@ class MethodApplicator:
         elif self.parameter == "Hidden layer dimension":
             return GraphSage(self.graph, dim_hidden_layer=value, device=device)
         else:
-            return GraphSage(self.graph, device=device)
+            return GraphSage(self.graph,
+                             device=device,
+                             dim_embedding=16,
+                             dim_hidden_layer=16)
 
     def _instantiate_hope(self, value) -> Hope:
         if self.parameter == "Embedding dimension":
@@ -143,7 +149,7 @@ class MethodApplicator:
         elif self.parameter == "Measurement":
             return Hope(self.graph, measurement=value)
         else:
-            return Hope(self.graph)
+            return Hope(self.graph, dim_embedding=16, measurement="katz")
 
 
 class ClusteringFigureCreator:
@@ -278,12 +284,8 @@ class TimeComparator(ClusteringFigureCreator):
         new_results = np.zeros(len(METHODS))
         for i_method, method in enumerate(METHODS):
             start = time()
-            results = MethodApplicator(graph, method, None, None,
-                                       None).apply_method()
-            if np.all(np.isnan(results)):
-                new_results[i_method] = np.nan
-            else:
-                new_results[i_method] = time() - start
+            MethodApplicator(graph, method, None, None, None).apply_method()
+            new_results[i_method] = time() - start
         return new_results
 
     def plot(self):
