@@ -12,7 +12,7 @@ from ranking.mehta import PageRankMethod, KuehlmannMethod
 from ranking.random import RandomRankingMethod
 from ranking.ranking import RankingMethod
 from ranking.sheyner import ValueIteration
-from report.dataset import Dataset
+from report.dataset import Dataset, HomerDataset
 from report.report import Histogram, PATH_FIGURES
 from typing import Dict, List, Set, Tuple
 
@@ -274,76 +274,86 @@ class RankingMethodsComparator:
         return common_top_exploits
 
 
-def run_homer(i: int, path_results: Path):
-    # Load the graph
-    path = "methods_input/dense_dataset/{}.json".format(i)
-    graph = DependencyAttackGraph()
-    graph.load(path)
+class HomerBranchNodes:
+    def __init__(self, n_graphs: int = None):
+        self.path_results = Path("report/data/homer.npy")
+        if n_graphs is None:
+            self.n_graphs = HomerDataset.n_graphs
+        else:
+            self.n_graphs = min(n_graphs, HomerDataset.n_graphs)
 
-    # Apply Homer
-    start = time.time()
-    RiskQuantifier(graph).apply()
-    total_time = time.time() - start
+    def plot_execution_time_for_homer(self):
+        utils.create_parent_folders(self.path_results)
 
-    # Save the time
-    results = np.load(path_results)
-    results[i] = total_time
-    print(total_time)
-    np.save(path_results, results)
+        if not self.path_results.exists():
+            np.save(self.path_results, np.zeros(self.n_graphs))
 
+        for i_graph in range(self.n_graphs):
+            print("Applying Homer on graph {}/{}".format(
+                i_graph + 1, self.n_graphs))
 
-def plot_execution_time_for_homer(n_graphs: int = 7):
-    path_results = Path("report/data/homer.npy")
-    utils.create_parent_folders(path_results)
+            results = np.load(self.path_results)
+            if results[i_graph] != 0:
+                continue
 
-    if not path_results.exists():
-        np.save(path_results, np.zeros(n_graphs))
+            results[i_graph] = np.inf
+            np.save(self.path_results, results)
 
-    for i in range(n_graphs):
-        print(i)
+            # Execute Homer
+            process = multiprocessing.Process(target=self._run_homer,
+                                              name="Homer",
+                                              args=(i_graph, ))
+            process.start()
 
-        results = np.load(path_results)
-        if results[i] != 0:
-            continue
+            # If the execution isn't finished after one hour, stop the
+            # execution
+            for _ in range(360):
+                time.sleep(10)
+                if not process.is_alive():
+                    break
+            if process.is_alive():
+                process.terminate()
 
-        results[i] = np.inf
-        print("inf")
-        np.save(path_results, results)
+            self._draw_scatter_plot_for_homer()
 
-        # Execute Homer
-        process = multiprocessing.Process(target=run_homer,
-                                          name="Homer",
-                                          args=(i, path_results))
-        process.start()
+        self._draw_scatter_plot_for_homer()
 
-        # If the execution isn't finished after one hour, stop the execution
-        for i in range(60):
-            time.sleep(60)
-            if not process.is_alive():
-                break
-        if process.is_alive():
-            process.terminate()
+    def _run_homer(self, i_graph: int):
+        # Load the graph
+        graph = HomerDataset.load(i_graph)
 
-    # Count the number of branch nodes
-    branch_nodes = np.zeros(n_graphs)
-    for i in range(n_graphs):
-        path = "methods_input/dense_dataset/{}.json".format(i)
-        graph = DependencyAttackGraph()
-        graph.load(path)
-        for node, data in graph.nodes(data=True):
-            if "id_proposition" in data and len(list(
-                    graph.successors(node))) > 1:
-                branch_nodes[i] += 1
+        # Apply Homer
+        start = time.time()
+        RiskQuantifier(graph).apply()
+        total_time = time.time() - start
 
-    # Draw the graph
-    results = np.load(path_results)
-    results[results == np.inf] = 3600
-    fig, ax = subplots()
-    ax.plot(branch_nodes, results)
-    ax.set_xlabel("Number of branch nodes")
-    ax.set_ylabel("Execution time (s)")
+        # Save the time
+        results = np.load(self.path_results)
+        results[i_graph] = total_time
+        np.save(self.path_results, results)
 
-    path = Path(PATH_FIGURES, "homer.png")
-    fig.tight_layout()
-    fig.savefig(path)
-    fig.clf()
+    def _draw_scatter_plot_for_homer(self):
+        # Count the number of branch nodes
+        n_branch_nodes = np.zeros(self.n_graphs)
+        for i_graph in range(self.n_graphs):
+            graph = HomerDataset.load(i_graph)
+            n_branch_nodes[i_graph] = len(graph.get_branch_nodes())
+
+        # Draw the graph
+        results = np.load(self.path_results)
+        results[results == np.inf] = 3600
+
+        argsort = np.argsort(n_branch_nodes)
+        n_branch_nodes = n_branch_nodes[argsort]
+        results = results[argsort]
+
+        fig, ax = subplots()
+        ax.scatter(n_branch_nodes, results)
+        ax.set_xlabel("Number of branch nodes")
+        ax.set_ylabel("Logarithm of the execution time (log(s))")
+        ax.set_yscale("log")
+
+        path = Path(PATH_FIGURES, "homer.png")
+        fig.tight_layout()
+        fig.savefig(path)
+        fig.clf()
