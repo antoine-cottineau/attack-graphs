@@ -359,6 +359,14 @@ class DependencyAttackGraph(BaseGraph):
                 result[node] = probability
         return result
 
+    def get_branch_nodes(self) -> List[int]:
+        branch_nodes = []
+        for node, id_proposition in self.nodes(data="id_proposition"):
+            if id_proposition is not None and len(list(
+                    self.successors(node))) > 1:
+                branch_nodes.append(node)
+        return branch_nodes
+
 
 class StateAttackGraph(BaseGraph):
     def fill_graph(self):

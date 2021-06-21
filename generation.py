@@ -50,6 +50,17 @@ class Generator:
 
         return state_graph, dependency_graph
 
+    def generate_dependency_attack_graph(self) -> DependencyAttackGraph:
+        self._generate_exploits()
+
+        dependency_graph = DependencyAttackGraph()
+        dependency_graph.propositions = self.propositions.copy()
+        dependency_graph.exploits = self.exploits.copy()
+        dependency_graph.goal_proposition = self.goal_proposition
+        dependency_graph.fill_graph()
+
+        return dependency_graph
+
     def _generate_exploits(self):
         # Stop the recursion when we have enough exploits and only one goal
         # proposition
@@ -99,11 +110,11 @@ class Generator:
         self._generate_exploits()
 
     def _finish_graph(self):
-        available_propositions = self._get_available_propositions()
-
         # Look for the proposition nodes that do not have successors
         nodes_to_merge = []
-        for node, id_proposition in available_propositions:
+        for node, id_proposition in self.graph.nodes(data="id_proposition"):
+            if id_proposition is None:
+                continue
             n_successors = len(list(self.graph.successors(node)))
             if n_successors == 0:
                 nodes_to_merge.append((node, id_proposition))

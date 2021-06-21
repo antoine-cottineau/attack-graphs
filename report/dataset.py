@@ -5,7 +5,7 @@ from attack_graph import DependencyAttackGraph, StateAttackGraph
 from generation import Generator
 from pathlib import Path
 from time import time
-from typing import List
+from typing import Dict, List
 
 
 class Dataset:
@@ -176,3 +176,40 @@ class Dataset:
         # Get the i-th graph summary in terms of number of nodes
         graph_summary = graph_summaries[argsort[i_graph]]
         return graph_summary
+
+
+class HomerDataset:
+
+    path = Path("methods_input/homer_dataset")
+    n_graphs = 50
+
+    def __init__(self):
+        utils.create_folders(HomerDataset.path)
+
+    def generate():
+        for i_graph in range(HomerDataset.n_graphs):
+            # Generate the graph
+            print("Generating graph {}".format(i_graph))
+            generator = Generator(
+                exploits_prob_n_predecessors=HomerDataset._generate_probs(),
+                propositions_prob_n_successors=HomerDataset._generate_probs())
+            graph = generator.generate_dependency_attack_graph()
+
+            print("The graph has {} branch nodes".format(
+                len(graph.get_branch_nodes())))
+
+            # Save the graph
+            graph.save(Path(HomerDataset.path, "{}.json".format(i_graph)))
+
+    def _generate_probs(size: int = 4) -> Dict[int, float]:
+        probs = np.random.randint(10, size=size)
+        probs = probs.astype(float)
+        probs /= np.sum(probs)
+        probs = dict([(i, probs[i]) for i in range(size)])
+        return probs
+
+    def load(i_graph: int) -> DependencyAttackGraph:
+        path = Path(HomerDataset.path, "{}.json".format(i_graph))
+        graph = DependencyAttackGraph()
+        graph.load(path)
+        return graph
