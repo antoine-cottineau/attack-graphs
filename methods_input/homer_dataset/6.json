@@ -1,0 +1,1069 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 17,
+      "id": 17
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 20,
+      "id": 20
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_proposition": 23,
+      "id": 23
+    },
+    {
+      "id_proposition": 24,
+      "id": 24
+    },
+    {
+      "id_proposition": 25,
+      "id": 25
+    },
+    {
+      "id_proposition": 26,
+      "id": 26
+    },
+    {
+      "id_proposition": 27,
+      "id": 27
+    },
+    {
+      "id_proposition": 28,
+      "id": 28
+    },
+    {
+      "id_proposition": 29,
+      "id": 29
+    },
+    {
+      "id_proposition": 30,
+      "id": 30
+    },
+    {
+      "id_proposition": 31,
+      "id": 31
+    },
+    {
+      "id_proposition": 33,
+      "id": 33
+    },
+    {
+      "id_exploit": 0,
+      "id": 43
+    },
+    {
+      "id_exploit": 1,
+      "id": 44
+    },
+    {
+      "id_exploit": 2,
+      "id": 45
+    },
+    {
+      "id_exploit": 3,
+      "id": 46
+    },
+    {
+      "id_exploit": 4,
+      "id": 47
+    },
+    {
+      "id_exploit": 5,
+      "id": 48
+    },
+    {
+      "id_exploit": 6,
+      "id": 49
+    },
+    {
+      "id_exploit": 7,
+      "id": 50
+    },
+    {
+      "id_exploit": 8,
+      "id": 51
+    },
+    {
+      "id_exploit": 9,
+      "id": 52
+    },
+    {
+      "id_exploit": 10,
+      "id": 53
+    },
+    {
+      "id_exploit": 11,
+      "id": 54
+    },
+    {
+      "id_exploit": 12,
+      "id": 55
+    },
+    {
+      "id_exploit": 13,
+      "id": 56
+    },
+    {
+      "id_exploit": 14,
+      "id": 57
+    },
+    {
+      "id_exploit": 15,
+      "id": 58
+    },
+    {
+      "id_exploit": 16,
+      "id": 59
+    },
+    {
+      "id_exploit": 17,
+      "id": 60
+    },
+    {
+      "id_exploit": 18,
+      "id": 61
+    },
+    {
+      "id_exploit": 19,
+      "id": 62
+    },
+    {
+      "id_exploit": 20,
+      "id": 63
+    },
+    {
+      "id_exploit": 21,
+      "id": 64
+    },
+    {
+      "id_exploit": 22,
+      "id": 65
+    },
+    {
+      "id_exploit": 23,
+      "id": 66
+    },
+    {
+      "id_exploit": 24,
+      "id": 67
+    },
+    {
+      "id_exploit": 25,
+      "id": 68
+    },
+    {
+      "id_exploit": 26,
+      "id": 69
+    },
+    {
+      "id_exploit": 27,
+      "id": 70
+    },
+    {
+      "id_exploit": 28,
+      "id": 71
+    },
+    {
+      "id_exploit": 29,
+      "id": 72
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 43
+    },
+    {
+      "source": 0,
+      "target": 52
+    },
+    {
+      "source": 0,
+      "target": 63
+    },
+    {
+      "source": 1,
+      "target": 43
+    },
+    {
+      "source": 2,
+      "target": 43
+    },
+    {
+      "source": 2,
+      "target": 45
+    },
+    {
+      "source": 2,
+      "target": 48
+    },
+    {
+      "source": 3,
+      "target": 44
+    },
+    {
+      "source": 3,
+      "target": 48
+    },
+    {
+      "source": 3,
+      "target": 64
+    },
+    {
+      "source": 4,
+      "target": 46
+    },
+    {
+      "source": 4,
+      "target": 56
+    },
+    {
+      "source": 5,
+      "target": 45
+    },
+    {
+      "source": 6,
+      "target": 45
+    },
+    {
+      "source": 7,
+      "target": 52
+    },
+    {
+      "source": 7,
+      "target": 69
+    },
+    {
+      "source": 8,
+      "target": 46
+    },
+    {
+      "source": 8,
+      "target": 60
+    },
+    {
+      "source": 9,
+      "target": 46
+    },
+    {
+      "source": 11,
+      "target": 51
+    },
+    {
+      "source": 11,
+      "target": 59
+    },
+    {
+      "source": 11,
+      "target": 69
+    },
+    {
+      "source": 12,
+      "target": 48
+    },
+    {
+      "source": 13,
+      "target": 57
+    },
+    {
+      "source": 13,
+      "target": 61
+    },
+    {
+      "source": 15,
+      "target": 50
+    },
+    {
+      "source": 16,
+      "target": 50
+    },
+    {
+      "source": 16,
+      "target": 67
+    },
+    {
+      "source": 17,
+      "target": 50
+    },
+    {
+      "source": 17,
+      "target": 51
+    },
+    {
+      "source": 17,
+      "target": 53
+    },
+    {
+      "source": 19,
+      "target": 51
+    },
+    {
+      "source": 19,
+      "target": 52
+    },
+    {
+      "source": 19,
+      "target": 54
+    },
+    {
+      "source": 20,
+      "target": 60
+    },
+    {
+      "source": 21,
+      "target": 60
+    },
+    {
+      "source": 22,
+      "target": 58
+    },
+    {
+      "source": 22,
+      "target": 66
+    },
+    {
+      "source": 23,
+      "target": 58
+    },
+    {
+      "source": 24,
+      "target": 55
+    },
+    {
+      "source": 24,
+      "target": 57
+    },
+    {
+      "source": 24,
+      "target": 59
+    },
+    {
+      "source": 25,
+      "target": 59
+    },
+    {
+      "source": 26,
+      "target": 58
+    },
+    {
+      "source": 26,
+      "target": 71
+    },
+    {
+      "source": 27,
+      "target": 64
+    },
+    {
+      "source": 28,
+      "target": 61
+    },
+    {
+      "source": 28,
+      "target": 63
+    },
+    {
+      "source": 28,
+      "target": 65
+    },
+    {
+      "source": 29,
+      "target": 61
+    },
+    {
+      "source": 29,
+      "target": 63
+    },
+    {
+      "source": 29,
+      "target": 64
+    },
+    {
+      "source": 30,
+      "target": 66
+    },
+    {
+      "source": 31,
+      "target": 72
+    },
+    {
+      "source": 33,
+      "target": 66
+    },
+    {
+      "source": 33,
+      "target": 69
+    },
+    {
+      "source": 43,
+      "target": 3
+    },
+    {
+      "source": 44,
+      "target": 4
+    },
+    {
+      "source": 45,
+      "target": 7
+    },
+    {
+      "source": 46,
+      "target": 10
+    },
+    {
+      "source": 47,
+      "target": 11
+    },
+    {
+      "source": 48,
+      "target": 13
+    },
+    {
+      "source": 49,
+      "target": 10
+    },
+    {
+      "source": 50,
+      "target": 10
+    },
+    {
+      "source": 51,
+      "target": 20
+    },
+    {
+      "source": 52,
+      "target": 21
+    },
+    {
+      "source": 53,
+      "target": 22
+    },
+    {
+      "source": 54,
+      "target": 23
+    },
+    {
+      "source": 55,
+      "target": 25
+    },
+    {
+      "source": 56,
+      "target": 26
+    },
+    {
+      "source": 57,
+      "target": 27
+    },
+    {
+      "source": 58,
+      "target": 28
+    },
+    {
+      "source": 59,
+      "target": 29
+    },
+    {
+      "source": 60,
+      "target": 30
+    },
+    {
+      "source": 61,
+      "target": 31
+    },
+    {
+      "source": 62,
+      "target": 10
+    },
+    {
+      "source": 63,
+      "target": 33
+    },
+    {
+      "source": 64,
+      "target": 10
+    },
+    {
+      "source": 65,
+      "target": 10
+    },
+    {
+      "source": 66,
+      "target": 10
+    },
+    {
+      "source": 67,
+      "target": 10
+    },
+    {
+      "source": 68,
+      "target": 10
+    },
+    {
+      "source": 69,
+      "target": 10
+    },
+    {
+      "source": 70,
+      "target": 10
+    },
+    {
+      "source": 71,
+      "target": 10
+    },
+    {
+      "source": 72,
+      "target": 10
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": true
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": false
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": true
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": true
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": true
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": false
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": true
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": true
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": true
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": true
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": true
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": false
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": false
+    },
+    "30": {
+      "text": "Randomly generated 30",
+      "initial": false
+    },
+    "31": {
+      "text": "Randomly generated 31",
+      "initial": false
+    },
+    "32": {
+      "text": "Randomly generated 32",
+      "initial": false
+    },
+    "33": {
+      "text": "Randomly generated 33",
+      "initial": false
+    },
+    "34": {
+      "text": "Randomly generated 34",
+      "initial": false
+    },
+    "35": {
+      "text": "Randomly generated 35",
+      "initial": false
+    },
+    "36": {
+      "text": "Randomly generated 36",
+      "initial": false
+    },
+    "37": {
+      "text": "Randomly generated 37",
+      "initial": false
+    },
+    "38": {
+      "text": "Randomly generated 38",
+      "initial": false
+    },
+    "39": {
+      "text": "Randomly generated 39",
+      "initial": false
+    },
+    "40": {
+      "text": "Randomly generated 40",
+      "initial": false
+    },
+    "41": {
+      "text": "Randomly generated 41",
+      "initial": false
+    },
+    "42": {
+      "text": "Randomly generated 42",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "BigProf Online Invoicing System (OIS) through 2.6 has XSS that can be leveraged for session hijacking. An attacker can exploit the XSS vulnerability, retrieve the session cookie from the administrator login, and take over the administrator account via the Name field in an Add New Client action.",
+      "granted_proposition": 3,
+      "required_propositions": [
+        0,
+        1,
+        2
+      ],
+      "cve_id": "cve-2020-6583",
+      "cvss": 6.1
+    },
+    "1": {
+      "text": "XACK DNS 1.11.0 to 1.11.4, 1.10.0 to 1.10.8, 1.8.0 to 1.8.23, 1.7.0 to 1.7.18, and versions before 1.7.0 allow remote attackers to cause a denial of service condition resulting in degradation of the recursive resolver's performance or compromising the recursive resolver as a reflector in a reflection attack.",
+      "granted_proposition": 4,
+      "required_propositions": [
+        3
+      ],
+      "cve_id": "cve-2020-5591",
+      "cvss": 7.5
+    },
+    "2": {
+      "text": "Adobe Premiere Pro versions 14.2 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 7,
+      "required_propositions": [
+        5,
+        2,
+        6
+      ],
+      "cve_id": "cve-2020-9652",
+      "cvss": 7.8
+    },
+    "3": {
+      "text": "When the pre-logon feature is enabled, a missing certification validation in Palo Alto Networks GlobalProtect app can disclose the pre-logon authentication cookie to a man-in-the-middle attacker on the same local area network segment with the ability to manipulate ARP or to conduct ARP spoofing attacks. This allows the attacker to access the GlobalProtect Server as allowed by configured Security rules for the 'pre-login' user. This access may be limited compared to the network access of regular users. This issue affects: GlobalProtect app 5.0 versions earlier than GlobalProtect app 5.0.10 when the prelogon feature is enabled; GlobalProtect app 5.1 versions earlier than GlobalProtect app 5.1.4 when the prelogon feature is enabled.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        4,
+        8,
+        9
+      ],
+      "cve_id": "cve-2020-2033",
+      "cvss": 5.3
+    },
+    "4": {
+      "text": "Jenkins VMware Lab Manager Slaves Plugin 0.2.8 and earlier stores a password unencrypted in the global config.xml file on the Jenkins controller where it can be viewed by users with access to the Jenkins controller file system.",
+      "granted_proposition": 11,
+      "required_propositions": [],
+      "cve_id": "cve-2020-2319",
+      "cvss": 6.5
+    },
+    "5": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 13,
+      "required_propositions": [
+        3,
+        2,
+        12
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "6": {
+      "text": "Improper input validation in subsystem for Intel(R) AMT versions before 11.8.77, 11.12.77, 11.22.77 and 12.0.64 may allow a privileged user to potentially enable denial of service via network access.",
+      "granted_proposition": 10,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0537",
+      "cvss": 4.9
+    },
+    "7": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        15,
+        16,
+        17
+      ],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "8": {
+      "text": "In ihevcd_decode() of ihevcd_decode.c, there is possible resource exhaustion due to an infinite loop. This could lead to remote denial of service with no additional execution privileges needed. User interaction is needed for exploitation.Product: AndroidVersions: Android-10Android ID: A-139939283",
+      "granted_proposition": 20,
+      "required_propositions": [
+        11,
+        17,
+        19
+      ],
+      "cve_id": "cve-2020-0189",
+      "cvss": 6.5
+    },
+    "9": {
+      "text": "Improper input validation in subsystem for Intel(R) AMT versions before 11.8.77, 11.12.77, 11.22.77 and 12.0.64 may allow a privileged user to potentially enable denial of service via network access.",
+      "granted_proposition": 21,
+      "required_propositions": [
+        7,
+        0,
+        19
+      ],
+      "cve_id": "cve-2020-0537",
+      "cvss": 4.9
+    },
+    "10": {
+      "text": "Incorrect implementation in Omnibox in Google Chrome on iOS prior to 80.0.3987.87 allowed a remote attacker to spoof the contents of the Omnibox (URL bar) via a crafted HTML page.",
+      "granted_proposition": 22,
+      "required_propositions": [
+        17
+      ],
+      "cve_id": "cve-2020-6403",
+      "cvss": 4.3
+    },
+    "11": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 23,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "12": {
+      "text": "Improper input validation in subsystem for Intel(R) AMT versions before 11.8.77, 11.12.77, 11.22.77 and 12.0.64 may allow a privileged user to potentially enable denial of service via network access.",
+      "granted_proposition": 25,
+      "required_propositions": [
+        24
+      ],
+      "cve_id": "cve-2020-0537",
+      "cvss": 4.9
+    },
+    "13": {
+      "text": "Insufficient policy enforcement in navigations in Google Chrome prior to 83.0.4103.61 allowed a remote attacker to bypass navigation restrictions via a crafted HTML page.",
+      "granted_proposition": 26,
+      "required_propositions": [
+        4
+      ],
+      "cve_id": "cve-2020-6486",
+      "cvss": 6.5
+    },
+    "14": {
+      "text": "In ihevcd_decode() of ihevcd_decode.c, there is possible resource exhaustion due to an infinite loop. This could lead to remote denial of service with no additional execution privileges needed. User interaction is needed for exploitation.Product: AndroidVersions: Android-10Android ID: A-139939283",
+      "granted_proposition": 27,
+      "required_propositions": [
+        13,
+        24
+      ],
+      "cve_id": "cve-2020-0189",
+      "cvss": 6.5
+    },
+    "15": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 28,
+      "required_propositions": [
+        23,
+        26,
+        22
+      ],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "16": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 29,
+      "required_propositions": [
+        11,
+        24,
+        25
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "17": {
+      "text": "Envoy version 1.14.2, 1.13.2, 1.12.4 or earlier may exhaust file descriptors and/or memory when accepting too many connections.",
+      "granted_proposition": 30,
+      "required_propositions": [
+        21,
+        8,
+        20
+      ],
+      "cve_id": "cve-2020-8663",
+      "cvss": 7.5
+    },
+    "18": {
+      "text": "A CWE-269 Improper Privilege Management vulnerability exists in EcoStruxure\u00aa Operator Terminal Expert runtime (Vijeo XD) that could cause privilege escalation on the workstation when interacting directly with a driver installed by the runtime software of EcoStruxure\u00aa Operator Terminal Expert.",
+      "granted_proposition": 31,
+      "required_propositions": [
+        13,
+        29,
+        28
+      ],
+      "cve_id": "cve-2020-7544",
+      "cvss": 7.8
+    },
+    "19": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 10,
+      "required_propositions": [],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "20": {
+      "text": "A navigationto expression language injection remote code execution vulnerability was discovered in HPE Intelligent Management Center (iMC) version(s): Prior to iMC PLAT 7.3 (E0705P07).",
+      "granted_proposition": 33,
+      "required_propositions": [
+        29,
+        0,
+        28
+      ],
+      "cve_id": "cve-2020-7163",
+      "cvss": 9.8
+    },
+    "21": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        27,
+        3,
+        29
+      ],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "22": {
+      "text": "When reading from areas partially or fully outside the source resource with WebGL's <code>copyTexSubImage</code> method, the specification requires the returned values be zero. Previously, this memory was uninitialized, leading to potentially sensitive data disclosure. This vulnerability affects Thunderbird < 68.7.0, Firefox ESR < 68.7, and Firefox < 75.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        28
+      ],
+      "cve_id": "cve-2020-6821",
+      "cvss": 7.5
+    },
+    "23": {
+      "text": "When a device using Juniper Network's Dynamic Host Configuration Protocol Daemon (JDHCPD) process on Junos OS or Junos OS Evolved which is configured in relay mode it vulnerable to an attacker sending crafted IPv6 packets who may then arbitrarily execute commands as root on the target device. This issue affects IPv6 JDHCPD services. This issue affects: Juniper Networks Junos OS: 15.1 versions prior to 15.1R7-S6; 15.1X49 versions prior to 15.1X49-D200; 15.1X53 versions prior to 15.1X53-D592; 16.1 versions prior to 16.1R7-S6; 16.2 versions prior to 16.2R2-S11; 17.1 versions prior to 17.1R2-S11, 17.1R3-S1; 17.2 versions prior to 17.2R2-S8, 17.2R3-S3; 17.3 versions prior to 17.3R3-S6; 17.4 versions prior to 17.4R2-S7, 17.4R3; 18.1 versions prior to 18.1R3-S8; 18.2 versions prior to 18.2R3-S2; 18.2X75 versions prior to 18.2X75-D60; 18.3 versions prior to 18.3R1-S6, 18.3R2-S2, 18.3R3; 18.4 versions prior to 18.4R1-S5, 18.4R2-S3, 18.4R3; 19.1 versions prior to 19.1R1-S3, 19.1R2; 19.2 versions prior to 19.2R1-S3, 19.2R2*. and All versions prior to 19.3R1 on Junos OS Evolved. This issue do not affect versions of Junos OS prior to 15.1, or JDHCPD operating as a local server in non-relay mode.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        30,
+        33,
+        22
+      ],
+      "cve_id": "cve-2020-1609",
+      "cvss": 8.8
+    },
+    "24": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 10,
+      "required_propositions": [
+        16
+      ],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "25": {
+      "text": "When reading from areas partially or fully outside the source resource with WebGL's <code>copyTexSubImage</code> method, the specification requires the returned values be zero. Previously, this memory was uninitialized, leading to potentially sensitive data disclosure. This vulnerability affects Thunderbird < 68.7.0, Firefox ESR < 68.7, and Firefox < 75.",
+      "granted_proposition": 10,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6821",
+      "cvss": 7.5
+    },
+    "26": {
+      "text": "IBM Intelligent Operations Center for Emergency Management, Intelligent Operations Center (IOC), and IBM Water Operations for Waternamics are vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 177356.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        11,
+        7,
+        33
+      ],
+      "cve_id": "cve-2020-4318",
+      "cvss": 5.4
+    },
+    "27": {
+      "text": "In Bluetooth, there is a possible control over Bluetooth enabled state due to a missing permission check. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-11Android ID: A-145129266",
+      "granted_proposition": 10,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0298",
+      "cvss": 7.8
+    },
+    "28": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        26
+      ],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "29": {
+      "text": "openSIS Community Edition version 7.3 is vulnerable to SQL injection via the USERNAME parameter of index.php.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        31
+      ],
+      "cve_id": "cve-2020-6637",
+      "cvss": 9.8
+    }
+  },
+  "goal_proposition": 10,
+  "goal_nodes": [
+    10
+  ],
+  "type": "dependency"
+}

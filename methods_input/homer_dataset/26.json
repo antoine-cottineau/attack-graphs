@@ -1,0 +1,592 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_exploit": 0,
+      "id": 30
+    },
+    {
+      "id_exploit": 1,
+      "id": 31
+    },
+    {
+      "id_exploit": 2,
+      "id": 32
+    },
+    {
+      "id_exploit": 3,
+      "id": 33
+    },
+    {
+      "id_exploit": 4,
+      "id": 34
+    },
+    {
+      "id_exploit": 5,
+      "id": 35
+    },
+    {
+      "id_exploit": 6,
+      "id": 36
+    },
+    {
+      "id_exploit": 7,
+      "id": 37
+    },
+    {
+      "id_exploit": 8,
+      "id": 38
+    },
+    {
+      "id_exploit": 9,
+      "id": 39
+    },
+    {
+      "id_exploit": 10,
+      "id": 40
+    },
+    {
+      "id_exploit": 11,
+      "id": 41
+    },
+    {
+      "id_exploit": 12,
+      "id": 42
+    },
+    {
+      "id_exploit": 13,
+      "id": 43
+    },
+    {
+      "id_exploit": 14,
+      "id": 44
+    },
+    {
+      "id_exploit": 15,
+      "id": 45
+    },
+    {
+      "id_exploit": 16,
+      "id": 46
+    },
+    {
+      "id_exploit": 17,
+      "id": 47
+    },
+    {
+      "id_exploit": 18,
+      "id": 48
+    },
+    {
+      "id_exploit": 19,
+      "id": 49
+    },
+    {
+      "id_exploit": 20,
+      "id": 50
+    },
+    {
+      "id_exploit": 21,
+      "id": 51
+    },
+    {
+      "id_exploit": 22,
+      "id": 52
+    },
+    {
+      "id_exploit": 23,
+      "id": 53
+    },
+    {
+      "id_exploit": 24,
+      "id": 54
+    },
+    {
+      "id_exploit": 25,
+      "id": 55
+    },
+    {
+      "id_exploit": 26,
+      "id": 56
+    },
+    {
+      "id_exploit": 27,
+      "id": 57
+    },
+    {
+      "id_exploit": 28,
+      "id": 58
+    },
+    {
+      "id_exploit": 29,
+      "id": 59
+    }
+  ],
+  "links": [
+    {
+      "source": 30,
+      "target": 0
+    },
+    {
+      "source": 31,
+      "target": 0
+    },
+    {
+      "source": 32,
+      "target": 0
+    },
+    {
+      "source": 33,
+      "target": 0
+    },
+    {
+      "source": 34,
+      "target": 0
+    },
+    {
+      "source": 35,
+      "target": 0
+    },
+    {
+      "source": 36,
+      "target": 0
+    },
+    {
+      "source": 37,
+      "target": 0
+    },
+    {
+      "source": 38,
+      "target": 0
+    },
+    {
+      "source": 39,
+      "target": 0
+    },
+    {
+      "source": 40,
+      "target": 0
+    },
+    {
+      "source": 41,
+      "target": 0
+    },
+    {
+      "source": 42,
+      "target": 0
+    },
+    {
+      "source": 43,
+      "target": 0
+    },
+    {
+      "source": 44,
+      "target": 0
+    },
+    {
+      "source": 45,
+      "target": 0
+    },
+    {
+      "source": 46,
+      "target": 0
+    },
+    {
+      "source": 47,
+      "target": 0
+    },
+    {
+      "source": 48,
+      "target": 0
+    },
+    {
+      "source": 49,
+      "target": 0
+    },
+    {
+      "source": 50,
+      "target": 0
+    },
+    {
+      "source": 51,
+      "target": 0
+    },
+    {
+      "source": 52,
+      "target": 0
+    },
+    {
+      "source": 53,
+      "target": 0
+    },
+    {
+      "source": 54,
+      "target": 0
+    },
+    {
+      "source": 55,
+      "target": 0
+    },
+    {
+      "source": 56,
+      "target": 0
+    },
+    {
+      "source": 57,
+      "target": 0
+    },
+    {
+      "source": 58,
+      "target": 0
+    },
+    {
+      "source": 59,
+      "target": 0
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": false
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": false
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": false
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": false
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": false
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": false
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": false
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": false
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": false
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": false
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "There is an input validation vulnerability in a PON terminal product of ZTE, which supports the creation of WAN connections through WEB management pages. The front-end limits the length of the WAN connection name that is created, but the HTTP proxy is available to be used to bypass the limitation. An attacker can exploit the vulnerability to tamper with the parameter value. This affects: ZTE F680 V9.0.10P1N6",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6868",
+      "cvss": 6.5
+    },
+    "1": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "2": {
+      "text": "Jenkins VMware Lab Manager Slaves Plugin 0.2.8 and earlier stores a password unencrypted in the global config.xml file on the Jenkins controller where it can be viewed by users with access to the Jenkins controller file system.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-2319",
+      "cvss": 6.5
+    },
+    "3": {
+      "text": "XACK DNS 1.11.0 to 1.11.4, 1.10.0 to 1.10.8, 1.8.0 to 1.8.23, 1.7.0 to 1.7.18, and versions before 1.7.0 allow remote attackers to cause a denial of service condition resulting in degradation of the recursive resolver's performance or compromising the recursive resolver as a reflector in a reflection attack.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-5591",
+      "cvss": 7.5
+    },
+    "4": {
+      "text": "Octech Oempro 4.7 through 4.11 allow XSS by an authenticated user. The parameter CampaignName in Campaign.Create is vulnerable.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9460",
+      "cvss": 5.4
+    },
+    "5": {
+      "text": "BigProf Online Invoicing System (OIS) through 2.6 has XSS that can be leveraged for session hijacking. An attacker can exploit the XSS vulnerability, retrieve the session cookie from the administrator login, and take over the administrator account via the Name field in an Add New Client action.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6583",
+      "cvss": 6.1
+    },
+    "6": {
+      "text": "Digi TransPort WR21 5.2.2.3, WR44 5.1.6.4, and WR44v2 5.1.6.9 devices allow stored XSS in the web application.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-8822",
+      "cvss": 4.8
+    },
+    "7": {
+      "text": "openSIS Community Edition version 7.3 is vulnerable to SQL injection via the USERNAME parameter of index.php.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6637",
+      "cvss": 9.8
+    },
+    "8": {
+      "text": "Improper neutralization of argument delimiters in a command in Nagios XI 5.7.3 allows a remote, authenticated admin user to write to arbitrary files and ultimately execute code with the privileges of the apache user.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-5792",
+      "cvss": 7.2
+    },
+    "9": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "10": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "11": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "12": {
+      "text": "Insufficient policy enforcement in navigations in Google Chrome prior to 83.0.4103.61 allowed a remote attacker to bypass navigation restrictions via a crafted HTML page.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6486",
+      "cvss": 6.5
+    },
+    "13": {
+      "text": "IBM Intelligent Operations Center for Emergency Management, Intelligent Operations Center (IOC), and IBM Water Operations for Waternamics are vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 177356.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4318",
+      "cvss": 5.4
+    },
+    "14": {
+      "text": "The IBM Process Federation Server 18.0.0.1, 18.0.0.2, 19.0.0.1, 19.0.0.2, and 19.0.0.3 Global Teams REST API does not properly shutdown the thread pools that it creates to retrieve Global Teams information from the federated systems. As a consequence, the Java Virtual Machine can't recover the memory used by those thread pools, which leads to an OutOfMemory exception when the Process Federation Server Global Teams REST API is used extensively. IBM X-Force ID: 177596.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4325",
+      "cvss": 6.5
+    },
+    "15": {
+      "text": "On Juniper Networks SRX Series and NFX Series, a local authenticated user with access to the shell may obtain the Web API service private key that is used to provide encrypted communication between the Juniper device and the authenticator services. Exploitation of this vulnerability may allow an attacker to decrypt the communications between the Juniper device and the authenticator service. This Web API service is used for authentication services such as the Juniper Identity Management Service, used to obtain user identity for Integrated User Firewall feature, or the integrated ClearPass authentication and enforcement feature. This issue affects Juniper Networks Junos OS on Networks SRX Series and NFX Series: 12.3X48 versions prior to 12.3X48-D105; 15.1X49 versions prior to 15.1X49-D190; 16.1 versions prior to 16.1R7-S8; 17.2 versions prior to 17.2R3-S4; 17.3 versions prior to 17.3R3-S8; 17.4 versions prior to 17.4R2-S11, 17.4R3; 18.1 versions prior to 18.1R3-S7; 18.2 versions prior to 18.2R3; 18.3 versions prior to 18.3R2-S4, 18.3R3; 18.4 versions prior to 18.4R1-S7, 18.4R2; 19.1 versions prior to 19.1R2; 19.2 versions prior to 19.2R1-S4, 19.2R2.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-1688",
+      "cvss": 6.5
+    },
+    "16": {
+      "text": "openSIS Community Edition version 7.3 is vulnerable to SQL injection via the USERNAME parameter of index.php.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6637",
+      "cvss": 9.8
+    },
+    "17": {
+      "text": "When reading from areas partially or fully outside the source resource with WebGL's <code>copyTexSubImage</code> method, the specification requires the returned values be zero. Previously, this memory was uninitialized, leading to potentially sensitive data disclosure. This vulnerability affects Thunderbird < 68.7.0, Firefox ESR < 68.7, and Firefox < 75.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6821",
+      "cvss": 7.5
+    },
+    "18": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "19": {
+      "text": "This vulnerability allows local attackers to disclose information on affected installations of Parallels Desktop 15.1.2-47123. An attacker must first obtain the ability to execute low-privileged code on the target system in order to exploit this vulnerability. The specific flaw exists within the IOCTL handler. The issue results from the lack of proper validation of user-supplied data, which can result in a read past the end of an allocated buffer. An attacker can leverage this in conjunction with other vulnerabilities to execute arbitrary code in the context of the kernel. Was ZDI-CAN-10029.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-8876",
+      "cvss": 5.5
+    },
+    "20": {
+      "text": "IBM Intelligent Operations Center for Emergency Management, Intelligent Operations Center (IOC), and IBM Water Operations for Waternamics are vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 177356.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4318",
+      "cvss": 5.4
+    },
+    "21": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "22": {
+      "text": "A reportpage index expression language injection remote code execution vulnerability was discovered in HPE Intelligent Management Center (iMC) version(s): Prior to iMC PLAT 7.3 (E0705P07).",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-7187",
+      "cvss": 8.8
+    },
+    "23": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "24": {
+      "text": "Improper neutralization of argument delimiters in a command in Nagios XI 5.7.3 allows a remote, authenticated admin user to write to arbitrary files and ultimately execute code with the privileges of the apache user.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-5792",
+      "cvss": 7.2
+    },
+    "25": {
+      "text": "Improper access control in the Intel(R) HD Graphics Control Panel before version 15.40.46.5144 and 15.36.39.5143 may allow an authenticated user to potentially enable denial of service via local access.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0518",
+      "cvss": 5.5
+    },
+    "26": {
+      "text": "Adobe Experience Manager versions 6.5 and earlier have a server-side request forgery (ssrf) vulnerability. Successful exploitation could lead to sensitive information disclosure.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-3769",
+      "cvss": 7.5
+    },
+    "27": {
+      "text": "IBM Intelligent Operations Center for Emergency Management, Intelligent Operations Center (IOC), and IBM Water Operations for Waternamics are vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 177356.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4318",
+      "cvss": 5.4
+    },
+    "28": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "29": {
+      "text": "IBM Intelligent Operations Center for Emergency Management, Intelligent Operations Center (IOC), and IBM Water Operations for Waternamics are vulnerable to cross-site scripting. This vulnerability allows users to embed arbitrary JavaScript code in the Web UI thus altering the intended functionality potentially leading to credentials disclosure within a trusted session. IBM X-Force ID: 177356.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4318",
+      "cvss": 5.4
+    }
+  },
+  "goal_proposition": 0,
+  "goal_nodes": [
+    0
+  ],
+  "type": "dependency"
+}

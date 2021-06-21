@@ -1,0 +1,1084 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 17,
+      "id": 17
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_proposition": 24,
+      "id": 24
+    },
+    {
+      "id_proposition": 25,
+      "id": 25
+    },
+    {
+      "id_proposition": 27,
+      "id": 27
+    },
+    {
+      "id_proposition": 28,
+      "id": 28
+    },
+    {
+      "id_proposition": 29,
+      "id": 29
+    },
+    {
+      "id_proposition": 30,
+      "id": 30
+    },
+    {
+      "id_proposition": 31,
+      "id": 31
+    },
+    {
+      "id_proposition": 32,
+      "id": 32
+    },
+    {
+      "id_proposition": 33,
+      "id": 33
+    },
+    {
+      "id_proposition": 35,
+      "id": 35
+    },
+    {
+      "id_proposition": 37,
+      "id": 37
+    },
+    {
+      "id_proposition": 41,
+      "id": 41
+    },
+    {
+      "id_exploit": 0,
+      "id": 45
+    },
+    {
+      "id_exploit": 1,
+      "id": 46
+    },
+    {
+      "id_exploit": 2,
+      "id": 47
+    },
+    {
+      "id_exploit": 3,
+      "id": 48
+    },
+    {
+      "id_exploit": 4,
+      "id": 49
+    },
+    {
+      "id_exploit": 5,
+      "id": 50
+    },
+    {
+      "id_exploit": 6,
+      "id": 51
+    },
+    {
+      "id_exploit": 7,
+      "id": 52
+    },
+    {
+      "id_exploit": 8,
+      "id": 53
+    },
+    {
+      "id_exploit": 9,
+      "id": 54
+    },
+    {
+      "id_exploit": 10,
+      "id": 55
+    },
+    {
+      "id_exploit": 11,
+      "id": 56
+    },
+    {
+      "id_exploit": 12,
+      "id": 57
+    },
+    {
+      "id_exploit": 13,
+      "id": 58
+    },
+    {
+      "id_exploit": 14,
+      "id": 59
+    },
+    {
+      "id_exploit": 15,
+      "id": 60
+    },
+    {
+      "id_exploit": 16,
+      "id": 61
+    },
+    {
+      "id_exploit": 17,
+      "id": 62
+    },
+    {
+      "id_exploit": 18,
+      "id": 63
+    },
+    {
+      "id_exploit": 19,
+      "id": 64
+    },
+    {
+      "id_exploit": 20,
+      "id": 65
+    },
+    {
+      "id_exploit": 21,
+      "id": 66
+    },
+    {
+      "id_exploit": 22,
+      "id": 67
+    },
+    {
+      "id_exploit": 23,
+      "id": 68
+    },
+    {
+      "id_exploit": 24,
+      "id": 69
+    },
+    {
+      "id_exploit": 25,
+      "id": 70
+    },
+    {
+      "id_exploit": 26,
+      "id": 71
+    },
+    {
+      "id_exploit": 27,
+      "id": 72
+    },
+    {
+      "id_exploit": 28,
+      "id": 73
+    },
+    {
+      "id_exploit": 29,
+      "id": 74
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 45
+    },
+    {
+      "source": 0,
+      "target": 46
+    },
+    {
+      "source": 1,
+      "target": 45
+    },
+    {
+      "source": 2,
+      "target": 45
+    },
+    {
+      "source": 3,
+      "target": 46
+    },
+    {
+      "source": 3,
+      "target": 47
+    },
+    {
+      "source": 3,
+      "target": 48
+    },
+    {
+      "source": 4,
+      "target": 46
+    },
+    {
+      "source": 4,
+      "target": 47
+    },
+    {
+      "source": 4,
+      "target": 57
+    },
+    {
+      "source": 6,
+      "target": 47
+    },
+    {
+      "source": 7,
+      "target": 48
+    },
+    {
+      "source": 7,
+      "target": 62
+    },
+    {
+      "source": 7,
+      "target": 72
+    },
+    {
+      "source": 8,
+      "target": 48
+    },
+    {
+      "source": 8,
+      "target": 58
+    },
+    {
+      "source": 8,
+      "target": 67
+    },
+    {
+      "source": 10,
+      "target": 49
+    },
+    {
+      "source": 11,
+      "target": 50
+    },
+    {
+      "source": 11,
+      "target": 51
+    },
+    {
+      "source": 11,
+      "target": 54
+    },
+    {
+      "source": 12,
+      "target": 50
+    },
+    {
+      "source": 14,
+      "target": 51
+    },
+    {
+      "source": 14,
+      "target": 69
+    },
+    {
+      "source": 14,
+      "target": 74
+    },
+    {
+      "source": 15,
+      "target": 70
+    },
+    {
+      "source": 16,
+      "target": 52
+    },
+    {
+      "source": 17,
+      "target": 55
+    },
+    {
+      "source": 18,
+      "target": 53
+    },
+    {
+      "source": 18,
+      "target": 58
+    },
+    {
+      "source": 18,
+      "target": 60
+    },
+    {
+      "source": 19,
+      "target": 56
+    },
+    {
+      "source": 19,
+      "target": 66
+    },
+    {
+      "source": 21,
+      "target": 55
+    },
+    {
+      "source": 21,
+      "target": 63
+    },
+    {
+      "source": 21,
+      "target": 71
+    },
+    {
+      "source": 22,
+      "target": 58
+    },
+    {
+      "source": 22,
+      "target": 62
+    },
+    {
+      "source": 24,
+      "target": 57
+    },
+    {
+      "source": 25,
+      "target": 66
+    },
+    {
+      "source": 25,
+      "target": 69
+    },
+    {
+      "source": 25,
+      "target": 74
+    },
+    {
+      "source": 27,
+      "target": 59
+    },
+    {
+      "source": 28,
+      "target": 60
+    },
+    {
+      "source": 28,
+      "target": 63
+    },
+    {
+      "source": 28,
+      "target": 65
+    },
+    {
+      "source": 29,
+      "target": 60
+    },
+    {
+      "source": 29,
+      "target": 62
+    },
+    {
+      "source": 30,
+      "target": 71
+    },
+    {
+      "source": 31,
+      "target": 66
+    },
+    {
+      "source": 32,
+      "target": 72
+    },
+    {
+      "source": 33,
+      "target": 64
+    },
+    {
+      "source": 35,
+      "target": 69
+    },
+    {
+      "source": 37,
+      "target": 68
+    },
+    {
+      "source": 37,
+      "target": 72
+    },
+    {
+      "source": 41,
+      "target": 74
+    },
+    {
+      "source": 45,
+      "target": 3
+    },
+    {
+      "source": 46,
+      "target": 5
+    },
+    {
+      "source": 47,
+      "target": 7
+    },
+    {
+      "source": 48,
+      "target": 5
+    },
+    {
+      "source": 49,
+      "target": 11
+    },
+    {
+      "source": 50,
+      "target": 5
+    },
+    {
+      "source": 51,
+      "target": 15
+    },
+    {
+      "source": 52,
+      "target": 17
+    },
+    {
+      "source": 53,
+      "target": 19
+    },
+    {
+      "source": 54,
+      "target": 5
+    },
+    {
+      "source": 55,
+      "target": 22
+    },
+    {
+      "source": 56,
+      "target": 5
+    },
+    {
+      "source": 57,
+      "target": 25
+    },
+    {
+      "source": 58,
+      "target": 5
+    },
+    {
+      "source": 59,
+      "target": 28
+    },
+    {
+      "source": 60,
+      "target": 30
+    },
+    {
+      "source": 61,
+      "target": 31
+    },
+    {
+      "source": 62,
+      "target": 32
+    },
+    {
+      "source": 63,
+      "target": 33
+    },
+    {
+      "source": 64,
+      "target": 5
+    },
+    {
+      "source": 65,
+      "target": 35
+    },
+    {
+      "source": 66,
+      "target": 5
+    },
+    {
+      "source": 67,
+      "target": 37
+    },
+    {
+      "source": 68,
+      "target": 5
+    },
+    {
+      "source": 69,
+      "target": 5
+    },
+    {
+      "source": 70,
+      "target": 5
+    },
+    {
+      "source": 71,
+      "target": 41
+    },
+    {
+      "source": 72,
+      "target": 5
+    },
+    {
+      "source": 73,
+      "target": 5
+    },
+    {
+      "source": 74,
+      "target": 5
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": true
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": true
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": true
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": true
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": true
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": true
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": true
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": true
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": true
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": true
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": true
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": true
+    },
+    "30": {
+      "text": "Randomly generated 30",
+      "initial": false
+    },
+    "31": {
+      "text": "Randomly generated 31",
+      "initial": false
+    },
+    "32": {
+      "text": "Randomly generated 32",
+      "initial": false
+    },
+    "33": {
+      "text": "Randomly generated 33",
+      "initial": false
+    },
+    "34": {
+      "text": "Randomly generated 34",
+      "initial": false
+    },
+    "35": {
+      "text": "Randomly generated 35",
+      "initial": false
+    },
+    "36": {
+      "text": "Randomly generated 36",
+      "initial": false
+    },
+    "37": {
+      "text": "Randomly generated 37",
+      "initial": false
+    },
+    "38": {
+      "text": "Randomly generated 38",
+      "initial": false
+    },
+    "39": {
+      "text": "Randomly generated 39",
+      "initial": false
+    },
+    "40": {
+      "text": "Randomly generated 40",
+      "initial": false
+    },
+    "41": {
+      "text": "Randomly generated 41",
+      "initial": false
+    },
+    "42": {
+      "text": "Randomly generated 42",
+      "initial": false
+    },
+    "43": {
+      "text": "Randomly generated 43",
+      "initial": false
+    },
+    "44": {
+      "text": "Randomly generated 44",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "When the pre-logon feature is enabled, a missing certification validation in Palo Alto Networks GlobalProtect app can disclose the pre-logon authentication cookie to a man-in-the-middle attacker on the same local area network segment with the ability to manipulate ARP or to conduct ARP spoofing attacks. This allows the attacker to access the GlobalProtect Server as allowed by configured Security rules for the 'pre-login' user. This access may be limited compared to the network access of regular users. This issue affects: GlobalProtect app 5.0 versions earlier than GlobalProtect app 5.0.10 when the prelogon feature is enabled; GlobalProtect app 5.1 versions earlier than GlobalProtect app 5.1.4 when the prelogon feature is enabled.",
+      "granted_proposition": 3,
+      "required_propositions": [
+        0,
+        1,
+        2
+      ],
+      "cve_id": "cve-2020-2033",
+      "cvss": 5.3
+    },
+    "1": {
+      "text": "ActiveX Control(HShell.dll) in Handy Groupware 1.7.3.1 for Windows 7, 8, and 10 allows an attacker to execute arbitrary command via the ShellExec method.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        0,
+        4,
+        3
+      ],
+      "cve_id": "cve-2020-7804",
+      "cvss": 7.2
+    },
+    "2": {
+      "text": "When reading from areas partially or fully outside the source resource with WebGL's <code>copyTexSubImage</code> method, the specification requires the returned values be zero. Previously, this memory was uninitialized, leading to potentially sensitive data disclosure. This vulnerability affects Thunderbird < 68.7.0, Firefox ESR < 68.7, and Firefox < 75.",
+      "granted_proposition": 7,
+      "required_propositions": [
+        4,
+        3,
+        6
+      ],
+      "cve_id": "cve-2020-6821",
+      "cvss": 7.5
+    },
+    "3": {
+      "text": "A cross-site request forgery vulnerability in Jenkins Health Advisor by CloudBees Plugin 3.0 and earlier allows attackers to send an email with fixed content to an attacker-specified recipient.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        8,
+        7,
+        3
+      ],
+      "cve_id": "cve-2020-2093",
+      "cvss": 8.8
+    },
+    "4": {
+      "text": "A use after free issue was addressed with improved memory management. This issue is fixed in Safari 14.0. Processing maliciously crafted web content may lead to arbitrary code execution.",
+      "granted_proposition": 11,
+      "required_propositions": [
+        10
+      ],
+      "cve_id": "cve-2020-9951",
+      "cvss": 8.8
+    },
+    "5": {
+      "text": "The IBM Process Federation Server 18.0.0.1, 18.0.0.2, 19.0.0.1, 19.0.0.2, and 19.0.0.3 Global Teams REST API does not properly shutdown the thread pools that it creates to retrieve Global Teams information from the federated systems. As a consequence, the Java Virtual Machine can't recover the memory used by those thread pools, which leads to an OutOfMemory exception when the Process Federation Server Global Teams REST API is used extensively. IBM X-Force ID: 177596.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        11,
+        12
+      ],
+      "cve_id": "cve-2020-4325",
+      "cvss": 6.5
+    },
+    "6": {
+      "text": "Insufficient policy enforcement in navigation in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to confuse the user via a crafted domain name.",
+      "granted_proposition": 15,
+      "required_propositions": [
+        11,
+        14
+      ],
+      "cve_id": "cve-2020-6410",
+      "cvss": 8.8
+    },
+    "7": {
+      "text": "Inappropriate implementation in JavaScript in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 17,
+      "required_propositions": [
+        16
+      ],
+      "cve_id": "cve-2020-6415",
+      "cvss": 8.8
+    },
+    "8": {
+      "text": "An elevation of privilege vulnerability exists in the way that the Windows Graphics Device Interface (GDI) handles objects in memory, aka 'Windows GDI Elevation of Privilege Vulnerability'. This CVE ID is unique from CVE-2020-1480.",
+      "granted_proposition": 19,
+      "required_propositions": [
+        18
+      ],
+      "cve_id": "cve-2020-1529",
+      "cvss": 7.8
+    },
+    "9": {
+      "text": "ActiveX Control(HShell.dll) in Handy Groupware 1.7.3.1 for Windows 7, 8, and 10 allows an attacker to execute arbitrary command via the ShellExec method.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        11
+      ],
+      "cve_id": "cve-2020-7804",
+      "cvss": 7.2
+    },
+    "10": {
+      "text": "Insufficient policy enforcement in navigations in Google Chrome prior to 83.0.4103.61 allowed a remote attacker to bypass navigation restrictions via a crafted HTML page.",
+      "granted_proposition": 22,
+      "required_propositions": [
+        21,
+        17
+      ],
+      "cve_id": "cve-2020-6486",
+      "cvss": 6.5
+    },
+    "11": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        19
+      ],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "12": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 25,
+      "required_propositions": [
+        24,
+        4
+      ],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "13": {
+      "text": "When the pre-logon feature is enabled, a missing certification validation in Palo Alto Networks GlobalProtect app can disclose the pre-logon authentication cookie to a man-in-the-middle attacker on the same local area network segment with the ability to manipulate ARP or to conduct ARP spoofing attacks. This allows the attacker to access the GlobalProtect Server as allowed by configured Security rules for the 'pre-login' user. This access may be limited compared to the network access of regular users. This issue affects: GlobalProtect app 5.0 versions earlier than GlobalProtect app 5.0.10 when the prelogon feature is enabled; GlobalProtect app 5.1 versions earlier than GlobalProtect app 5.1.4 when the prelogon feature is enabled.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        18,
+        22,
+        8
+      ],
+      "cve_id": "cve-2020-2033",
+      "cvss": 5.3
+    },
+    "14": {
+      "text": "OpenSearch Web browser 1.0.4.9 allows Intent Scheme Hijacking.[a link that opens another app in the browser can be manipulated]",
+      "granted_proposition": 28,
+      "required_propositions": [
+        27
+      ],
+      "cve_id": "cve-2020-8954",
+      "cvss": 5.4
+    },
+    "15": {
+      "text": "When the pre-logon feature is enabled, a missing certification validation in Palo Alto Networks GlobalProtect app can disclose the pre-logon authentication cookie to a man-in-the-middle attacker on the same local area network segment with the ability to manipulate ARP or to conduct ARP spoofing attacks. This allows the attacker to access the GlobalProtect Server as allowed by configured Security rules for the 'pre-login' user. This access may be limited compared to the network access of regular users. This issue affects: GlobalProtect app 5.0 versions earlier than GlobalProtect app 5.0.10 when the prelogon feature is enabled; GlobalProtect app 5.1 versions earlier than GlobalProtect app 5.1.4 when the prelogon feature is enabled.",
+      "granted_proposition": 30,
+      "required_propositions": [
+        28,
+        18,
+        29
+      ],
+      "cve_id": "cve-2020-2033",
+      "cvss": 5.3
+    },
+    "16": {
+      "text": "When a device using Juniper Network's Dynamic Host Configuration Protocol Daemon (JDHCPD) process on Junos OS or Junos OS Evolved which is configured in relay mode it vulnerable to an attacker sending crafted IPv6 packets who may then arbitrarily execute commands as root on the target device. This issue affects IPv6 JDHCPD services. This issue affects: Juniper Networks Junos OS: 15.1 versions prior to 15.1R7-S6; 15.1X49 versions prior to 15.1X49-D200; 15.1X53 versions prior to 15.1X53-D592; 16.1 versions prior to 16.1R7-S6; 16.2 versions prior to 16.2R2-S11; 17.1 versions prior to 17.1R2-S11, 17.1R3-S1; 17.2 versions prior to 17.2R2-S8, 17.2R3-S3; 17.3 versions prior to 17.3R3-S6; 17.4 versions prior to 17.4R2-S7, 17.4R3; 18.1 versions prior to 18.1R3-S8; 18.2 versions prior to 18.2R3-S2; 18.2X75 versions prior to 18.2X75-D60; 18.3 versions prior to 18.3R1-S6, 18.3R2-S2, 18.3R3; 18.4 versions prior to 18.4R1-S5, 18.4R2-S3, 18.4R3; 19.1 versions prior to 19.1R1-S3, 19.1R2; 19.2 versions prior to 19.2R1-S3, 19.2R2*. and All versions prior to 19.3R1 on Junos OS Evolved. This issue do not affect versions of Junos OS prior to 15.1, or JDHCPD operating as a local server in non-relay mode.",
+      "granted_proposition": 31,
+      "required_propositions": [],
+      "cve_id": "cve-2020-1609",
+      "cvss": 8.8
+    },
+    "17": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 32,
+      "required_propositions": [
+        22,
+        7,
+        29
+      ],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "18": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 33,
+      "required_propositions": [
+        21,
+        28
+      ],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "19": {
+      "text": "An information disclosure vulnerability exists in the way that Microsoft Edge handles cross-origin requests, aka 'Microsoft Edge Information Disclosure Vulnerability'.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        33
+      ],
+      "cve_id": "cve-2020-1242",
+      "cvss": 5.3
+    },
+    "20": {
+      "text": "ActiveX Control(HShell.dll) in Handy Groupware 1.7.3.1 for Windows 7, 8, and 10 allows an attacker to execute arbitrary command via the ShellExec method.",
+      "granted_proposition": 35,
+      "required_propositions": [
+        28
+      ],
+      "cve_id": "cve-2020-7804",
+      "cvss": 7.2
+    },
+    "21": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        19,
+        25,
+        31
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "22": {
+      "text": "Insufficient control flow management in firmware for some Intel(R) Data Center SSDs may allow a privileged user to potentially enable information disclosure via local access.",
+      "granted_proposition": 37,
+      "required_propositions": [
+        8
+      ],
+      "cve_id": "cve-2020-0527",
+      "cvss": 4.4
+    },
+    "23": {
+      "text": "apiconnect-cli-plugins through 6.0.1 is vulnerable to Command Injection.It allows execution of arbitrary commands via the pluginUri argument.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        37
+      ],
+      "cve_id": "cve-2020-7633",
+      "cvss": 9.8
+    },
+    "24": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        25,
+        35,
+        14
+      ],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "25": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 5,
+      "required_propositions": [
+        15
+      ],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "26": {
+      "text": "Adobe Experience Manager versions 6.5 and earlier have a server-side request forgery (ssrf) vulnerability. Successful exploitation could lead to sensitive information disclosure.",
+      "granted_proposition": 41,
+      "required_propositions": [
+        30,
+        21
+      ],
+      "cve_id": "cve-2020-3769",
+      "cvss": 7.5
+    },
+    "27": {
+      "text": "Insufficient policy enforcement in navigation in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to confuse the user via a crafted domain name.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        7,
+        32,
+        37
+      ],
+      "cve_id": "cve-2020-6410",
+      "cvss": 8.8
+    },
+    "28": {
+      "text": "A cross-site request forgery vulnerability in Jenkins Health Advisor by CloudBees Plugin 3.0 and earlier allows attackers to send an email with fixed content to an attacker-specified recipient.",
+      "granted_proposition": 5,
+      "required_propositions": [],
+      "cve_id": "cve-2020-2093",
+      "cvss": 8.8
+    },
+    "29": {
+      "text": "Adobe Experience Manager versions 6.5 and earlier have a server-side request forgery (ssrf) vulnerability. Successful exploitation could lead to sensitive information disclosure.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        14,
+        25,
+        41
+      ],
+      "cve_id": "cve-2020-3769",
+      "cvss": 7.5
+    }
+  },
+  "goal_proposition": 5,
+  "goal_nodes": [
+    5
+  ],
+  "type": "dependency"
+}

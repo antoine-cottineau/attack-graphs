@@ -1,0 +1,810 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 21,
+      "id": 21
+    },
+    {
+      "id_proposition": 29,
+      "id": 29
+    },
+    {
+      "id_exploit": 0,
+      "id": 35
+    },
+    {
+      "id_exploit": 1,
+      "id": 36
+    },
+    {
+      "id_exploit": 2,
+      "id": 37
+    },
+    {
+      "id_exploit": 3,
+      "id": 38
+    },
+    {
+      "id_exploit": 4,
+      "id": 39
+    },
+    {
+      "id_exploit": 5,
+      "id": 40
+    },
+    {
+      "id_exploit": 6,
+      "id": 41
+    },
+    {
+      "id_exploit": 7,
+      "id": 42
+    },
+    {
+      "id_exploit": 8,
+      "id": 43
+    },
+    {
+      "id_exploit": 9,
+      "id": 44
+    },
+    {
+      "id_exploit": 10,
+      "id": 45
+    },
+    {
+      "id_exploit": 11,
+      "id": 46
+    },
+    {
+      "id_exploit": 12,
+      "id": 47
+    },
+    {
+      "id_exploit": 13,
+      "id": 48
+    },
+    {
+      "id_exploit": 14,
+      "id": 49
+    },
+    {
+      "id_exploit": 15,
+      "id": 50
+    },
+    {
+      "id_exploit": 16,
+      "id": 51
+    },
+    {
+      "id_exploit": 17,
+      "id": 52
+    },
+    {
+      "id_exploit": 18,
+      "id": 53
+    },
+    {
+      "id_exploit": 19,
+      "id": 54
+    },
+    {
+      "id_exploit": 20,
+      "id": 55
+    },
+    {
+      "id_exploit": 21,
+      "id": 56
+    },
+    {
+      "id_exploit": 22,
+      "id": 57
+    },
+    {
+      "id_exploit": 23,
+      "id": 58
+    },
+    {
+      "id_exploit": 24,
+      "id": 59
+    },
+    {
+      "id_exploit": 25,
+      "id": 60
+    },
+    {
+      "id_exploit": 26,
+      "id": 61
+    },
+    {
+      "id_exploit": 27,
+      "id": 62
+    },
+    {
+      "id_exploit": 28,
+      "id": 63
+    },
+    {
+      "id_exploit": 29,
+      "id": 64
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 36
+    },
+    {
+      "source": 0,
+      "target": 38
+    },
+    {
+      "source": 0,
+      "target": 49
+    },
+    {
+      "source": 1,
+      "target": 36
+    },
+    {
+      "source": 1,
+      "target": 50
+    },
+    {
+      "source": 2,
+      "target": 40
+    },
+    {
+      "source": 3,
+      "target": 38
+    },
+    {
+      "source": 3,
+      "target": 42
+    },
+    {
+      "source": 4,
+      "target": 38
+    },
+    {
+      "source": 5,
+      "target": 39
+    },
+    {
+      "source": 6,
+      "target": 50
+    },
+    {
+      "source": 6,
+      "target": 52
+    },
+    {
+      "source": 6,
+      "target": 55
+    },
+    {
+      "source": 7,
+      "target": 51
+    },
+    {
+      "source": 9,
+      "target": 42
+    },
+    {
+      "source": 10,
+      "target": 44
+    },
+    {
+      "source": 10,
+      "target": 54
+    },
+    {
+      "source": 11,
+      "target": 49
+    },
+    {
+      "source": 12,
+      "target": 44
+    },
+    {
+      "source": 13,
+      "target": 44
+    },
+    {
+      "source": 15,
+      "target": 55
+    },
+    {
+      "source": 15,
+      "target": 62
+    },
+    {
+      "source": 21,
+      "target": 53
+    },
+    {
+      "source": 29,
+      "target": 62
+    },
+    {
+      "source": 35,
+      "target": 0
+    },
+    {
+      "source": 36,
+      "target": 2
+    },
+    {
+      "source": 37,
+      "target": 3
+    },
+    {
+      "source": 38,
+      "target": 5
+    },
+    {
+      "source": 39,
+      "target": 6
+    },
+    {
+      "source": 40,
+      "target": 7
+    },
+    {
+      "source": 41,
+      "target": 8
+    },
+    {
+      "source": 42,
+      "target": 10
+    },
+    {
+      "source": 43,
+      "target": 11
+    },
+    {
+      "source": 44,
+      "target": 8
+    },
+    {
+      "source": 45,
+      "target": 15
+    },
+    {
+      "source": 46,
+      "target": 8
+    },
+    {
+      "source": 47,
+      "target": 8
+    },
+    {
+      "source": 48,
+      "target": 8
+    },
+    {
+      "source": 49,
+      "target": 8
+    },
+    {
+      "source": 50,
+      "target": 8
+    },
+    {
+      "source": 51,
+      "target": 21
+    },
+    {
+      "source": 52,
+      "target": 8
+    },
+    {
+      "source": 53,
+      "target": 8
+    },
+    {
+      "source": 54,
+      "target": 8
+    },
+    {
+      "source": 55,
+      "target": 8
+    },
+    {
+      "source": 56,
+      "target": 8
+    },
+    {
+      "source": 57,
+      "target": 8
+    },
+    {
+      "source": 58,
+      "target": 8
+    },
+    {
+      "source": 59,
+      "target": 29
+    },
+    {
+      "source": 60,
+      "target": 8
+    },
+    {
+      "source": 61,
+      "target": 8
+    },
+    {
+      "source": 62,
+      "target": 8
+    },
+    {
+      "source": 63,
+      "target": 8
+    },
+    {
+      "source": 64,
+      "target": 8
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": false
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": false
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": true
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": false
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": false
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": true
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": false
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": true
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": false
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": false
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": false
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": false
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": false
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": false
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": false
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": false
+    },
+    "30": {
+      "text": "Randomly generated 30",
+      "initial": false
+    },
+    "31": {
+      "text": "Randomly generated 31",
+      "initial": false
+    },
+    "32": {
+      "text": "Randomly generated 32",
+      "initial": false
+    },
+    "33": {
+      "text": "Randomly generated 33",
+      "initial": false
+    },
+    "34": {
+      "text": "Randomly generated 34",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "Envoy version 1.14.2, 1.13.2, 1.12.4 or earlier may exhaust file descriptors and/or memory when accepting too many connections.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-8663",
+      "cvss": 7.5
+    },
+    "1": {
+      "text": "openSIS Community Edition version 7.3 is vulnerable to SQL injection via the USERNAME parameter of index.php.",
+      "granted_proposition": 2,
+      "required_propositions": [
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-6637",
+      "cvss": 9.8
+    },
+    "2": {
+      "text": "When a device using Juniper Network's Dynamic Host Configuration Protocol Daemon (JDHCPD) process on Junos OS or Junos OS Evolved which is configured in relay mode it vulnerable to an attacker sending crafted IPv6 packets who may then arbitrarily execute commands as root on the target device. This issue affects IPv6 JDHCPD services. This issue affects: Juniper Networks Junos OS: 15.1 versions prior to 15.1R7-S6; 15.1X49 versions prior to 15.1X49-D200; 15.1X53 versions prior to 15.1X53-D592; 16.1 versions prior to 16.1R7-S6; 16.2 versions prior to 16.2R2-S11; 17.1 versions prior to 17.1R2-S11, 17.1R3-S1; 17.2 versions prior to 17.2R2-S8, 17.2R3-S3; 17.3 versions prior to 17.3R3-S6; 17.4 versions prior to 17.4R2-S7, 17.4R3; 18.1 versions prior to 18.1R3-S8; 18.2 versions prior to 18.2R3-S2; 18.2X75 versions prior to 18.2X75-D60; 18.3 versions prior to 18.3R1-S6, 18.3R2-S2, 18.3R3; 18.4 versions prior to 18.4R1-S5, 18.4R2-S3, 18.4R3; 19.1 versions prior to 19.1R1-S3, 19.1R2; 19.2 versions prior to 19.2R1-S3, 19.2R2*. and All versions prior to 19.3R1 on Junos OS Evolved. This issue do not affect versions of Junos OS prior to 15.1, or JDHCPD operating as a local server in non-relay mode.",
+      "granted_proposition": 3,
+      "required_propositions": [],
+      "cve_id": "cve-2020-1609",
+      "cvss": 8.8
+    },
+    "3": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        4,
+        3,
+        0
+      ],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "4": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 6,
+      "required_propositions": [
+        5
+      ],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "5": {
+      "text": "Adobe Premiere Pro versions 14.2 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 7,
+      "required_propositions": [
+        2
+      ],
+      "cve_id": "cve-2020-9652",
+      "cvss": 7.8
+    },
+    "6": {
+      "text": "The IBM Process Federation Server 18.0.0.1, 18.0.0.2, 19.0.0.1, 19.0.0.2, and 19.0.0.3 Global Teams REST API does not properly shutdown the thread pools that it creates to retrieve Global Teams information from the federated systems. As a consequence, the Java Virtual Machine can't recover the memory used by those thread pools, which leads to an OutOfMemory exception when the Process Federation Server Global Teams REST API is used extensively. IBM X-Force ID: 177596.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4325",
+      "cvss": 6.5
+    },
+    "7": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 10,
+      "required_propositions": [
+        3,
+        9
+      ],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "8": {
+      "text": "A cross-site request forgery vulnerability in Jenkins Health Advisor by CloudBees Plugin 3.0 and earlier allows attackers to send an email with fixed content to an attacker-specified recipient.",
+      "granted_proposition": 11,
+      "required_propositions": [],
+      "cve_id": "cve-2020-2093",
+      "cvss": 8.8
+    },
+    "9": {
+      "text": "Jenkins VMware Lab Manager Slaves Plugin 0.2.8 and earlier stores a password unencrypted in the global config.xml file on the Jenkins controller where it can be viewed by users with access to the Jenkins controller file system.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        12,
+        10,
+        13
+      ],
+      "cve_id": "cve-2020-2319",
+      "cvss": 6.5
+    },
+    "10": {
+      "text": "Jenkins VMware Lab Manager Slaves Plugin 0.2.8 and earlier stores a password unencrypted in the global config.xml file on the Jenkins controller where it can be viewed by users with access to the Jenkins controller file system.",
+      "granted_proposition": 15,
+      "required_propositions": [],
+      "cve_id": "cve-2020-2319",
+      "cvss": 6.5
+    },
+    "11": {
+      "text": "The IBM Process Federation Server 18.0.0.1, 18.0.0.2, 19.0.0.1, 19.0.0.2, and 19.0.0.3 Global Teams REST API does not properly shutdown the thread pools that it creates to retrieve Global Teams information from the federated systems. As a consequence, the Java Virtual Machine can't recover the memory used by those thread pools, which leads to an OutOfMemory exception when the Process Federation Server Global Teams REST API is used extensively. IBM X-Force ID: 177596.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-4325",
+      "cvss": 6.5
+    },
+    "12": {
+      "text": "An elevation of privilege vulnerability exists in the way that the Windows Kernel handles objects in memory, aka 'Windows Kernel Elevation of Privilege Vulnerability'. This CVE ID is unique from CVE-2020-1411.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-1336",
+      "cvss": 7.8
+    },
+    "13": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "14": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        11,
+        0
+      ],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    },
+    "15": {
+      "text": "In Bluetooth, there is a possible out of bounds read due to a missing bounds check. This could lead to local information disclosure with System execution privileges and a compromised Firmware needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-11Android ID: A-146032016",
+      "granted_proposition": 8,
+      "required_propositions": [
+        1,
+        6
+      ],
+      "cve_id": "cve-2020-0291",
+      "cvss": 4.4
+    },
+    "16": {
+      "text": "This vulnerability allows local attackers to disclose information on affected installations of Parallels Desktop 15.1.2-47123. An attacker must first obtain the ability to execute low-privileged code on the target system in order to exploit this vulnerability. The specific flaw exists within the IOCTL handler. The issue results from the lack of proper validation of user-supplied data, which can result in a read past the end of an allocated buffer. An attacker can leverage this in conjunction with other vulnerabilities to execute arbitrary code in the context of the kernel. Was ZDI-CAN-10029.",
+      "granted_proposition": 21,
+      "required_propositions": [
+        7
+      ],
+      "cve_id": "cve-2020-8876",
+      "cvss": 5.5
+    },
+    "17": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 8,
+      "required_propositions": [
+        6
+      ],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "18": {
+      "text": "Insufficient control flow management in firmware for some Intel(R) Data Center SSDs may allow a privileged user to potentially enable information disclosure via local access.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        21
+      ],
+      "cve_id": "cve-2020-0527",
+      "cvss": 4.4
+    },
+    "19": {
+      "text": "Insufficient policy enforcement in navigations in Google Chrome prior to 83.0.4103.61 allowed a remote attacker to bypass navigation restrictions via a crafted HTML page.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        10
+      ],
+      "cve_id": "cve-2020-6486",
+      "cvss": 6.5
+    },
+    "20": {
+      "text": "A use after free issue was addressed with improved memory management. This issue is fixed in Safari 14.0. Processing maliciously crafted web content may lead to arbitrary code execution.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        15,
+        6
+      ],
+      "cve_id": "cve-2020-9951",
+      "cvss": 8.8
+    },
+    "21": {
+      "text": "An elevation of privilege vulnerability exists in the way that the Windows Kernel handles objects in memory, aka 'Windows Kernel Elevation of Privilege Vulnerability'. This CVE ID is unique from CVE-2020-1411.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-1336",
+      "cvss": 7.8
+    },
+    "22": {
+      "text": "In Bluetooth, there is a possible control over Bluetooth enabled state due to a missing permission check. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-11Android ID: A-145129266",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0298",
+      "cvss": 7.8
+    },
+    "23": {
+      "text": "In Bluetooth, there is a possible out of bounds read due to a missing bounds check. This could lead to local information disclosure with System execution privileges and a compromised Firmware needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-11Android ID: A-146032016",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0291",
+      "cvss": 4.4
+    },
+    "24": {
+      "text": "Adobe Experience Manager versions 6.5 and earlier have a server-side request forgery (ssrf) vulnerability. Successful exploitation could lead to sensitive information disclosure.",
+      "granted_proposition": 29,
+      "required_propositions": [],
+      "cve_id": "cve-2020-3769",
+      "cvss": 7.5
+    },
+    "25": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "26": {
+      "text": "ActiveX Control(HShell.dll) in Handy Groupware 1.7.3.1 for Windows 7, 8, and 10 allows an attacker to execute arbitrary command via the ShellExec method.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-7804",
+      "cvss": 7.2
+    },
+    "27": {
+      "text": "Improper neutralization of argument delimiters in a command in Nagios XI 5.7.3 allows a remote, authenticated admin user to write to arbitrary files and ultimately execute code with the privileges of the apache user.",
+      "granted_proposition": 8,
+      "required_propositions": [
+        15,
+        29
+      ],
+      "cve_id": "cve-2020-5792",
+      "cvss": 7.2
+    },
+    "28": {
+      "text": "In Bluetooth, there is a possible control over Bluetooth enabled state due to a missing permission check. This could lead to local escalation of privilege with no additional execution privileges needed. User interaction is not needed for exploitation.Product: AndroidVersions: Android-11Android ID: A-145129266",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-0298",
+      "cvss": 7.8
+    },
+    "29": {
+      "text": "A use after free issue was addressed with improved memory management. This issue is fixed in Safari 14.0. Processing maliciously crafted web content may lead to arbitrary code execution.",
+      "granted_proposition": 8,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9951",
+      "cvss": 8.8
+    }
+  },
+  "goal_proposition": 8,
+  "goal_nodes": [
+    8
+  ],
+  "type": "dependency"
+}

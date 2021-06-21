@@ -1,0 +1,1073 @@
+{
+  "directed": true,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id_proposition": 0,
+      "id": 0
+    },
+    {
+      "id_proposition": 1,
+      "id": 1
+    },
+    {
+      "id_proposition": 2,
+      "id": 2
+    },
+    {
+      "id_proposition": 3,
+      "id": 3
+    },
+    {
+      "id_proposition": 4,
+      "id": 4
+    },
+    {
+      "id_proposition": 5,
+      "id": 5
+    },
+    {
+      "id_proposition": 6,
+      "id": 6
+    },
+    {
+      "id_proposition": 7,
+      "id": 7
+    },
+    {
+      "id_proposition": 8,
+      "id": 8
+    },
+    {
+      "id_proposition": 9,
+      "id": 9
+    },
+    {
+      "id_proposition": 10,
+      "id": 10
+    },
+    {
+      "id_proposition": 11,
+      "id": 11
+    },
+    {
+      "id_proposition": 12,
+      "id": 12
+    },
+    {
+      "id_proposition": 13,
+      "id": 13
+    },
+    {
+      "id_proposition": 14,
+      "id": 14
+    },
+    {
+      "id_proposition": 15,
+      "id": 15
+    },
+    {
+      "id_proposition": 16,
+      "id": 16
+    },
+    {
+      "id_proposition": 17,
+      "id": 17
+    },
+    {
+      "id_proposition": 18,
+      "id": 18
+    },
+    {
+      "id_proposition": 19,
+      "id": 19
+    },
+    {
+      "id_proposition": 22,
+      "id": 22
+    },
+    {
+      "id_proposition": 23,
+      "id": 23
+    },
+    {
+      "id_proposition": 24,
+      "id": 24
+    },
+    {
+      "id_proposition": 25,
+      "id": 25
+    },
+    {
+      "id_proposition": 26,
+      "id": 26
+    },
+    {
+      "id_proposition": 28,
+      "id": 28
+    },
+    {
+      "id_proposition": 31,
+      "id": 31
+    },
+    {
+      "id_proposition": 32,
+      "id": 32
+    },
+    {
+      "id_proposition": 33,
+      "id": 33
+    },
+    {
+      "id_proposition": 37,
+      "id": 37
+    },
+    {
+      "id_exploit": 0,
+      "id": 41
+    },
+    {
+      "id_exploit": 1,
+      "id": 42
+    },
+    {
+      "id_exploit": 2,
+      "id": 43
+    },
+    {
+      "id_exploit": 3,
+      "id": 44
+    },
+    {
+      "id_exploit": 4,
+      "id": 45
+    },
+    {
+      "id_exploit": 5,
+      "id": 46
+    },
+    {
+      "id_exploit": 6,
+      "id": 47
+    },
+    {
+      "id_exploit": 7,
+      "id": 48
+    },
+    {
+      "id_exploit": 8,
+      "id": 49
+    },
+    {
+      "id_exploit": 9,
+      "id": 50
+    },
+    {
+      "id_exploit": 10,
+      "id": 51
+    },
+    {
+      "id_exploit": 11,
+      "id": 52
+    },
+    {
+      "id_exploit": 12,
+      "id": 53
+    },
+    {
+      "id_exploit": 13,
+      "id": 54
+    },
+    {
+      "id_exploit": 14,
+      "id": 55
+    },
+    {
+      "id_exploit": 15,
+      "id": 56
+    },
+    {
+      "id_exploit": 16,
+      "id": 57
+    },
+    {
+      "id_exploit": 17,
+      "id": 58
+    },
+    {
+      "id_exploit": 18,
+      "id": 59
+    },
+    {
+      "id_exploit": 19,
+      "id": 60
+    },
+    {
+      "id_exploit": 20,
+      "id": 61
+    },
+    {
+      "id_exploit": 21,
+      "id": 62
+    },
+    {
+      "id_exploit": 22,
+      "id": 63
+    },
+    {
+      "id_exploit": 23,
+      "id": 64
+    },
+    {
+      "id_exploit": 24,
+      "id": 65
+    },
+    {
+      "id_exploit": 25,
+      "id": 66
+    },
+    {
+      "id_exploit": 26,
+      "id": 67
+    },
+    {
+      "id_exploit": 27,
+      "id": 68
+    },
+    {
+      "id_exploit": 28,
+      "id": 69
+    },
+    {
+      "id_exploit": 29,
+      "id": 70
+    }
+  ],
+  "links": [
+    {
+      "source": 0,
+      "target": 42
+    },
+    {
+      "source": 0,
+      "target": 43
+    },
+    {
+      "source": 1,
+      "target": 42
+    },
+    {
+      "source": 1,
+      "target": 43
+    },
+    {
+      "source": 1,
+      "target": 44
+    },
+    {
+      "source": 2,
+      "target": 48
+    },
+    {
+      "source": 2,
+      "target": 64
+    },
+    {
+      "source": 3,
+      "target": 43
+    },
+    {
+      "source": 3,
+      "target": 44
+    },
+    {
+      "source": 3,
+      "target": 60
+    },
+    {
+      "source": 4,
+      "target": 46
+    },
+    {
+      "source": 4,
+      "target": 51
+    },
+    {
+      "source": 4,
+      "target": 56
+    },
+    {
+      "source": 5,
+      "target": 45
+    },
+    {
+      "source": 5,
+      "target": 46
+    },
+    {
+      "source": 5,
+      "target": 54
+    },
+    {
+      "source": 6,
+      "target": 45
+    },
+    {
+      "source": 6,
+      "target": 52
+    },
+    {
+      "source": 7,
+      "target": 53
+    },
+    {
+      "source": 7,
+      "target": 57
+    },
+    {
+      "source": 8,
+      "target": 46
+    },
+    {
+      "source": 9,
+      "target": 47
+    },
+    {
+      "source": 9,
+      "target": 60
+    },
+    {
+      "source": 10,
+      "target": 47
+    },
+    {
+      "source": 10,
+      "target": 50
+    },
+    {
+      "source": 11,
+      "target": 68
+    },
+    {
+      "source": 12,
+      "target": 48
+    },
+    {
+      "source": 12,
+      "target": 59
+    },
+    {
+      "source": 13,
+      "target": 55
+    },
+    {
+      "source": 13,
+      "target": 58
+    },
+    {
+      "source": 14,
+      "target": 49
+    },
+    {
+      "source": 14,
+      "target": 56
+    },
+    {
+      "source": 15,
+      "target": 49
+    },
+    {
+      "source": 17,
+      "target": 50
+    },
+    {
+      "source": 17,
+      "target": 54
+    },
+    {
+      "source": 18,
+      "target": 52
+    },
+    {
+      "source": 18,
+      "target": 55
+    },
+    {
+      "source": 18,
+      "target": 62
+    },
+    {
+      "source": 19,
+      "target": 51
+    },
+    {
+      "source": 19,
+      "target": 62
+    },
+    {
+      "source": 19,
+      "target": 64
+    },
+    {
+      "source": 22,
+      "target": 56
+    },
+    {
+      "source": 22,
+      "target": 63
+    },
+    {
+      "source": 23,
+      "target": 57
+    },
+    {
+      "source": 23,
+      "target": 58
+    },
+    {
+      "source": 24,
+      "target": 55
+    },
+    {
+      "source": 24,
+      "target": 57
+    },
+    {
+      "source": 25,
+      "target": 66
+    },
+    {
+      "source": 25,
+      "target": 70
+    },
+    {
+      "source": 26,
+      "target": 59
+    },
+    {
+      "source": 26,
+      "target": 60
+    },
+    {
+      "source": 28,
+      "target": 63
+    },
+    {
+      "source": 28,
+      "target": 69
+    },
+    {
+      "source": 31,
+      "target": 66
+    },
+    {
+      "source": 32,
+      "target": 66
+    },
+    {
+      "source": 32,
+      "target": 70
+    },
+    {
+      "source": 33,
+      "target": 69
+    },
+    {
+      "source": 33,
+      "target": 70
+    },
+    {
+      "source": 37,
+      "target": 69
+    },
+    {
+      "source": 41,
+      "target": 0
+    },
+    {
+      "source": 42,
+      "target": 2
+    },
+    {
+      "source": 43,
+      "target": 4
+    },
+    {
+      "source": 44,
+      "target": 5
+    },
+    {
+      "source": 45,
+      "target": 7
+    },
+    {
+      "source": 46,
+      "target": 9
+    },
+    {
+      "source": 47,
+      "target": 11
+    },
+    {
+      "source": 48,
+      "target": 13
+    },
+    {
+      "source": 49,
+      "target": 16
+    },
+    {
+      "source": 50,
+      "target": 18
+    },
+    {
+      "source": 51,
+      "target": 16
+    },
+    {
+      "source": 52,
+      "target": 16
+    },
+    {
+      "source": 53,
+      "target": 22
+    },
+    {
+      "source": 54,
+      "target": 23
+    },
+    {
+      "source": 55,
+      "target": 25
+    },
+    {
+      "source": 56,
+      "target": 26
+    },
+    {
+      "source": 57,
+      "target": 16
+    },
+    {
+      "source": 58,
+      "target": 28
+    },
+    {
+      "source": 59,
+      "target": 16
+    },
+    {
+      "source": 60,
+      "target": 16
+    },
+    {
+      "source": 61,
+      "target": 31
+    },
+    {
+      "source": 62,
+      "target": 32
+    },
+    {
+      "source": 63,
+      "target": 33
+    },
+    {
+      "source": 64,
+      "target": 16
+    },
+    {
+      "source": 65,
+      "target": 16
+    },
+    {
+      "source": 66,
+      "target": 16
+    },
+    {
+      "source": 67,
+      "target": 37
+    },
+    {
+      "source": 68,
+      "target": 16
+    },
+    {
+      "source": 69,
+      "target": 16
+    },
+    {
+      "source": 70,
+      "target": 16
+    }
+  ],
+  "propositions": {
+    "0": {
+      "text": "Randomly generated 0",
+      "initial": false
+    },
+    "1": {
+      "text": "Randomly generated 1",
+      "initial": true
+    },
+    "2": {
+      "text": "Randomly generated 2",
+      "initial": false
+    },
+    "3": {
+      "text": "Randomly generated 3",
+      "initial": true
+    },
+    "4": {
+      "text": "Randomly generated 4",
+      "initial": false
+    },
+    "5": {
+      "text": "Randomly generated 5",
+      "initial": false
+    },
+    "6": {
+      "text": "Randomly generated 6",
+      "initial": true
+    },
+    "7": {
+      "text": "Randomly generated 7",
+      "initial": false
+    },
+    "8": {
+      "text": "Randomly generated 8",
+      "initial": true
+    },
+    "9": {
+      "text": "Randomly generated 9",
+      "initial": false
+    },
+    "10": {
+      "text": "Randomly generated 10",
+      "initial": true
+    },
+    "11": {
+      "text": "Randomly generated 11",
+      "initial": false
+    },
+    "12": {
+      "text": "Randomly generated 12",
+      "initial": true
+    },
+    "13": {
+      "text": "Randomly generated 13",
+      "initial": false
+    },
+    "14": {
+      "text": "Randomly generated 14",
+      "initial": true
+    },
+    "15": {
+      "text": "Randomly generated 15",
+      "initial": true
+    },
+    "16": {
+      "text": "Randomly generated 16",
+      "initial": false
+    },
+    "17": {
+      "text": "Randomly generated 17",
+      "initial": true
+    },
+    "18": {
+      "text": "Randomly generated 18",
+      "initial": false
+    },
+    "19": {
+      "text": "Randomly generated 19",
+      "initial": true
+    },
+    "20": {
+      "text": "Randomly generated 20",
+      "initial": false
+    },
+    "21": {
+      "text": "Randomly generated 21",
+      "initial": false
+    },
+    "22": {
+      "text": "Randomly generated 22",
+      "initial": false
+    },
+    "23": {
+      "text": "Randomly generated 23",
+      "initial": false
+    },
+    "24": {
+      "text": "Randomly generated 24",
+      "initial": true
+    },
+    "25": {
+      "text": "Randomly generated 25",
+      "initial": false
+    },
+    "26": {
+      "text": "Randomly generated 26",
+      "initial": false
+    },
+    "27": {
+      "text": "Randomly generated 27",
+      "initial": false
+    },
+    "28": {
+      "text": "Randomly generated 28",
+      "initial": false
+    },
+    "29": {
+      "text": "Randomly generated 29",
+      "initial": false
+    },
+    "30": {
+      "text": "Randomly generated 30",
+      "initial": false
+    },
+    "31": {
+      "text": "Randomly generated 31",
+      "initial": false
+    },
+    "32": {
+      "text": "Randomly generated 32",
+      "initial": false
+    },
+    "33": {
+      "text": "Randomly generated 33",
+      "initial": false
+    },
+    "34": {
+      "text": "Randomly generated 34",
+      "initial": false
+    },
+    "35": {
+      "text": "Randomly generated 35",
+      "initial": false
+    },
+    "36": {
+      "text": "Randomly generated 36",
+      "initial": false
+    },
+    "37": {
+      "text": "Randomly generated 37",
+      "initial": false
+    },
+    "38": {
+      "text": "Randomly generated 38",
+      "initial": false
+    },
+    "39": {
+      "text": "Randomly generated 39",
+      "initial": false
+    },
+    "40": {
+      "text": "Randomly generated 40",
+      "initial": false
+    }
+  },
+  "exploits": {
+    "0": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 0,
+      "required_propositions": [],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "1": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 2,
+      "required_propositions": [
+        0,
+        1
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "2": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 4,
+      "required_propositions": [
+        1,
+        3,
+        0
+      ],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "3": {
+      "text": "Octech Oempro 4.7 through 4.11 allow XSS by an authenticated user. The parameter CampaignName in Campaign.Create is vulnerable.",
+      "granted_proposition": 5,
+      "required_propositions": [
+        1,
+        3
+      ],
+      "cve_id": "cve-2020-9460",
+      "cvss": 5.4
+    },
+    "4": {
+      "text": "Inappropriate implementation in JavaScript in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to potentially exploit heap corruption via a crafted HTML page.",
+      "granted_proposition": 7,
+      "required_propositions": [
+        6,
+        5
+      ],
+      "cve_id": "cve-2020-6415",
+      "cvss": 8.8
+    },
+    "5": {
+      "text": "On Juniper Networks SRX Series and NFX Series, a local authenticated user with access to the shell may obtain the Web API service private key that is used to provide encrypted communication between the Juniper device and the authenticator services. Exploitation of this vulnerability may allow an attacker to decrypt the communications between the Juniper device and the authenticator service. This Web API service is used for authentication services such as the Juniper Identity Management Service, used to obtain user identity for Integrated User Firewall feature, or the integrated ClearPass authentication and enforcement feature. This issue affects Juniper Networks Junos OS on Networks SRX Series and NFX Series: 12.3X48 versions prior to 12.3X48-D105; 15.1X49 versions prior to 15.1X49-D190; 16.1 versions prior to 16.1R7-S8; 17.2 versions prior to 17.2R3-S4; 17.3 versions prior to 17.3R3-S8; 17.4 versions prior to 17.4R2-S11, 17.4R3; 18.1 versions prior to 18.1R3-S7; 18.2 versions prior to 18.2R3; 18.3 versions prior to 18.3R2-S4, 18.3R3; 18.4 versions prior to 18.4R1-S7, 18.4R2; 19.1 versions prior to 19.1R2; 19.2 versions prior to 19.2R1-S4, 19.2R2.",
+      "granted_proposition": 9,
+      "required_propositions": [
+        4,
+        5,
+        8
+      ],
+      "cve_id": "cve-2020-1688",
+      "cvss": 6.5
+    },
+    "6": {
+      "text": "An information disclosure vulnerability exists when Internet Explorer improperly handles objects in memory, aka 'Internet Explorer Information Disclosure Vulnerability'.",
+      "granted_proposition": 11,
+      "required_propositions": [
+        9,
+        10
+      ],
+      "cve_id": "cve-2020-1315",
+      "cvss": 5.3
+    },
+    "7": {
+      "text": "stb stb_truetype.h through 1.22 has an assertion failure in stbtt__cff_int.",
+      "granted_proposition": 13,
+      "required_propositions": [
+        12,
+        2
+      ],
+      "cve_id": "cve-2020-6617",
+      "cvss": 8.8
+    },
+    "8": {
+      "text": "In ihevcd_decode() of ihevcd_decode.c, there is possible resource exhaustion due to an infinite loop. This could lead to remote denial of service with no additional execution privileges needed. User interaction is needed for exploitation.Product: AndroidVersions: Android-10Android ID: A-139939283",
+      "granted_proposition": 16,
+      "required_propositions": [
+        14,
+        15
+      ],
+      "cve_id": "cve-2020-0189",
+      "cvss": 6.5
+    },
+    "9": {
+      "text": "Adobe Acrobat and Reader versions 2020.009.20074 and earlier, 2020.001.30002, 2017.011.30171 and earlier, and 2015.006.30523 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to information disclosure.",
+      "granted_proposition": 18,
+      "required_propositions": [
+        17,
+        10
+      ],
+      "cve_id": "cve-2020-9706",
+      "cvss": 3.3
+    },
+    "10": {
+      "text": "A reportpage index expression language injection remote code execution vulnerability was discovered in HPE Intelligent Management Center (iMC) version(s): Prior to iMC PLAT 7.3 (E0705P07).",
+      "granted_proposition": 16,
+      "required_propositions": [
+        19,
+        4
+      ],
+      "cve_id": "cve-2020-7187",
+      "cvss": 8.8
+    },
+    "11": {
+      "text": "IBM Spectrum Protect Plus 10.1.0 through 10.1.5 contains hard-coded credentials, such as a password or cryptographic key, which it uses for its own inbound authentication, outbound communication to external components, or encryption of internal data. IBM X-Force ID: 174975.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        6,
+        18
+      ],
+      "cve_id": "cve-2020-4208",
+      "cvss": 9.8
+    },
+    "12": {
+      "text": "Octech Oempro 4.7 through 4.11 allow XSS by an authenticated user. The parameter CampaignName in Campaign.Create is vulnerable.",
+      "granted_proposition": 22,
+      "required_propositions": [
+        7
+      ],
+      "cve_id": "cve-2020-9460",
+      "cvss": 5.4
+    },
+    "13": {
+      "text": "On Juniper Networks SRX Series and NFX Series, a local authenticated user with access to the shell may obtain the Web API service private key that is used to provide encrypted communication between the Juniper device and the authenticator services. Exploitation of this vulnerability may allow an attacker to decrypt the communications between the Juniper device and the authenticator service. This Web API service is used for authentication services such as the Juniper Identity Management Service, used to obtain user identity for Integrated User Firewall feature, or the integrated ClearPass authentication and enforcement feature. This issue affects Juniper Networks Junos OS on Networks SRX Series and NFX Series: 12.3X48 versions prior to 12.3X48-D105; 15.1X49 versions prior to 15.1X49-D190; 16.1 versions prior to 16.1R7-S8; 17.2 versions prior to 17.2R3-S4; 17.3 versions prior to 17.3R3-S8; 17.4 versions prior to 17.4R2-S11, 17.4R3; 18.1 versions prior to 18.1R3-S7; 18.2 versions prior to 18.2R3; 18.3 versions prior to 18.3R2-S4, 18.3R3; 18.4 versions prior to 18.4R1-S7, 18.4R2; 19.1 versions prior to 19.1R2; 19.2 versions prior to 19.2R1-S4, 19.2R2.",
+      "granted_proposition": 23,
+      "required_propositions": [
+        5,
+        17
+      ],
+      "cve_id": "cve-2020-1688",
+      "cvss": 6.5
+    },
+    "14": {
+      "text": "Adobe Premiere Pro versions 14.2 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 25,
+      "required_propositions": [
+        18,
+        24,
+        13
+      ],
+      "cve_id": "cve-2020-9652",
+      "cvss": 7.8
+    },
+    "15": {
+      "text": "Adobe Premiere Pro versions 14.2 and earlier have an out-of-bounds read vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 26,
+      "required_propositions": [
+        14,
+        4,
+        22
+      ],
+      "cve_id": "cve-2020-9652",
+      "cvss": 7.8
+    },
+    "16": {
+      "text": "Adobe Illustrator versions 24.0.2 and earlier have a memory corruption vulnerability. Successful exploitation could lead to arbitrary code execution .",
+      "granted_proposition": 16,
+      "required_propositions": [
+        7,
+        24,
+        23
+      ],
+      "cve_id": "cve-2020-9574",
+      "cvss": 7.8
+    },
+    "17": {
+      "text": "Octech Oempro 4.7 through 4.11 allow XSS by an authenticated user. The parameter CampaignName in Campaign.Create is vulnerable.",
+      "granted_proposition": 28,
+      "required_propositions": [
+        23,
+        13
+      ],
+      "cve_id": "cve-2020-9460",
+      "cvss": 5.4
+    },
+    "18": {
+      "text": "SAP NetWeaver (Knowledge Management), versions (KMC-CM - 7.00, 7.01, 7.02, 7.30, 7.31, 7.40, 7.50 and KMC-WPC 7.30, 7.31, 7.40, 7.50), does not sufficiently validate path information provided by users, thus characters representing traverse to parent directory are passed through to the file APIs, allowing the attacker to overwrite, delete, or corrupt arbitrary files on the remote server, leading to Path Traversal.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        26,
+        12
+      ],
+      "cve_id": "cve-2020-6225",
+      "cvss": 8.8
+    },
+    "19": {
+      "text": "Insufficient policy enforcement in navigation in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to confuse the user via a crafted domain name.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        9,
+        3,
+        26
+      ],
+      "cve_id": "cve-2020-6410",
+      "cvss": 8.8
+    },
+    "20": {
+      "text": "apiconnect-cli-plugins through 6.0.1 is vulnerable to Command Injection.It allows execution of arbitrary commands via the pluginUri argument.",
+      "granted_proposition": 31,
+      "required_propositions": [],
+      "cve_id": "cve-2020-7633",
+      "cvss": 9.8
+    },
+    "21": {
+      "text": "A cross-site request forgery vulnerability in Jenkins Health Advisor by CloudBees Plugin 3.0 and earlier allows attackers to send an email with fixed content to an attacker-specified recipient.",
+      "granted_proposition": 32,
+      "required_propositions": [
+        19,
+        18
+      ],
+      "cve_id": "cve-2020-2093",
+      "cvss": 8.8
+    },
+    "22": {
+      "text": "SAP NetWeaver (Knowledge Management), versions (KMC-CM - 7.00, 7.01, 7.02, 7.30, 7.31, 7.40, 7.50 and KMC-WPC 7.30, 7.31, 7.40, 7.50), does not sufficiently validate path information provided by users, thus characters representing traverse to parent directory are passed through to the file APIs, allowing the attacker to overwrite, delete, or corrupt arbitrary files on the remote server, leading to Path Traversal.",
+      "granted_proposition": 33,
+      "required_propositions": [
+        22,
+        28
+      ],
+      "cve_id": "cve-2020-6225",
+      "cvss": 8.8
+    },
+    "23": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        2,
+        19
+      ],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "24": {
+      "text": "A use after free issue was addressed with improved memory management. This issue is fixed in Safari 14.0. Processing maliciously crafted web content may lead to arbitrary code execution.",
+      "granted_proposition": 16,
+      "required_propositions": [],
+      "cve_id": "cve-2020-9951",
+      "cvss": 8.8
+    },
+    "25": {
+      "text": "A vulnerability in Cisco Webex Meetings and Cisco Webex Meetings Server could allow an unauthenticated, remote attacker to maintain bidirectional audio despite being expelled from an active Webex session. The vulnerability is due to a synchronization issue between meeting and media services on a vulnerable Webex site. An attacker could exploit this vulnerability by sending crafted requests to a vulnerable Cisco Webex Meetings or Cisco Webex Meetings Server site. A successful exploit could allow the attacker to maintain the audio connection of a Webex session despite being expelled.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        32,
+        31,
+        25
+      ],
+      "cve_id": "cve-2020-3471",
+      "cvss": 6.5
+    },
+    "26": {
+      "text": "Insufficient policy enforcement in navigation in Google Chrome prior to 80.0.3987.87 allowed a remote attacker to confuse the user via a crafted domain name.",
+      "granted_proposition": 37,
+      "required_propositions": [],
+      "cve_id": "cve-2020-6410",
+      "cvss": 8.8
+    },
+    "27": {
+      "text": "SAP NetWeaver (Knowledge Management), versions (KMC-CM - 7.00, 7.01, 7.02, 7.30, 7.31, 7.40, 7.50 and KMC-WPC 7.30, 7.31, 7.40, 7.50), does not sufficiently validate path information provided by users, thus characters representing traverse to parent directory are passed through to the file APIs, allowing the attacker to overwrite, delete, or corrupt arbitrary files on the remote server, leading to Path Traversal.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        11
+      ],
+      "cve_id": "cve-2020-6225",
+      "cvss": 8.8
+    },
+    "28": {
+      "text": "XACK DNS 1.11.0 to 1.11.4, 1.10.0 to 1.10.8, 1.8.0 to 1.8.23, 1.7.0 to 1.7.18, and versions before 1.7.0 allow remote attackers to cause a denial of service condition resulting in degradation of the recursive resolver's performance or compromising the recursive resolver as a reflector in a reflection attack.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        37,
+        28,
+        33
+      ],
+      "cve_id": "cve-2020-5591",
+      "cvss": 7.5
+    },
+    "29": {
+      "text": "An insufficient session expiration vulnerability in FortiDeceptor 3.0.0 and below allows an attacker to reuse the unexpired admin user session IDs to gain admin privileges, should the attacker be able to obtain that session ID via other, hypothetical attacks.",
+      "granted_proposition": 16,
+      "required_propositions": [
+        25,
+        32,
+        33
+      ],
+      "cve_id": "cve-2020-6644",
+      "cvss": 8.1
+    }
+  },
+  "goal_proposition": 16,
+  "goal_nodes": [
+    16
+  ],
+  "type": "dependency"
+}
