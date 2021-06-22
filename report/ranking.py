@@ -350,7 +350,7 @@ class HomerBranchNodes:
         fig, ax = subplots()
         ax.scatter(n_branch_nodes, results)
         ax.set_xlabel("Number of branch nodes")
-        ax.set_ylabel("Logarithm of the execution time (log(s))")
+        ax.set_ylabel("Execution time (s)")
         ax.set_yscale("log")
 
         path = Path(PATH_FIGURES, "homer.png")
