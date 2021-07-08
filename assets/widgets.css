@@ -1,0 +1,43 @@
+#upload-attack-graph {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.2rem 0;
+  text-align: center;
+  border: 1px dashed black;
+  cursor: pointer;
+}
+
+#radio-items-graph-type {
+  margin-top: 0.3rem;
+}
+
+#sub-widget-number-exploits {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+}
+
+#button-generate {
+  margin-top: 0.3rem;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+#checklist-exploits {
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  margin-top: 0.3rem;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.table-cell {
+  padding: 0.2rem;
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}

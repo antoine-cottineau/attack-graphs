@@ -4,45 +4,45 @@ body {
 
 #root {
   display: grid;
-  grid-template-columns: 1fr 30rem;
-  grid-template-rows: 5rem 1fr;
+  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-rows: 1fr 1fr;
   height: 100vh;
-  background-color: var(--color-dark);
-}
-
-#dashboard-title {
-  grid-column: 1;
-  padding-left: 1rem;
-  color: var(--color-light);
-}
-
-#main-menu {
-  grid-column: 2;
-  grid-row: 1 / 3;
-  overflow-y: scroll;
-  color: var(--color-dark);
-  background-color: var(--color-medium);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  padding: 0 1.5rem 3rem;
+  margin: 0.5rem;
 }
 
-.subsection {
+.widget {
   display: flex;
   flex-direction: column;
+  margin-top: 1rem;
 }
 
-.section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.6rem 0 0;
-  padding: 0 1.5rem 0;
+#section-attack-graph {
+  grid-column: 1;
+  grid-row: 1;
 }
 
-#graph {
-  height: 100%;
+#section-exploit-ranking {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#section-exploit-selection {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+#section-clustering {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+#zone-attack-graph {
+  grid-column: 3;
+  grid-row: 1 / 3;
+  background-color: magenta;
 }

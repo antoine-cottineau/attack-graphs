@@ -1,65 +1,143 @@
 import dash_core_components as dcc
 import dash_html_components as html
 
-import ui.layouts.section_attack_graphs as section_attack_graphs
-import ui.layouts.section_ranking as section_ranking
-import ui.layouts.section_clustering as section_clustering
-import ui.layouts.section_exploits as section_exploits
-
-section_ids = [
-    "section-attack-graphs", "section-ranking", "section-clustering",
-    "section-exploits"
-]
-icon_ids = [
-    "icon-attack-graph", "icon-ranking", "icon-clustering", "icon-exploits"
-]
-header_ids = [
-    dict(section=section_ids[i], icon=icon_ids[i])
-    for i in range(len(section_ids))
-]
-
 
 def generate_layout() -> html.Div:
     return html.Div(id="root",
                     children=[
+                        generate_section_attack_graph(),
+                        generate_section_exploit_ranking(),
+                        generate_section_exploit_selection(),
+                        generate_section_clustering(),
+                        html.Div(id="zone-attack-graph"),
                         dcc.Store(id="attack-graph"),
-                        dcc.Store(id="parameters"),
-                        html.Div(id="dashboard-title",
-                                 children=html.H1("Dashboard")),
-                        html.Div(id="graph-zone"),
-                        generate_main_menu(),
-                        html.Div(id="useless-div", style=dict(display="none"))
+                        dcc.Store(id="parameters")
                     ])
 
 
-def generate_main_menu() -> html.Div:
-    children = []
+def generate_section_attack_graph() -> html.Div:
+    return html.Div(
+        id="section-attack-graph",
+        className="section",
+        children=[
+            html.H2(className="section-header", children="Attack graph"),
+            html.Div(className="widget",
+                     children=[
+                         html.H3(className="widget-header",
+                                 children="Load an attack graph"),
+                         dcc.Upload(id="upload-attack-graph",
+                                    children=html.Div("Click or drop a file"))
+                     ]),
+            html.Div(className="widget",
+                     children=[
+                         html.H3(className="widget-header",
+                                 children="Generate an attack graph"),
+                         dcc.RadioItems(
+                             id="radio-items-graph-type",
+                             options=[
+                                 dict(label="State attack graph",
+                                      value="state"),
+                                 dict(label="Dependency attack graph",
+                                      value="dependency")
+                             ],
+                             value="state"),
+                         html.Div(id="sub-widget-number-exploits",
+                                  children=[
+                                      html.Div(className="normal-text",
+                                               children="Number of exploits"),
+                                      dcc.Input(id="input-number-exploits",
+                                                type="number",
+                                                value=30)
+                                  ]),
+                         html.Button(id="button-generate", children="Generate")
+                     ])
+        ])
 
-    header_titles = ["Attack graphs", "Ranking", "Clustering", "Exploits"]
-    header_visibilities = ["visibility"
-                           ] + (len(header_titles) - 1) * ["visibility_off"]
 
-    headers = [
-        html.Div(children=[
-            html.H2(children=header_titles[i],
-                    className="section-header-label"),
-            html.Button(id=icon_ids[i],
-                        children=header_visibilities[i],
-                        className="material-icons icon-visibility")
-        ],
-                 className="section-header") for i in range(len(section_ids))
-    ]
+def generate_section_exploit_ranking() -> html.Div:
+    return html.Div(
+        id="section-exploit-ranking",
+        className="section",
+        children=[
+            html.H2(className="section-header", children="Exploit ranking"),
+            html.Div(className="widget",
+                     children=[
+                         html.H3(className="widget-header",
+                                 children="Ranking method"),
+                         dcc.Dropdown(id="dropdown-exploit-ranking-method",
+                                      options=[
+                                          dict(label="None", value="none"),
+                                          dict(label="PageRank",
+                                               value="pagerank"),
+                                          dict(label="Kuehlmann",
+                                               value="kuehlmann"),
+                                          dict(label="Value Iteration",
+                                               value="value_iteration"),
+                                          dict(label="Homer", value="homer"),
+                                          dict(label="Probabilistic path",
+                                               value="pp")
+                                      ],
+                                      value="none",
+                                      searchable=False,
+                                      clearable=False)
+                     ]),
+            html.Div(id="table-exploit-ranking",
+                     className="table",
+                     children=[
+                         html.Div(className="table-cell",
+                                  children=table_header)
+                         for table_header in ["#", "Id", "Score"]
+                     ])
+        ])
 
-    children.append(headers[0])
-    children.append(section_attack_graphs.generate_section())
 
-    children.append(headers[1])
-    children.append(section_ranking.generate_section())
+def generate_section_exploit_selection() -> html.Div:
+    return html.Div(id="section-exploit-selection",
+                    className="section",
+                    children=[
+                        html.H2(className="section-header",
+                                children="Exploit selection"),
+                        dcc.Checklist(id="checklist-exploits",
+                                      options=[
+                                          dict(label="foo", value="foo"),
+                                          dict(label="bar", value="bar")
+                                      ],
+                                      value=["foo"])
+                    ])
 
-    children.append(headers[2])
-    children.append(section_clustering.generate_section())
 
-    children.append(headers[3])
-    children.append(section_exploits.generate_section())
-
-    return html.Div(id="main-menu", children=children)
+def generate_section_clustering() -> html.Div:
+    return html.Div(
+        id="section-clustering",
+        className="section",
+        children=[
+            html.H2(className="section-header", children="Clustering"),
+            html.Div(className="widget",
+                     children=[
+                         html.H3(className="widget-header",
+                                 children="Clustering method"),
+                         dcc.Dropdown(id="dropdown-clustering-method",
+                                      options=[
+                                          dict(label="None", value="none"),
+                                          dict(label="Spectral 1",
+                                               value="spectral1"),
+                                          dict(label="Spectral 2",
+                                               value="spectral2"),
+                                          dict(label="DeepWalk",
+                                               value="deepwalk"),
+                                          dict(label="GraphSAGE",
+                                               value="graphsage"),
+                                          dict(label="HOPE", value="hope")
+                                      ],
+                                      value="none",
+                                      searchable=False,
+                                      clearable=False)
+                     ]),
+            html.Div(
+                id="table-clustering",
+                className="table",
+                children=[
+                    html.Div(className="table-cell", children=table_header)
+                    for table_header in ["Id", "Color", "Number of nodes"]
+                ])
+        ])
