@@ -14,15 +14,23 @@ class ClusteringMethod:
         self.node_assignment: Dict[int, int] = dict()
         for node in self.graph.nodes:
             self.node_assignment[node] = 0
+        self.clusters: Dict[int, List[int]] = {"0": [list(self.graph.nodes)]}
 
     def cluster(self):
         pass
 
     def update_clusters(self, node_assignment: List[int]):
+        self.node_assignment = {}
+        self.clusters = {}
         for i, node in enumerate(self.graph.nodes):
-            self.node_assignment[node] = node_assignment[i]
+            id_cluster = node_assignment[i]
+            self.node_assignment[node] = id_cluster
+            if id_cluster in self.clusters:
+                self.clusters[id_cluster].append(node)
+            else:
+                self.clusters[id_cluster] = [node]
 
-    def get_clusters(self) -> np.array:
+    def get_ids_clusters(self) -> np.array:
         node_assignment = list(self.node_assignment.values())
         return np.unique(node_assignment)
 
@@ -33,7 +41,7 @@ class ClusteringMethod:
     def evaluate_mean_silhouette_index(self) -> float:
         n = self.graph.number_of_nodes()
         node_ordering = self.graph.get_node_ordering()
-        clusters = self.get_clusters()
+        ids_clusters = self.get_ids_clusters()
 
         distance_matrix = np.zeros((n, n))
 
@@ -51,14 +59,14 @@ class ClusteringMethod:
         clusters_content = [[
             node_ordering[node] for node in self.graph.nodes
             if self.node_assignment[node] == cluster
-        ] for cluster in clusters]
+        ] for cluster in ids_clusters]
         for node in self.graph.nodes:
             i = node_ordering[node]
             node_cluster = self.node_assignment[node]
 
             mean_cluster_distances = [
                 distance_matrix[i][clusters_content[cluster]].mean()
-                for cluster in clusters
+                for cluster in ids_clusters
             ]
 
             a = mean_cluster_distances[node_cluster]
@@ -76,12 +84,12 @@ class ClusteringMethod:
 
     def evaluate_mean_conductance(self) -> float:
         adjacency_matrix = self.graph.compute_adjacency_matrix(directed=False)
-        clusters = self.get_clusters()
+        ids_clusters = self.get_ids_clusters()
         node_ordering = self.graph.get_node_ordering()
 
         # Compute the conductance for each cluster
-        cluster_conductances = np.zeros(len(clusters))
-        for cluster in clusters:
+        cluster_conductances = np.zeros(len(ids_clusters))
+        for cluster in ids_clusters:
             nodes = [
                 node for node in self.graph.nodes
                 if self.node_assignment[node] == cluster
@@ -106,12 +114,12 @@ class ClusteringMethod:
 
     def evaluate_mean_coverage(self) -> float:
         adjacency_matrix = self.graph.compute_adjacency_matrix(directed=False)
-        clusters = self.get_clusters()
+        ids_clusters = self.get_ids_clusters()
         node_ordering = self.graph.get_node_ordering()
 
         # Compute the coverage for each cluster
-        cluster_coverages = np.zeros(len(clusters))
-        for cluster in clusters:
+        cluster_coverages = np.zeros(len(ids_clusters))
+        for cluster in ids_clusters:
             nodes = [
                 node for node in self.graph.nodes
                 if self.node_assignment[node] == cluster
@@ -132,11 +140,11 @@ class ClusteringMethod:
         modularity = 0
 
         adjacency_matrix = graph.compute_adjacency_matrix(directed=False)
-        clusters = np.unique(node_assignment)
+        ids_clusters = np.unique(node_assignment)
 
         sum_all_weights = adjacency_matrix.sum()
 
-        for cluster in clusters:
+        for cluster in ids_clusters:
             adj_matrix_cluster = adjacency_matrix[
                 node_assignment == cluster][:, node_assignment == cluster]
             adj_matrix_out_cluster = adjacency_matrix[

@@ -1,10 +1,15 @@
+from embedding.embedding import EmbeddingMethod
 import dash
 import dash_html_components as html
 import json
 import utils
 from attack_graph import BaseGraph, DependencyAttackGraph, StateAttackGraph
 from base64 import b64decode
+from clustering.white_smyth import Spectral1, Spectral2
 from dash.dependencies import Input, Output, State
+from embedding.deepwalk import DeepWalk
+from embedding.graphsage import GraphSage
+from embedding.hope import Hope
 from generation import Generator
 from ranking.abraham import ProbabilisticPath
 from ranking.homer import RiskQuantifier
@@ -102,6 +107,47 @@ def update_exploits(graph_data: str) -> Tuple[List[Dict[str, str]], List[str]]:
     return exploits, selected_exploits
 
 
+@app.callback(Output("table-clustering", "children"),
+              Output("parameters", "data"), Input("attack-graph", "data"),
+              Input("dropdown-clustering-method", "value"),
+              Input("checklist-exploits", "value"))
+def update_clusters_and_parameters(
+        graph_data: str, clustering_method: str,
+        selected_exploits: List[str]) -> Tuple[List[html.Div], dict]:
+    # Get the current attack graph
+    attack_graph = get_attack_graph_from_string(graph_data)
+    if attack_graph is None:
+        return None
+
+    # Remove the exploits that are not selected
+    pruned_graph = attack_graph.get_pruned_graph(
+        [int(i) for i in selected_exploits])
+
+    # Get the list of clusters
+    clusters = get_clusters(pruned_graph, clustering_method)
+
+    # Create the table of clusters
+    table_clustering = []
+    if clusters is not None:
+        table_clustering = []
+        for id_cluster, data in clusters.items():
+            table_clustering += [
+                html.Div(className="table-cell", children=str(id_cluster)),
+                html.Div(
+                    className="table-cell",
+                    style=dict(backgroundColor="{}".format(data["color"]))),
+                html.Div(className="table-cell",
+                         children=str(len(data["nodes"])))
+            ]
+
+    # Create the dictionary of parameters
+    parameters = {}
+    parameters["selected_exploits"] = selected_exploits
+    parameters["clusters"] = clusters
+
+    return table_clustering, parameters
+
+
 def get_table_exploit_ranking(ranking: Dict[int, int],
                               scores: Dict[int, float]) -> List[html.Div]:
     table = []
@@ -139,6 +185,38 @@ def get_attack_graph_from_string(string: str,
     attack_graph.parse(string, extension)
 
     return attack_graph
+
+
+def get_clusters(attack_graph: BaseGraph, clustering_method: str) -> dict:
+    # Get an instance of the clustering method
+    instance = None
+    if clustering_method == "spectral1":
+        instance = Spectral1(attack_graph)
+    elif clustering_method == "spectral2":
+        instance = Spectral2(attack_graph)
+    elif clustering_method == "deepwalk":
+        instance = DeepWalk(attack_graph)
+    elif clustering_method == "graphsage":
+        instance = GraphSage(attack_graph)
+    elif clustering_method == "hope":
+        instance = Hope(attack_graph)
+
+    if instance is None:
+        return None
+    elif isinstance(instance, EmbeddingMethod):
+        instance.embed()
+
+    # Apply clustering
+    instance.cluster()
+
+    # Create the result dictionary
+    results = {}
+    clusters = instance.clusters
+    for id_cluster, nodes in clusters.items():
+        color = utils.create_random_color()
+        results[str(id_cluster)] = dict(color=color, nodes=nodes)
+
+    return results
 
 
 if __name__ == "__main__":
