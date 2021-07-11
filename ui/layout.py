@@ -40,14 +40,14 @@ def generate_section_attack_graph() -> html.Div:
                                  dict(label="Dependency attack graph",
                                       value="dependency")
                              ],
-                             value="state"),
+                             value="dependency"),
                          html.Div(id="sub-widget-number-exploits",
                                   children=[
                                       html.Div(className="normal-text",
                                                children="Number of exploits"),
                                       dcc.Input(id="input-number-exploits",
                                                 type="number",
-                                                value=30)
+                                                value=20)
                                   ]),
                          html.Button(id="button-generate", children="Generate")
                      ])
@@ -72,7 +72,7 @@ def generate_section_exploit_ranking() -> html.Div:
                                           dict(label="Kuehlmann",
                                                value="kuehlmann"),
                                           dict(label="Value Iteration",
-                                               value="value_iteration"),
+                                               value="vi"),
                                           dict(label="Homer", value="homer"),
                                           dict(label="Probabilistic path",
                                                value="pp")
@@ -81,12 +81,17 @@ def generate_section_exploit_ranking() -> html.Div:
                                       searchable=False,
                                       clearable=False)
                      ]),
-            html.Div(id="table-exploit-ranking",
-                     className="table",
+            html.Div(className="table",
                      children=[
-                         html.Div(className="table-cell",
-                                  children=table_header)
-                         for table_header in ["#", "Id", "Score"]
+                         html.Div(className="table-header",
+                                  children=[
+                                      html.Div(className="table-cell",
+                                               children=table_header)
+                                      for table_header in
+                                      ["#", "Exploit removed", "Score"]
+                                  ]),
+                         html.Div(id="table-exploit-ranking",
+                                  className="table-content")
                      ])
         ])
 
@@ -134,10 +139,10 @@ def generate_section_clustering() -> html.Div:
                                       clearable=False)
                      ]),
             html.Div(
-                id="table-clustering",
-                className="table",
+                className="table-header",
                 children=[
                     html.Div(className="table-cell", children=table_header)
                     for table_header in ["Id", "Color", "Number of nodes"]
-                ])
+                ]),
+            html.Div(id="table-clustering", className="table")
         ])

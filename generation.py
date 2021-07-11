@@ -50,6 +50,17 @@ class Generator:
 
         return state_graph, dependency_graph
 
+    def generate_state_attack_graph(self) -> StateAttackGraph:
+        self._generate_exploits()
+
+        state_attack_graph = StateAttackGraph()
+        state_attack_graph.propositions = self.propositions.copy()
+        state_attack_graph.exploits = self.exploits.copy()
+        state_attack_graph.goal_proposition = self.goal_proposition
+        state_attack_graph.fill_graph()
+
+        return state_attack_graph
+
     def generate_dependency_attack_graph(self) -> DependencyAttackGraph:
         self._generate_exploits()
 

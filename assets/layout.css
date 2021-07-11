@@ -27,6 +27,7 @@ body {
 }
 
 #section-exploit-ranking {
+  overflow-y: auto;
   grid-column: 1;
   grid-row: 2;
 }

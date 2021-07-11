@@ -194,7 +194,7 @@ class RankingMethodsComparator:
         for i, instance in enumerate(instances):
             print("Applying {}".format(METHODS[i]))
             start = time.time()
-            exploit_rankings.append(instance.rank_exploits())
+            exploit_rankings.append(instance.rank_exploits()[0])
             times.append((time.time() - start) / len(state_graph.exploits))
 
         return exploit_rankings, times

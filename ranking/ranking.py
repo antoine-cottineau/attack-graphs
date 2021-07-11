@@ -1,13 +1,13 @@
 from attack_graph import BaseGraph
 from scipy.stats import rankdata
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 class RankingMethod:
     def __init__(self, ids_exploits: List[int]):
         self.ids_exploits = ids_exploits
 
-    def rank_exploits(self) -> Dict[int, int]:
+    def rank_exploits(self) -> Tuple[Dict[int, int], Dict[int, float]]:
         scores: Dict[int, float] = {}
 
         # Evaluate the score when removing no exploit
@@ -23,7 +23,7 @@ class RankingMethod:
         ordering = dict([(list(scores)[i], int(ranks[i]))
                          for i in range(len(self.ids_exploits) + 1)])
 
-        return ordering
+        return ordering, scores
 
     def get_score(self) -> float:
         return

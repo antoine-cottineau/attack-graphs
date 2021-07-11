@@ -29,11 +29,22 @@
 }
 
 .table {
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
+  display: flex;
   margin-top: 0.3rem;
+  flex-direction: column;
   border-bottom: 1px solid black;
   border-right: 1px solid black;
+  overflow-y: auto;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+}
+
+.table-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
 }
 
 .table-cell {
