@@ -103,11 +103,8 @@ def generate_section_exploit_selection() -> html.Div:
                         html.H2(className="section-header",
                                 children="Exploit selection"),
                         dcc.Checklist(id="checklist-exploits",
-                                      options=[
-                                          dict(label="foo", value="foo"),
-                                          dict(label="bar", value="bar")
-                                      ],
-                                      value=["foo"])
+                                      options=[],
+                                      value=[])
                     ])
 
 
@@ -138,11 +135,16 @@ def generate_section_clustering() -> html.Div:
                                       searchable=False,
                                       clearable=False)
                      ]),
-            html.Div(
-                className="table-header",
-                children=[
-                    html.Div(className="table-cell", children=table_header)
-                    for table_header in ["Id", "Color", "Number of nodes"]
-                ]),
-            html.Div(id="table-clustering", className="table")
+            html.Div(className="table",
+                     children=[
+                         html.Div(className="table-header",
+                                  children=[
+                                      html.Div(className="table-cell",
+                                               children=table_header)
+                                      for table_header in
+                                      ["Id", "Color", "Number of nodes"]
+                                  ]),
+                         html.Div(id="table-clustering",
+                                  className="table-content")
+                     ])
         ])

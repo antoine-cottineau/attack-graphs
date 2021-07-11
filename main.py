@@ -10,7 +10,7 @@ from ranking.abraham import ProbabilisticPath
 from ranking.homer import RiskQuantifier
 from ranking.mehta import PageRankMethod, KuehlmannMethod
 from ranking.sheyner import ValueIteration
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from ui.layout import generate_layout
 
 app = dash.Dash(__name__)
@@ -76,6 +76,30 @@ def update_exploit_ranking(graph_data: str,
 
     # Update the UI
     return get_table_exploit_ranking(ranking, scores)
+
+
+@app.callback(Output("checklist-exploits", "options"),
+              Output("checklist-exploits", "value"),
+              Input("attack-graph", "data"))
+def update_exploits(graph_data: str) -> Tuple[List[Dict[str, str]], List[str]]:
+    # Get the current attack graph
+    attack_graph = get_attack_graph_from_string(graph_data)
+    if attack_graph is None:
+        return None
+
+    # Create the list of exploits
+    exploits = []
+    selected_exploits = []
+    for id_exploit, data in attack_graph.exploits.items():
+        text: str = data["text"]
+        # Only keep the first 20 words
+        text = " ".join(text.split(" ")[:20])
+        # Add the id at the beginning of the text
+        text = "{}: {}".format(id_exploit, text)
+        exploits.append(dict(label=text, value=id_exploit))
+        selected_exploits.append(id_exploit)
+
+    return exploits, selected_exploits
 
 
 def get_table_exploit_ranking(ranking: Dict[int, int],

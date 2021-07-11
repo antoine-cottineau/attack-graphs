@@ -12,7 +12,8 @@ body {
 .section {
   display: flex;
   flex-direction: column;
-  margin: 0.5rem;
+  padding: 0.5rem;
+  overflow-y: auto;
 }
 
 .widget {
@@ -27,7 +28,6 @@ body {
 }
 
 #section-exploit-ranking {
-  overflow-y: auto;
   grid-column: 1;
   grid-row: 2;
 }
