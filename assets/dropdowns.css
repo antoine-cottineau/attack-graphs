@@ -1,0 +1,5 @@
+.dropdown {
+  margin-top: var(--space-medium);
+  cursor: pointer;
+  color: var(--color-dark);
+}

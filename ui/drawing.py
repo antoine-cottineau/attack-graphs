@@ -1,6 +1,7 @@
 import dash_core_components as dcc
 import networkx as nx
 import plotly.graph_objects as go
+import ui.constants
 from attack_graph import DependencyAttackGraph, StateAttackGraph
 from typing import Dict, List, Tuple
 from ui.cluster_drawing import ClusterDrawer
@@ -28,7 +29,7 @@ class BaseGraphDrawer:
         if not self.parameters:
             return
 
-        self.elected_exploits = self.parameters["selected_exploits"]
+        self.selected_exploits = self.parameters["selected_exploits"]
         self.clusters = self.parameters["clusters"]
 
     def prune_graph(self):
@@ -60,19 +61,19 @@ class BaseGraphDrawer:
             y.append(position[1])
             hovertext.append(dict_hovertexts[node])
 
-        node_objects = go.Scatter(x=x,
-                                  y=y,
-                                  mode="markers",
-                                  hoverinfo="text",
-                                  hovertext=hovertext,
-                                  marker=dict(color=colors))
+        node_objects = go.Scatter(
+            x=x,
+            y=y,
+            mode="markers",
+            hoverinfo="text",
+            hovertext=hovertext,
+            hoverlabel=dict(font=dict(family="Montserrat")),
+            marker=dict(size=12, color=colors))
 
         self.objects.append(node_objects)
 
-    def add_edge_objects(self,
-                         edges: List[Tuple[Tuple[float, float], Tuple[float,
-                                                                      float]]],
-                         color: str = "black"):
+    def add_edge_objects(self, edges: List[Tuple[Tuple[float, float],
+                                                 Tuple[float, float]]]):
         x = []
         y = []
         for edge in edges:
@@ -85,7 +86,7 @@ class BaseGraphDrawer:
             go.Scatter(x=x,
                        y=y,
                        mode="lines",
-                       line=dict(width=1.5, color=color)))
+                       line=dict(width=1, color=ui.constants.color_light)))
 
     def add_zone_objects(self):
         if self.clusters is None:
@@ -110,6 +111,7 @@ class BaseGraphDrawer:
                            mode="lines",
                            fill="toself",
                            fillcolor=color,
+                           line=dict(width=0),
                            hoverinfo="text",
                            text="cluster {}".format(i_cluster)))
 
@@ -119,10 +121,13 @@ class BaseGraphDrawer:
                                showticklabels=False)
 
         figure = go.Figure(data=self.objects,
-                           layout=go.Layout(margin=dict(b=8, l=8, r=8, t=8),
-                                            showlegend=False,
-                                            xaxis=axis_parameters,
-                                            yaxis=axis_parameters))
+                           layout=go.Layout(
+                               margin=dict(b=0, l=0, r=0, t=0),
+                               paper_bgcolor=ui.constants.color_dark,
+                               plot_bgcolor=ui.constants.color_dark,
+                               showlegend=False,
+                               xaxis=axis_parameters,
+                               yaxis=axis_parameters))
 
         return dcc.Graph(id="object-attack-graph",
                          figure=figure,
@@ -164,15 +169,10 @@ class StateAttackGraphDrawer(BaseGraphDrawer):
         hovertexts: Dict[int, str] = {}
         for node in self.attack_graph.nodes:
             hovertext = "id: {}".format(node)
-            hovertext += "<br>"
-            hovertext += ";".join([
-                str(i)
-                for i in self.attack_graph.nodes[node]["ids_propositions"]
-            ])
-
             hovertexts[node] = hovertext
 
-        colors = ["red"] * self.attack_graph.number_of_nodes()
+        colors = [ui.constants.color_accent
+                  ] * self.attack_graph.number_of_nodes()
 
         self.add_node_objects(self.positions, hovertexts, colors)
 
@@ -262,12 +262,12 @@ class DependencyAttackGraphDrawer(BaseGraphDrawer):
                 hovertext += "<br>proposition id: {}".format(
                     data["id_proposition"])
                 hovertexts[node] = hovertext
-                colors.append("red")
+                colors.append(ui.constants.color_accent)
             else:
                 node_positions[node] = position
                 hovertext += "<br>exploit id: {}".format(data["id_exploit"])
                 hovertexts[node] = hovertext
-                colors.append("blue")
+                colors.append(ui.constants.color_accent_secondary)
 
         self.add_node_objects(node_positions, hovertexts, colors)
 

@@ -14,53 +14,41 @@
 }
 
 #radio-items-graph-type {
-  margin-top: 0.3rem;
+  margin-top: var(--space-medium);
 }
 
 #sub-widget-number-exploits {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.3rem;
+  align-items: center;
+  margin-top: var(--space-medium);
 }
 
 #button-generate {
-  margin-top: 0.3rem;
   align-self: flex-end;
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.25);
+  color: var(--color-dark);
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  margin-top: var(--space-medium);
+  padding: 0.5rem 1.5rem;
 }
 
 #checklist-exploits {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: var(--space-large);
   overflow-y: auto;
-}
-
-.table {
-  display: flex;
-  margin-top: 0.3rem;
-  flex-direction: column;
-  border-bottom: 1px solid black;
-  border-right: 1px solid black;
-  overflow-y: auto;
-}
-
-.table-header {
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
-}
-
-.table-content {
-  display: grid;
-  grid-template-columns: 1fr 2fr 2fr;
-}
-
-.table-cell {
-  padding: 0.2rem;
-  border-top: 1px solid black;
-  border-left: 1px solid black;
 }
 
 #object-attack-graph {
   height: 100%;
+}
+
+#input-number-exploits {
+  padding: 0.4rem;
 }

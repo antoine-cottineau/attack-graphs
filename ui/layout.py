@@ -40,11 +40,10 @@ def generate_section_attack_graph() -> html.Div:
                                  dict(label="Dependency attack graph",
                                       value="dependency")
                              ],
-                             value="dependency"),
+                             value="state"),
                          html.Div(id="sub-widget-number-exploits",
                                   children=[
-                                      html.Div(className="normal-text",
-                                               children="Number of exploits"),
+                                      html.Div(children="Number of exploits"),
                                       dcc.Input(id="input-number-exploits",
                                                 type="number",
                                                 value=20)
@@ -65,6 +64,7 @@ def generate_section_exploit_ranking() -> html.Div:
                          html.H3(className="widget-header",
                                  children="Ranking method"),
                          dcc.Dropdown(id="dropdown-exploit-ranking-method",
+                                      className="dropdown",
                                       options=[
                                           dict(label="None", value="none"),
                                           dict(label="PageRank",
@@ -119,6 +119,7 @@ def generate_section_clustering() -> html.Div:
                          html.H3(className="widget-header",
                                  children="Clustering method"),
                          dcc.Dropdown(id="dropdown-clustering-method",
+                                      className="dropdown",
                                       options=[
                                           dict(label="None", value="none"),
                                           dict(label="Spectral 1",

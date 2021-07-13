@@ -2,6 +2,7 @@ import dash
 import dash_html_components as html
 import dash_core_components as dcc
 import json
+import ui.constants
 import utils
 from attack_graph import BaseGraph, DependencyAttackGraph, StateAttackGraph
 from base64 import b64decode
@@ -231,9 +232,10 @@ def get_clusters(attack_graph: BaseGraph,
     # Create the result dictionary
     results = {}
     clusters = instance.clusters
-    for id_cluster, nodes in clusters.items():
-        color = utils.create_random_color()
-        results[str(id_cluster)] = dict(color=color, nodes=nodes)
+    for i_cluster in sorted(clusters):
+        nodes = clusters[i_cluster]
+        color = ui.constants.colors_clusters[i_cluster]
+        results[str(i_cluster)] = dict(color=color, nodes=nodes)
 
     return results
 

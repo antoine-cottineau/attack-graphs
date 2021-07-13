@@ -10,8 +10,11 @@
   --color-medium: rgb(158, 158, 158);
   --color-accent: rgb(59, 207, 0);
   --color-accent-light: rgb(76, 228, 17);
+  --color-accent-secondary: rgb(226, 32, 226);
 
   --space-small: 0.4rem;
   --space-medium: 0.8rem;
   --space-large: 1.6rem;
+
+  --border: 1px solid var(--color-light);
 }

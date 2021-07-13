@@ -1,0 +1,25 @@
+.table {
+  display: flex;
+  margin-top: var(--space-medium);
+  flex-direction: column;
+  border-bottom: var(--border);
+  border-right: var(--border);
+  overflow-y: auto;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+  font-weight: 600;
+}
+
+.table-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 2fr;
+}
+
+.table-cell {
+  padding: 0.3rem;
+  border-top: var(--border);
+  border-left: var(--border);
+}
