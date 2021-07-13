@@ -1,6 +1,6 @@
-from embedding.embedding import EmbeddingMethod
 import dash
 import dash_html_components as html
+import dash_core_components as dcc
 import json
 import utils
 from attack_graph import BaseGraph, DependencyAttackGraph, StateAttackGraph
@@ -8,6 +8,7 @@ from base64 import b64decode
 from clustering.white_smyth import Spectral1, Spectral2
 from dash.dependencies import Input, Output, State
 from embedding.deepwalk import DeepWalk
+from embedding.embedding import EmbeddingMethod
 from embedding.graphsage import GraphSage
 from embedding.hope import Hope
 from generation import Generator
@@ -16,6 +17,7 @@ from ranking.homer import RiskQuantifier
 from ranking.mehta import PageRankMethod, KuehlmannMethod
 from ranking.sheyner import ValueIteration
 from typing import Dict, List, Tuple
+from ui.drawing import DependencyAttackGraphDrawer, StateAttackGraphDrawer
 from ui.layout import generate_layout
 
 app = dash.Dash(__name__)
@@ -148,6 +150,22 @@ def update_clusters_and_parameters(
     return table_clustering, parameters
 
 
+@app.callback(Output("zone-attack-graph", "children"),
+              Input("parameters", "data"), State("attack-graph", "data"))
+def display_attack_graph(parameters: dict, graph_data: str) -> dcc.Graph:
+    # Get the current attack graph
+    attack_graph = get_attack_graph_from_string(graph_data)
+    if attack_graph is None:
+        return None
+
+    if isinstance(attack_graph, StateAttackGraph):
+        return StateAttackGraphDrawer(attack_graph, parameters).apply()
+    elif isinstance(attack_graph, DependencyAttackGraph):
+        return DependencyAttackGraphDrawer(attack_graph, parameters).apply()
+    else:
+        return None
+
+
 def get_table_exploit_ranking(ranking: Dict[int, int],
                               scores: Dict[int, float]) -> List[html.Div]:
     table = []
@@ -187,7 +205,8 @@ def get_attack_graph_from_string(string: str,
     return attack_graph
 
 
-def get_clusters(attack_graph: BaseGraph, clustering_method: str) -> dict:
+def get_clusters(attack_graph: BaseGraph,
+                 clustering_method: str) -> Dict[str, dict]:
     # Get an instance of the clustering method
     instance = None
     if clustering_method == "spectral1":

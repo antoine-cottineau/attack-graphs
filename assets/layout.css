@@ -7,19 +7,15 @@ body {
   grid-template-columns: 1fr 1fr 2fr;
   grid-template-rows: 1fr 1fr;
   height: 100vh;
+  background-color: var(--color-dark);
+  color: var(--color-light);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: var(--space-medium);
   overflow-y: auto;
-}
-
-.widget {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
 }
 
 #section-attack-graph {
@@ -45,5 +41,4 @@ body {
 #zone-attack-graph {
   grid-column: 3;
   grid-row: 1 / 3;
-  background-color: magenta;
 }

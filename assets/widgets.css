@@ -1,9 +1,15 @@
+.widget {
+  display: flex;
+  flex-direction: column;
+  margin-top: var(--space-large);
+}
+
 #upload-attack-graph {
   width: 100%;
-  margin-top: 0.3rem;
-  padding: 0.2rem 0;
+  margin-top: var(--space-medium);
+  padding: 0.4rem 0;
   text-align: center;
-  border: 1px dashed black;
+  border: 2px dashed var(--color-light);
   cursor: pointer;
 }
 
@@ -53,4 +59,8 @@
   padding: 0.2rem;
   border-top: 1px solid black;
   border-left: 1px solid black;
+}
+
+#object-attack-graph {
+  height: 100%;
 }
