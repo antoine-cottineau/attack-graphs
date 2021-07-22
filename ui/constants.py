@@ -1,7 +1,7 @@
 color_dark = "rgb(43, 43, 43)"
 color_light = "rgb(206, 206, 206)"
 color_medium = "rgb(158, 158, 158)"
-color_accent = "rgb(59, 207, 0)"
+color_accent = "#c15b58"
 color_accent_light = "rgb(76, 228, 17)"
 color_accent_secondary = "rgb(226, 32, 226)"
 

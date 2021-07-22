@@ -86,7 +86,7 @@ class BaseGraphDrawer:
             go.Scatter(x=x,
                        y=y,
                        mode="lines",
-                       line=dict(width=1, color=ui.constants.color_light)))
+                       line=dict(width=1, color="white")))
 
     def add_zone_objects(self):
         if self.clusters is None:
